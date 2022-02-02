@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31313.79
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{FB01A7E8-5609-47A6-BFB8-85DDA97B537A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{8B5F373A-E4C5-4691-96BB-2BB898562882}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "delegatorApi", "delegatorApi\delegatorApi.csproj", "{9652746F-110F-4078-84BC-0039F26632BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9652746F-110F-4078-84BC-0039F26632BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9652746F-110F-4078-84BC-0039F26632BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9652746F-110F-4078-84BC-0039F26632BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9652746F-110F-4078-84BC-0039F26632BC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9652746F-110F-4078-84BC-0039F26632BC} = {8B5F373A-E4C5-4691-96BB-2BB898562882}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AA2B69EC-013B-48A8-B316-859E28F22F44}
+	EndGlobalSection
+EndGlobal

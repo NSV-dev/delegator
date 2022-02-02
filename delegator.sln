@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{8B5F373A-E4C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "delegatorApi", "delegatorApi\delegatorApi.csproj", "{9652746F-110F-4078-84BC-0039F26632BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "delegatorApi.Library", "delegatorApi.Library\delegatorApi.Library.csproj", "{CBE13B02-A76D-48AF-81CF-A94FF2354DE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,12 +21,17 @@ Global
 		{9652746F-110F-4078-84BC-0039F26632BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9652746F-110F-4078-84BC-0039F26632BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9652746F-110F-4078-84BC-0039F26632BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBE13B02-A76D-48AF-81CF-A94FF2354DE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBE13B02-A76D-48AF-81CF-A94FF2354DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBE13B02-A76D-48AF-81CF-A94FF2354DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBE13B02-A76D-48AF-81CF-A94FF2354DE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9652746F-110F-4078-84BC-0039F26632BC} = {8B5F373A-E4C5-4691-96BB-2BB898562882}
+		{CBE13B02-A76D-48AF-81CF-A94FF2354DE2} = {8B5F373A-E4C5-4691-96BB-2BB898562882}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA2B69EC-013B-48A8-B316-859E28F22F44}

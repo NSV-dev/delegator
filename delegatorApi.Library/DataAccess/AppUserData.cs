@@ -10,11 +10,19 @@ namespace delegatorApi.Library.DataAccess
 {
     public class AppUserData
     {
-        public AppUser GetUserById(string Id)
+        public List<AppUser> GetAll()
         {
             using (delegatorContext db = new())
             {
-                return db.AppUsers.First(u => u.Id == Id);
+                return db.AppUsers.ToList();
+            }
+        }
+
+        public List<AppUser> GetByCompanyId(string compId)
+        {
+            using (delegatorContext db = new())
+            {
+                return db.CompanyUsers.Where(cu => cu.CompanyId == compId).Select(x => x.AppUser).ToList();
             }
         }
     }

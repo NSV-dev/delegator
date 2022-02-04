@@ -1,4 +1,6 @@
-﻿using delegatorApi.Models;
+﻿using delegatorApi.Library.DataAccess;
+using delegatorApi.Library.Models;
+using delegatorApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -6,24 +8,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using delegatorApi.Library.Models;
-using delegatorApi.Library.DataAccess;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 
 namespace delegatorApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class AppUserController : ControllerBase
     {
-        [HttpGet]
-        public AppUser GetById()
-        {
-            AppUserData data = new();
+        public List<AppUser> GetAll() => new AppUserData().GetAll();
 
-            return data.GetUserById(User.FindFirstValue(ClaimTypes.NameIdentifier));
-        }
+        [Route("ByComp")]
+        public List<AppUser> getByCompanyId(string compId) => new AppUserData().GetByCompanyId(compId);
     }
 }

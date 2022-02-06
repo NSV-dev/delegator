@@ -1,43 +1,51 @@
-﻿using delegatorUI.Library.Api;
+﻿using delegatorUI.Infrastructure.Commands.Base;
+using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace delegatorUI.ViewModel.WindowViewModel
 {
     public class WindowViewModel : BaseViewModel
-    {        
-        private readonly APIHelper _apiHelper;
-
-        private string _title;
+    {
+        #region Title
+        private string _title = "delegator";
         public string Title 
         {
             get => _title;
             set => OnPropertyChanged(ref _title, value);
         }
+        #endregion
 
+        #region Users
         private List<User> _users;
         public List<User> Users
         {
             get => _users;
             set => OnPropertyChanged(ref _users, value);
         }
+        #endregion
 
-        public WindowViewModel(APIHelper apiHelper)
+        #region WindowState
+        private WindowState _windowState;
+        public WindowState WindowState
         {
-            _apiHelper = apiHelper;
-
-            Title = "123";
-            Load();
+            get => _windowState;
+            set => OnPropertyChanged(ref _windowState, value);
         }
 
-        private async void Load()
+        public ICommand MinimazeCommand { get; set; }
+        public ICommand MaximazeCommand { get; set; }
+        public ICommand CloseCommand { get; set; }
+        #endregion
+
+        public WindowViewModel()
         {
-            Users = await _apiHelper.GetAllUsers();
+            MinimazeCommand = new RelayCommand(_ => WindowState = WindowState.Minimized);
+            MaximazeCommand = new RelayCommand(_ => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized);
+            CloseCommand = new RelayCommand(_ => Application.Current.Shutdown());
         }
     }
 }

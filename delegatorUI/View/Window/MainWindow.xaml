@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:delegatorUI.View.Window"
+        xmlns:vms="clr-namespace:delegatorUI.ViewModel.UserControlViewModels"
+        xmlns:vs="clr-namespace:delegatorUI.View.UserControls"
         mc:Ignorable="d"
         WindowState="{Binding WindowState}"
         Height="450" Width="800">
@@ -60,7 +61,13 @@
                     <Button Content="✕" Command="{Binding CloseCommand}"/>
                 </StackPanel>
             </DockPanel>
-            <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
+            <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">
+                <ContentControl.Resources>
+                    <DataTemplate DataType="{x:Type vms:AllUsersControlViewModel}">
+                        <vs:AllUsersControl/>
+                    </DataTemplate>
+                </ContentControl.Resources>
+            </ContentControl>
 
         </Grid>
 

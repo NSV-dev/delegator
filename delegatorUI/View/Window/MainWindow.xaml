@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="{Binding Title}" Height="450" Width="800">
     <Grid>
-        
+        <ListView ItemsSource="{Binding Users}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding UserName}"/>
+                        <TextBlock Text=" "/>
+                        <TextBlock Text="{Binding Email}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Window>

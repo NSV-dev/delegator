@@ -1,4 +1,5 @@
-﻿using delegatorUI.View.Window;
+﻿using delegatorUI.Library.Api;
+using delegatorUI.View.Window;
 using delegatorUI.ViewModel.WindowViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -22,7 +23,9 @@ namespace delegatorUI
         {
             IServiceCollection services = new ServiceCollection();
 
-            services.AddSingleton<WindowViewModel>()
+            services
+                .AddSingleton<APIHelper>()
+                .AddSingleton<WindowViewModel>()
                 .AddSingleton<MainWindow>(s => new MainWindow() { DataContext = s.GetRequiredService<WindowViewModel>() });
 
             _serviceProvider = services.BuildServiceProvider();

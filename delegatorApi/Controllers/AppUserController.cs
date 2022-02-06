@@ -18,6 +18,6 @@ namespace delegatorApi.Controllers
         public List<AppUser> GetAll() => new AppUserData().GetAll();
 
         [Route("ByComp")]
-        public List<AppUser> getByCompanyId(string compId) => new AppUserData().GetByCompanyId(compId);
+        public List<AppUser> GetByCompanyId(string compId) => new AppUserData().GetByCompanyId(compId);
     }
 }

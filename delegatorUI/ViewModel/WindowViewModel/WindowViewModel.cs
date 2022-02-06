@@ -4,6 +4,7 @@ using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
 using delegatorUI.ViewModel.UserControlViewModels;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
@@ -16,7 +17,7 @@ namespace delegatorUI.ViewModel.WindowViewModel
         public BaseViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
 
         #region Title
-        private string _title = "delegator";
+        private string _title;
         public string Title 
         {
             get => _title;
@@ -26,7 +27,6 @@ namespace delegatorUI.ViewModel.WindowViewModel
 
         #region WindowState
         private WindowState _windowState;
-
         public WindowState WindowState
         {
             get => _windowState;
@@ -38,15 +38,23 @@ namespace delegatorUI.ViewModel.WindowViewModel
         public ICommand CloseCommand { get; set; }
         #endregion
 
-        public WindowViewModel(NavigationStore navigationStore, AllUsersControlViewModel allUsersControlViewModel)
+        public WindowViewModel(NavigationStore navigationStore, LogInControlViewModel logInControlViewModel)
         {
             _navigationStore = navigationStore;
+            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
 
             MinimazeCommand = new RelayCommand(_ => WindowState = WindowState.Minimized);
             MaximazeCommand = new RelayCommand(_ => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized);
             CloseCommand = new RelayCommand(_ => Application.Current.Shutdown());
 
-            _navigationStore.CurrentViewModel = allUsersControlViewModel;
+            _navigationStore.Title = "Logging In";
+            _navigationStore.CurrentViewModel = logInControlViewModel;
+        }
+
+        private void OnCurrentViewModelChanged()
+        {
+            Title = "delegator | " + _navigationStore.Title;
+            OnPropertyChanged(nameof(CurrentViewModel));
         }
     }
 }

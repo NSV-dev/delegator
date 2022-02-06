@@ -5,8 +5,9 @@ namespace delegatorUI.Infrastructure.Stores
 {
     public class NavigationStore
     {
-        private BaseViewModel _currentViewModel;
+        public string Title;
 
+        private BaseViewModel _currentViewModel;
         public BaseViewModel CurrentViewModel
         {
             get => _currentViewModel;

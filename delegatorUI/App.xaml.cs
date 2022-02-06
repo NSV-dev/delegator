@@ -27,6 +27,14 @@ namespace delegatorUI
                 .AddSingleton<MainWindow>(s => new MainWindow() { DataContext = s.GetRequiredService<WindowViewModel>() })
                 .AddSingleton<AllUsersControlViewModel>()
                 .AddSingleton<AllUsersControl>(s => new AllUsersControl() { DataContext = s.GetRequiredService<AllUsersControlViewModel>() })
+                .AddSingleton<LogInControlViewModel>()
+                .AddSingleton<LogInControl>(s => new LogInControl() { DataContext = s.GetRequiredService<LogInControlViewModel>() })
+                .AddSingleton<RegControlViewModel>()
+                .AddSingleton<RegControl>(s => new RegControl() { DataContext = s.GetRequiredService<RegControlViewModel>() })
+                .AddSingleton<AdminControlViewModel>()
+                .AddSingleton<AdminControl>(s => new AdminControl() { DataContext = s.GetRequiredService<AdminControlViewModel>() })
+                .AddSingleton<EmpControlViewModel>()
+                .AddSingleton<EmpControl>(s => new EmpControl() { DataContext = s.GetRequiredService<EmpControlViewModel>() })
                 ;
 
             _serviceProvider = services.BuildServiceProvider();

@@ -18,6 +18,14 @@ namespace delegatorApi.Library.DataAccess
             }
         }
 
+        public AppUser GetByUsername(string name)
+        {
+            using (delegatorContext db = new())
+            {
+                return db.AppUsers.FirstOrDefault(u => u.UserName == name);
+            }
+        }
+
         public List<AppUser> GetByCompanyId(string compId)
         {
             using (delegatorContext db = new())

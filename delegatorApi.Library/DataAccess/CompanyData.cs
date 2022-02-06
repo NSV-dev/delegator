@@ -10,23 +10,11 @@ namespace delegatorApi.Library.DataAccess
 {
     public class CompanyData
     {
-        public List<Company> GetAll()
-        {
-            using delegatorContext db = new();
-            return db.Companies.ToList();
-        }
-
-        public List<Company> GetByAdminId(string id)
+        public List<Company> GetByUserId(string id)
         {
             using (delegatorContext db = new())
             {
-                var cus = db.CompanyUsers.Where(cu => cu.Role.Title == "Admin" && cu.AppUserId == id).ToList();
-                List<Company> res = new();
-                foreach (var c in db.Companies.ToList())
-                    foreach (var cu in cus)
-                        if (c.Id == cu.CompanyId)
-                            res.Add(c);
-                return res;
+                return db.CompanyUsers.Where(cu => cu.AppUserId == id).Select(cu => cu.Company).ToList();
             }
         }
     }

@@ -13,14 +13,9 @@ namespace delegatorApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AppUserController : ControllerBase
+    public class CompanyController : ControllerBase
     {
-        public List<AppUser> GetAll() => new AppUserData().GetAll();
-
-        [Route("ByUsername")]
-        public AppUser GetByUesrname(string name) => new AppUserData().GetByUsername(name);
-
-        [Route("ByComp")]
-        public List<AppUser> GetByCompanyId(string compId) => new AppUserData().GetByCompanyId(compId);
+        [Route("ByUserId")]
+        public List<Company> GetByUserId(string id) => new CompanyData().GetByUserId(id);
     }
 }

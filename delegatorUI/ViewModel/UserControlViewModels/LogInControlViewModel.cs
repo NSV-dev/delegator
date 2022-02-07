@@ -117,6 +117,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         {
             List<CompanyUser> companyUserList = await _apiHelper.GetCompaniesUsersByCompanyId(company.Id, _userByLogin.Id);
             CompanyUser companyUser = companyUserList.First();
+            _navigationStore.Title = companyUser.Company.Title;
             if (companyUser.Role.Title == "Admin")
                 _navigationStore.CurrentViewModel = _adminControlViewModel;
             if (companyUser.Role.Title == "User")

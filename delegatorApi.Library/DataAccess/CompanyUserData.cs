@@ -13,7 +13,9 @@ namespace delegatorApi.Library.DataAccess
             using (delegatorContext db = new())
             {
                 return db.CompanyUsers.Where(cu => cu.CompanyId == CompanyId && cu.AppUserId == AppUserId)
-                    .Include(cu => cu.Role).ToList();
+                    .Include(cu => cu.Role)
+                    .Include(cu => cu.Company)
+                    .ToList();
             }
         }
     }

@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         WindowState="{Binding WindowState}"
         WindowStartupLocation="CenterScreen"
+        Title="{Binding Title}"
         Height="450" Width="800">
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" ResizeBorderThickness="4" CornerRadius="0" CaptionHeight="25"/>
@@ -33,7 +34,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <DockPanel Background="#1c1c1c">
-                <Label Content="{Binding Title}" Foreground="White"/>
+                <TextBlock Text="{Binding Title}" Foreground="White" Margin="5,0,0,0" VerticalAlignment="Center"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                             WindowChrome.IsHitTestVisibleInChrome="True">
                     <StackPanel.Resources>

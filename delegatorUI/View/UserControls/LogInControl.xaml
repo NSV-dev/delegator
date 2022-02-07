@@ -167,6 +167,49 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
+                <Style TargetType="Button" x:Key="CompanyButton">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="border" BorderBrush="Transparent" BorderThickness="1" CornerRadius="5"
+                                        MinWidth="100">
+                                    <ContentPresenter Margin="3" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation
+                                                        Storyboard.TargetName="border"
+                                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
+                                                        To="White" Duration="0:0:.3"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation
+                                                        Storyboard.TargetName="border"
+                                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
+                                                        To="Transparent" Duration="0:0:.3"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="FontSize" Value="14"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
             </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -298,15 +341,28 @@
                 <TextBlock Text="Выберите компанию" Style="{StaticResource TextBlockStyle}"
                            HorizontalAlignment="Center"/>
 
-                <ListView ItemsSource="{Binding Companies}" SelectedItem="{Binding SelectedCompany}"
+                <ListView x:Name="CompanyListView"
+                          ItemsSource="{Binding Companies}"
                           Width="160" Grid.Row="1"
                           Background="Transparent" BorderBrush="Transparent" Foreground="White">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border>
+                                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Button Content="{Binding Title}" Style="{x:Null}"
-                                    Background="Transparent" Foreground="White"
-                                    BorderBrush="Transparent" Margin="2"
-                                    Command="{Binding OnCompanySelectedCommandExecute}"/>
+                            <Button Content="{Binding Title}" Style="{StaticResource CompanyButton}"
+                                    Command="{Binding DataContext.CompanySelectedCommand, ElementName=CompanyListView}"
+                                    CommandParameter="{Binding}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

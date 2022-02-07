@@ -56,6 +56,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         #endregion
 
         #region LoggingIn
+        private User _userByLogin;
+
         private string _login;
         public string Login
         {
@@ -85,44 +87,46 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         }
 
         public ICommand LogInCommand { get; }
-        public ICommand CompanySelectesCommand { get; }
+        public ICommand CompanySelectedCommand { get; }
 
         private async void OnLogInCommandExecute(object p)
         {
-            User user = await _apiHelper.GetUserByUsername(Login);
-            if (user == null)
+            _userByLogin = await _apiHelper.GetUserByUsername(Login);
+            if (_userByLogin == null)
             {
                 ShowError("Такого пользователя не существует");
                 return;
             }
-            if (user.Password != Password)
+            if (_userByLogin.Password != Password)
             {
                 ShowError("Неверный пароль");
                 return;
             }
 
-            var userCompanies = await _apiHelper.GetCompaniesByUserId(user.Id);
+            List<Company> userCompanies = await _apiHelper.GetCompaniesByUserId(_userByLogin.Id);
             if (userCompanies.Count == 1)
-            {
-                List<CompanyUser> companyUserList = await _apiHelper.GetCompaniesUsersByCompanyId(userCompanies.First().Id, user.Id);
-                CompanyUser companyUser = companyUserList.First();
-                if (companyUser.Role.Title == "Admin")
-                    _navigationStore.CurrentViewModel = _adminControlViewModel;
-                if (companyUser.Role.Title == "User")
-                    _navigationStore.CurrentViewModel = _empControlViewModel;
-            }
+                await UserRoleRecognition(userCompanies.First());
 
             CompanyWidth = 200;
             Companies = userCompanies;
         }
 
-        private async void OnCompanySelectedCommandExecute(object p)
+        private async void OnCompanySelectedCommandExecute(object p) => await UserRoleRecognition(p as Company);
+
+        private async Task UserRoleRecognition(Company company)
         {
-            
+            List<CompanyUser> companyUserList = await _apiHelper.GetCompaniesUsersByCompanyId(company.Id, _userByLogin.Id);
+            CompanyUser companyUser = companyUserList.First();
+            if (companyUser.Role.Title == "Admin")
+                _navigationStore.CurrentViewModel = _adminControlViewModel;
+            if (companyUser.Role.Title == "User")
+                _navigationStore.CurrentViewModel = _empControlViewModel;
         }
         #endregion
 
-        public LogInControlViewModel(NavigationStore navigationStore, APIHelper apiHelper, RegControlViewModel regControlViewModel, AdminControlViewModel adminControlViewModel, EmpControlViewModel empControlViewModel)
+        public LogInControlViewModel(NavigationStore navigationStore, APIHelper apiHelper, 
+            RegControlViewModel regControlViewModel, AdminControlViewModel adminControlViewModel, 
+            EmpControlViewModel empControlViewModel)
         {
             _navigationStore = navigationStore;
             _apiHelper = apiHelper;
@@ -131,8 +135,10 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             _empControlViewModel = empControlViewModel;
 
             ToRegCommand = new RelayCommand(OnToRegCommandExecute);
-            LogInCommand = new RelayCommand(OnLogInCommandExecute, _ => !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password) && CompanyWidth == 0);
-            CompanySelectesCommand = new RelayCommand(OnCompanySelectedCommandExecute);
+            LogInCommand = new RelayCommand(OnLogInCommandExecute, _ => !string.IsNullOrWhiteSpace(Login) && 
+                                                                        !string.IsNullOrWhiteSpace(Password) && 
+                                                                        CompanyWidth == 0);
+            CompanySelectedCommand = new RelayCommand(OnCompanySelectedCommandExecute);
         }
     }
 }

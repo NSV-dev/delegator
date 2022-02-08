@@ -65,9 +65,6 @@
             </DockPanel>
             <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">
                 <ContentControl.Resources>
-                    <DataTemplate DataType="{x:Type vms:AllUsersControlViewModel}">
-                        <vs:AllUsersControl/>
-                    </DataTemplate>
                     <DataTemplate DataType="{x:Type vms:LogInControlViewModel}">
                         <vs:LogInControl/>
                     </DataTemplate>

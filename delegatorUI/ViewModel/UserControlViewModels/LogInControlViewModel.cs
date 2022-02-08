@@ -91,7 +91,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async void OnLogInCommandExecute(object p)
         {
-            _userByLogin = await _apiHelper.GetUserByUsername(Login);
+            _userByLogin = await _apiHelper.Users.GetByUsername(Login);
             if (_userByLogin == null)
             {
                 ShowError("Такого пользователя не существует");
@@ -103,7 +103,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
                 return;
             }
 
-            List<Company> userCompanies = await _apiHelper.GetCompaniesByUserId(_userByLogin.Id);
+            List<Company> userCompanies = await _apiHelper.Companies.GetByUserId(_userByLogin.Id);
             if (userCompanies.Count == 1)
                 await UserRoleRecognition(userCompanies.First());
 
@@ -115,7 +115,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async Task UserRoleRecognition(Company company)
         {
-            List<CompanyUser> companyUserList = await _apiHelper.GetCompaniesUsersByCompanyId(company.Id, _userByLogin.Id);
+            List<CompanyUser> companyUserList = await _apiHelper.CompaniesUsers.GetByCompanyId(company.Id, _userByLogin.Id);
             CompanyUser companyUser = companyUserList.First();
             _navigationStore.Title = companyUser.Company.Title;
             if (companyUser.Role.Title == "Admin")

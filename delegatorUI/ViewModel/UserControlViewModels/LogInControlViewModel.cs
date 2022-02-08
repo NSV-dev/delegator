@@ -65,7 +65,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             set => OnPropertyChanged(ref _login, value);
         }
 
-        private string _password;
+        private string _password = "";
         public string Password
         {
             get => _password;

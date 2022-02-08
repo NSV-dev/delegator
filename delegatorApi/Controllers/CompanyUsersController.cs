@@ -9,7 +9,14 @@ namespace delegatorApi.Controllers
     [ApiController]
     public class CompanyUsersController : ControllerBase
     {
+        private readonly CompanyUserData _companyUserData;
+
+        public CompanyUsersController(CompanyUserData companyUserData)
+        {
+            _companyUserData = companyUserData;
+        }
+
         [Route("ByCompanyAndUserId")]
-        public List<CompanyUser> GetByCompanyId(string CompanyId, string AppUserId) => new CompanyUserData().GetByCompanyAndUserId(CompanyId, AppUserId);
+        public List<CompanyUser> GetByCompanyId(string CompanyId, string AppUserId) => _companyUserData.GetByCompanyAndUserId(CompanyId, AppUserId);
     }
 }

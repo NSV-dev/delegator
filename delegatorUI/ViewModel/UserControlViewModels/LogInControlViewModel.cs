@@ -3,10 +3,8 @@ using delegatorUI.Infrastructure.Stores;
 using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -125,8 +123,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         }
         #endregion
 
-        public LogInControlViewModel(NavigationStore navigationStore, APIHelper apiHelper, 
-            RegControlViewModel regControlViewModel, AdminControlViewModel adminControlViewModel, 
+        public LogInControlViewModel(NavigationStore navigationStore, APIHelper apiHelper,
+            RegControlViewModel regControlViewModel, AdminControlViewModel adminControlViewModel,
             EmpControlViewModel empControlViewModel)
         {
             _navigationStore = navigationStore;
@@ -136,8 +134,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             _empControlViewModel = empControlViewModel;
 
             ToRegCommand = new RelayCommand(OnToRegCommandExecute);
-            LogInCommand = new RelayCommand(OnLogInCommandExecute, _ => !string.IsNullOrWhiteSpace(Login) && 
-                                                                        !string.IsNullOrWhiteSpace(Password) && 
+            LogInCommand = new RelayCommand(OnLogInCommandExecute, _ => !string.IsNullOrWhiteSpace(Login) &&
+                                                                        !string.IsNullOrWhiteSpace(Password) &&
                                                                         CompanyWidth == 0);
             CompanySelectedCommand = new RelayCommand(OnCompanySelectedCommandExecute);
         }

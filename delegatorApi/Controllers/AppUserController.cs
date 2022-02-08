@@ -9,12 +9,19 @@ namespace delegatorApi.Controllers
     [ApiController]
     public class AppUserController : ControllerBase
     {
+        private readonly AppUserData _appUserData;
+
+        public AppUserController(AppUserData appUserData)
+        {
+            _appUserData = appUserData;
+        }
+
         public List<AppUser> GetAll() => new AppUserData().GetAll();
 
         [Route("ByUsername")]
-        public AppUser GetByUesrname(string name) => new AppUserData().GetByUsername(name);
+        public AppUser GetByUesrname(string name) => _appUserData.GetByUsername(name);
 
         [Route("ByComp")]
-        public List<AppUser> GetByCompanyId(string compId) => new AppUserData().GetByCompanyId(compId);
+        public List<AppUser> GetByCompanyId(string compId) => _appUserData.GetByCompanyId(compId);
     }
 }

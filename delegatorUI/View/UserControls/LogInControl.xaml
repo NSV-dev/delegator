@@ -174,9 +174,9 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="Button">
-                                <Border x:Name="border" BorderBrush="Transparent" BorderThickness="1" CornerRadius="5"
-                                        MinWidth="100">
-                                    <ContentPresenter Margin="3" VerticalAlignment="Center"/>
+                                <Border x:Name="border" BorderBrush="Transparent" BorderThickness="0,0,0,1"
+                                        MinWidth="100" Margin="0, 2">
+                                    <ContentPresenter Margin="1" VerticalAlignment="Center"/>
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
@@ -208,6 +208,21 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
+                </Style>
+                <Style TargetType="Grid" x:Key="CompaniesGrid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CompanyWidth}" Value="200">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                Duration="0:0:.3" 
+                                                From="0" To="200"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                        </DataTrigger>
+                    </Style.Triggers>
                 </Style>
 
             </Grid.Resources>
@@ -315,30 +330,13 @@
             <Button Content="Войти" Command="{Binding LogInCommand}" Grid.Row="2" Width="100" Height="30"/>
 
             <Grid Grid.RowSpan="100" Grid.Column="2" Width="{Binding CompanyWidth}"
-                  HorizontalAlignment="Center">
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding CompanyWidth}" Value="200">
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="Width"
-                                                Duration="0:0:.3" 
-                                                From="0" To="200"/>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
+                  HorizontalAlignment="Center" Style="{StaticResource CompaniesGrid}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height=".2*"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 
-                <TextBlock Text="Выберите компанию" Style="{StaticResource TextBlockStyle}"
+                <TextBlock Text="Выберите компанию: " Style="{StaticResource TextBlockStyle}"
                            HorizontalAlignment="Center"/>
 
                 <ListView x:Name="CompanyListView"
@@ -361,7 +359,8 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Button Content="{Binding Title}" Style="{StaticResource CompanyButton}"
-                                    Command="{Binding DataContext.CompanySelectedCommand, ElementName=CompanyListView}"
+                                    Command="{Binding DataContext.CompanySelectedCommand, 
+                                                        ElementName=CompanyListView}"
                                     CommandParameter="{Binding}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>

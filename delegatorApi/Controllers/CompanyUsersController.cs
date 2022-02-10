@@ -16,6 +16,8 @@ namespace delegatorApi.Controllers
             _companyUserData = companyUserData;
         }
 
+        public void Post(CompanyUser companyUser) => _companyUserData.Post(companyUser);
+
         [Route("ByCompanyAndUserId")]
         public List<CompanyUser> GetByCompanyId(string CompanyId, string AppUserId) => _companyUserData.GetByCompanyAndUserId(CompanyId, AppUserId);
     }

@@ -1,14 +1,11 @@
-﻿using delegatorUI.Infrastructure;
+﻿using delegatorUI.Infrastructure.Services;
 using delegatorUI.Infrastructure.Commands.Base;
 using delegatorUI.Infrastructure.Stores;
 using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security;
 using System.Threading.Tasks;
 using System.Windows.Input;
 

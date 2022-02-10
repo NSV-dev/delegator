@@ -16,7 +16,7 @@ namespace delegatorApi.Controllers
             _appUserData = appUserData;
         }
 
-        public List<AppUser> GetAll() => new AppUserData().GetAll();
+        public void Post(AppUser appUser) => _appUserData.Post(appUser);
 
         [Route("ByUsername")]
         public AppUser GetByUesrname(string name) => _appUserData.GetByUsername(name);

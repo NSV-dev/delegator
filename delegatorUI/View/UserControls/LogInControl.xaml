@@ -171,7 +171,7 @@
                                     <Storyboard>
                                         <ThicknessAnimation
                                                 Storyboard.TargetProperty="Margin"
-                                                To="2,0,0,-15" Duration="0:0:.1"/>
+                                                To="2,0,0,-16" Duration="0:0:.1"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.ExitActions>

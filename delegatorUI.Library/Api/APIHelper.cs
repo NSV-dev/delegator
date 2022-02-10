@@ -1,13 +1,8 @@
 ﻿using delegatorUI.Library.Api.Helpers;
-using delegatorUI.Library.Models;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace delegatorUI.Library.Api
 {
@@ -19,12 +14,14 @@ namespace delegatorUI.Library.Api
         public AppUserHelper Users;
         public CompaniesHelper Companies;
         public CompaniesUsersHelper CompaniesUsers;
+        public RoleHelper Roles;
 
         private void InitializeHelpers()
         {
             Users = new(_apiClient);
             Companies = new(_apiClient);
             CompaniesUsers = new(_apiClient);
+            Roles = new(_apiClient);
         }
         #endregion
 

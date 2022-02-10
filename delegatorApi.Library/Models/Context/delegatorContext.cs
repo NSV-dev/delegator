@@ -66,7 +66,7 @@ namespace delegatorApi.Library.Models.Context
 
             modelBuilder.Entity<CompanyUser>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
 
                 entity.ToTable("CompanyUser");
 

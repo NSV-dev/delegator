@@ -16,7 +16,15 @@ namespace delegatorApi.Controllers
             _companyData = companyData;
         }
 
+        public void Post(Company company) => _companyData.Post(company);
+
         [Route("ByUserId")]
         public List<Company> GetByUserId(string id) => _companyData.GetByUserId(id);
+
+        [Route("ByTitle")]
+        public Company GetByTitle(string title) => _companyData.GetByTitle(title);
+
+        [Route("WhereTitleContains")]
+        public List<Company> GetWhereTitleContains(string s) => _companyData.GetWhereTitleContains(s);
     }
 }

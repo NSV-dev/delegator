@@ -25,14 +25,14 @@ namespace delegatorUI
                 .AddSingleton<NavigationStore>()
                 .AddSingleton<WindowViewModel>()
                 .AddSingleton<MainWindow>(s => new MainWindow() { DataContext = s.GetRequiredService<WindowViewModel>() })
-                .AddSingleton<LogInControlViewModel>()
-                .AddSingleton<LogInControl>(s => new LogInControl() { DataContext = s.GetRequiredService<LogInControlViewModel>() })
-                .AddSingleton<RegControlViewModel>()
-                .AddSingleton<RegControl>(s => new RegControl() { DataContext = s.GetRequiredService<RegControlViewModel>() })
-                .AddSingleton<AdminControlViewModel>()
-                .AddSingleton<AdminControl>(s => new AdminControl() { DataContext = s.GetRequiredService<AdminControlViewModel>() })
-                .AddSingleton<EmpControlViewModel>()
-                .AddSingleton<EmpControl>(s => new EmpControl() { DataContext = s.GetRequiredService<EmpControlViewModel>() })
+                .AddTransient<LogInControlViewModel>()
+                .AddTransient<LogInControl>(s => new LogInControl() { DataContext = s.GetRequiredService<LogInControlViewModel>() })
+                .AddTransient<RegControlViewModel>()
+                .AddTransient<RegControl>(s => new RegControl() { DataContext = s.GetRequiredService<RegControlViewModel>() })
+                .AddTransient<AdminControlViewModel>()
+                .AddTransient<AdminControl>(s => new AdminControl() { DataContext = s.GetRequiredService<AdminControlViewModel>() })
+                .AddTransient<EmpControlViewModel>()
+                .AddTransient<EmpControl>(s => new EmpControl() { DataContext = s.GetRequiredService<EmpControlViewModel>() })
                 ;
 
             _serviceProvider = services.BuildServiceProvider();

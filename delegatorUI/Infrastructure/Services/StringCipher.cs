@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace delegatorUI.Infrastructure
+namespace delegatorUI.Infrastructure.Services
 {
     public static class StringCipher
     {

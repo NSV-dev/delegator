@@ -1,7 +1,6 @@
 ﻿using delegatorUI.Library.Api.Helpers.Base;
 using delegatorUI.Library.Models;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -12,12 +11,12 @@ namespace delegatorUI.Library.Api.Helpers
         public AppUserHelper(HttpClient apiClient) 
             : base(apiClient) { }
 
-        public async Task<List<User>> GetAll()
+        public async Task Post(User user)
         {
-            using (HttpResponseMessage resp = await _apiClient.GetAsync("AppUser"))
+            using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("AppUser", user))
             {
                 if (resp.IsSuccessStatusCode)
-                    return await resp.Content.ReadAsAsync<List<User>>();
+                    return;
                 else
                     throw new Exception(resp.ReasonPhrase);
             }

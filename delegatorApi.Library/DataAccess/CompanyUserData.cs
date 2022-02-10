@@ -8,6 +8,15 @@ namespace delegatorApi.Library.DataAccess
 {
     public class CompanyUserData
     {
+        public void Post(CompanyUser companyUser)
+        {
+            using (delegatorContext db = new())
+            {
+                db.CompanyUsers.Add(companyUser);
+                db.SaveChanges();
+            }
+        }
+
         public List<CompanyUser> GetByCompanyAndUserId(string CompanyId, string AppUserId)
         {
             using (delegatorContext db = new())

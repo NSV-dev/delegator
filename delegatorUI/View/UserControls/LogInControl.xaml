@@ -359,5 +359,6 @@
             </Grid>
         </Grid>
 
+        <resources:LoadingAnimation Grid.Row="1" Opacity="{Binding LoadingOpacity}" Panel.ZIndex="{Binding LoadingZIndex}"/>
     </Grid>
 </UserControl>

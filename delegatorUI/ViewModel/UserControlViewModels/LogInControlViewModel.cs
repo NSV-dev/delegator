@@ -18,6 +18,34 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         private readonly AdminControlViewModel _adminControlViewModel;
         private readonly EmpControlViewModel _empControlViewModel;
 
+        #region Loading
+        private int _loadingOpacity = 0;
+        public int LoadingOpacity
+        {
+            get => _loadingOpacity;
+            set => OnPropertyChanged(ref _loadingOpacity, value);
+        }
+
+        private int _loadingZIndex = -2;
+        public int LoadingZIndex
+        {
+            get => _loadingZIndex;
+            set => OnPropertyChanged(ref _loadingZIndex, value);
+        }
+
+        private void StartLoading()
+        {
+            LoadingOpacity = 1;
+            LoadingZIndex = 20;
+        }
+
+        private void EndLoading()
+        {
+            LoadingOpacity = 0;
+            LoadingZIndex = -20;
+        }
+        #endregion
+
         #region Errors
         private double _errorOpacity;
         public double ErrorOpacity
@@ -90,6 +118,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async void OnLogInCommandExecute(object p)
         {
+            StartLoading();
             _userByLogin = await _apiHelper.Users.GetByUsername(Login);
             if (_userByLogin == null)
             {
@@ -105,6 +134,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             List<Company> userCompanies = await _apiHelper.Companies.GetByUserId(_userByLogin.Id);
             if (userCompanies.Count == 1)
                 await UserRoleRecognition(userCompanies.First());
+            EndLoading();
 
             CompanyWidth = 200;
             Companies = userCompanies;

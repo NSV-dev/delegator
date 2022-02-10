@@ -4,10 +4,7 @@ using delegatorUI.Infrastructure.Stores;
 using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -155,6 +152,13 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             get => _companyDataOpacity;
             set => OnPropertyChanged(ref _companyDataOpacity, value);
         }
+
+        private int _companyConfirmOpacity;
+        public int CompanyConfirmOpacity
+        {
+            get => _companyConfirmOpacity;
+            set => OnPropertyChanged(ref _companyConfirmOpacity, value);
+        }
         #endregion
         #region Grid's ZIndexes
         private int _dataZIndex = 0;
@@ -176,6 +180,13 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         {
             get => _companyDataZIndex;
             set => OnPropertyChanged(ref _companyDataZIndex, value);
+        }
+
+        private int _companyConfirmZIndex = -1;
+        public int CompanyConfirmZIndex
+        {
+            get => _companyConfirmZIndex;
+            set => OnPropertyChanged(ref _companyConfirmZIndex, value);
         }
         #endregion
 
@@ -201,6 +212,13 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         }
 
         private Company _selectedCompany;
+
+        private string _selectedCompanyCode;
+        public string SelectedCompanyCode
+        {
+            get => _selectedCompanyCode;
+            set => OnPropertyChanged(ref _selectedCompanyCode, value);
+        }
         #endregion
 
         #region Commands
@@ -209,6 +227,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         public ICommand NewCompanyCommand { get; }
         public ICommand BackToCompaniesCommand { get; }
         public ICommand CreateCompanyCommand { get; }
+        public ICommand BackToCompaniesFromCodeCommand { get; }
+        public ICommand CompanyConfirmedCommand { get; }
 
         private async void OnNextCommandExecute(object p)
         {
@@ -232,10 +252,14 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             CompaniesZIndex = 0;
         }
 
-        private void OnCompanySelectedCommandExecute(object p)
+        private async void OnCompanySelectedCommandExecute(object p)
         {
-            _selectedCompany = p as Company;
-            PostUser();
+            _selectedCompany = (Company)p;
+            CompaniesOpacity = 0;
+            CompaniesZIndex = -1;
+            await Task.Delay(100);
+            CompanyConfirmOpacity = 1;
+            CompanyConfirmZIndex = 0;
         }
 
         private async void OnNewCompanyCommandExecute(object p)
@@ -265,6 +289,23 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             }
             PostCompany();
         }
+
+        private async void OnBackToCompaniesFromCodeCommandExecute(object p)
+        {
+            CompanyConfirmOpacity = 0;
+            CompanyConfirmZIndex = -1;
+            await Task.Delay(100);
+            CompaniesOpacity = 1;
+            CompaniesZIndex = 0;
+        }
+
+        private void OnCompanyConfirmedCommandExecute(object p)
+        {
+            if (StringCipher.Decrypt(_selectedCompany.Code, "delegator") == SelectedCompanyCode)
+                PostUser();
+            else
+                Error("Код не соответсвует");
+        }
         #endregion
 
         #region Extra Funcs
@@ -283,7 +324,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             return new Company()
             {
                 Title = NewCompanyTitle,
-                Code = NewCompanyCode,
+                Code = StringCipher.Encrypt(NewCompanyCode, "delegator")
             };
         }
 
@@ -362,6 +403,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             CreateCompanyCommand = new RelayCommand(OnCreateCompanyCommandExecute, _ =>
                 !string.IsNullOrWhiteSpace(NewCompanyTitle) &&
                 !string.IsNullOrWhiteSpace(NewCompanyCode));
+            BackToCompaniesFromCodeCommand = new RelayCommand(OnBackToCompaniesFromCodeCommandExecute);
+            CompanyConfirmedCommand = new RelayCommand(OnCompanyConfirmedCommandExecute);
         }
     }
 }

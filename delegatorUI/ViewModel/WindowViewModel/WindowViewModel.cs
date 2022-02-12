@@ -1,4 +1,5 @@
 ﻿using delegatorUI.Infrastructure.Commands.Base;
+using delegatorUI.Infrastructure.Services;
 using delegatorUI.Infrastructure.Stores;
 using delegatorUI.ViewModel.Base;
 using delegatorUI.ViewModel.UserControlViewModels;
@@ -12,14 +13,14 @@ namespace delegatorUI.ViewModel.WindowViewModel
         private readonly NavigationStore _navigationStore;
         public BaseViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
 
-        //#region Title
-        //private string _title;
-        //public string Title 
-        //{
-        //    get => _title;
-        //    set => OnPropertyChanged(ref _title, value);
-        //}
-        //#endregion
+        #region Title
+        private string _title;
+        public string Title
+        {
+            get => _title;
+            set => OnPropertyChanged(ref _title, value);
+        }
+        #endregion
 
         #region WindowState
         private WindowState _windowState;
@@ -34,7 +35,7 @@ namespace delegatorUI.ViewModel.WindowViewModel
         public ICommand CloseCommand { get; set; }
         #endregion
 
-        public WindowViewModel(NavigationStore navigationStore, LogInControlViewModel logInControlViewModel)
+        public WindowViewModel(NavigationStore navigationStore, NavigationService<LogInControlViewModel> toLog)
         {
             _navigationStore = navigationStore;
             _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
@@ -43,13 +44,12 @@ namespace delegatorUI.ViewModel.WindowViewModel
             MaximazeCommand = new RelayCommand(_ => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized);
             CloseCommand = new RelayCommand(_ => Application.Current.Shutdown());
 
-            _navigationStore.Title = "Logging In";
-            _navigationStore.CurrentViewModel = logInControlViewModel;
+            toLog.Navigate();
         }
 
         private void OnCurrentViewModelChanged()
         {
-            //Title = "delegator | " + _navigationStore.Title;
+            Title = _navigationStore.Title;
             OnPropertyChanged(nameof(CurrentViewModel));
         }
     }

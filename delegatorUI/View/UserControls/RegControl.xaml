@@ -86,23 +86,7 @@
         </StackPanel>
 
         <Grid Grid.Row="1" Width="400" Height="150" Opacity="{Binding DataOpacity}" Panel.ZIndex="{Binding DataZIndex}">
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding DataOpacity}" Value="0">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation
-                                    Storyboard.TargetProperty="Opacity"
-                                    From="1" To="0" Duration="0:0:.1"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
+            
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Loaded">
                     <BeginStoryboard>

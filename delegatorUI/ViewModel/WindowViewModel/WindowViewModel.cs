@@ -1,11 +1,7 @@
 ﻿using delegatorUI.Infrastructure.Commands.Base;
 using delegatorUI.Infrastructure.Stores;
-using delegatorUI.Library.Api;
-using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
 using delegatorUI.ViewModel.UserControlViewModels;
-using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 
@@ -16,14 +12,14 @@ namespace delegatorUI.ViewModel.WindowViewModel
         private readonly NavigationStore _navigationStore;
         public BaseViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
 
-        #region Title
-        private string _title;
-        public string Title 
-        {
-            get => _title;
-            set => OnPropertyChanged(ref _title, value);
-        }
-        #endregion
+        //#region Title
+        //private string _title;
+        //public string Title 
+        //{
+        //    get => _title;
+        //    set => OnPropertyChanged(ref _title, value);
+        //}
+        //#endregion
 
         #region WindowState
         private WindowState _windowState;
@@ -53,7 +49,7 @@ namespace delegatorUI.ViewModel.WindowViewModel
 
         private void OnCurrentViewModelChanged()
         {
-            Title = "delegator | " + _navigationStore.Title;
+            //Title = "delegator | " + _navigationStore.Title;
             OnPropertyChanged(nameof(CurrentViewModel));
         }
     }

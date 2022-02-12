@@ -1,6 +1,5 @@
 ﻿using delegatorUI.Infrastructure.Commands.Base;
 using delegatorUI.Infrastructure.Services;
-using delegatorUI.Infrastructure.Stores;
 using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
@@ -12,8 +11,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 {
     public class RegControlViewModel : BaseViewModel
     {
-        private readonly NavigationStore _navigationStore;
         private readonly APIHelper _apiHelper;
+        private readonly NavigationService<LogInControlViewModel> _toLog;
 
         #region Loading
         private int _loadingOpacity = 0;
@@ -69,14 +68,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         #region ToLog
         public ICommand ToLogCommand { get; }
-
-        private void OnToLogCommandExecute(object p)
-        {
-            _navigationStore.Title = "Logging";
-            //_navigationStore.CurrentViewModel = _logInControlViewModel;
-        }
         #endregion
-        
+
         #region Registration
 
         #region Properties
@@ -386,12 +379,14 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         #endregion
 
-        public RegControlViewModel(NavigationStore navigationStore, APIHelper apiHelper)
+        public RegControlViewModel(APIHelper apiHelper, NavigationService<LogInControlViewModel> toLog)
         {
-            _navigationStore = navigationStore;
-            _apiHelper = apiHelper;
+            Title = "Regestration";
 
-            ToLogCommand = new RelayCommand(OnToLogCommandExecute);
+            _apiHelper = apiHelper;
+            _toLog = toLog;
+
+            ToLogCommand = new RelayCommand(_ => _toLog.Navigate());
             NextCommand = new RelayCommand(OnNextCommandExecute, _ => 
                 !string.IsNullOrWhiteSpace(Login) &&
                 !string.IsNullOrWhiteSpace(Email) &&

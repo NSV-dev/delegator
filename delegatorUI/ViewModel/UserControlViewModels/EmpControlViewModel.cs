@@ -9,5 +9,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 {
     public class EmpControlViewModel : BaseViewModel
     {
+        public EmpControlViewModel()
+        {
+        }
     }
 }

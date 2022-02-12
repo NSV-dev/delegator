@@ -1,6 +1,5 @@
 ﻿using delegatorUI.Infrastructure.Services;
 using delegatorUI.Infrastructure.Commands.Base;
-using delegatorUI.Infrastructure.Stores;
 using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
@@ -13,10 +12,10 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 {
     public class LogInControlViewModel : BaseViewModel
     {
-        private readonly NavigationStore _navigationStore;
         private readonly APIHelper _apiHelper;
-        private readonly AdminControlViewModel _adminControlViewModel;
-        private readonly EmpControlViewModel _empControlViewModel;
+        private readonly NavigationService<RegControlViewModel> _toReg;
+        private readonly NavigationService<EmpControlViewModel> _toEmp;
+        private readonly NavigationService<AdminControlViewModel> _toAdmin;
 
         #region Loading
         private int _loadingOpacity = 0;
@@ -71,15 +70,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         #endregion
 
         #region ToReg
-        private readonly RegControlViewModel _regControlViewModel;
-
         public ICommand ToRegCommand { get; }
-
-        private void OnToRegCommandExecute(object p)
-        {
-            _navigationStore.Title = "Register";
-            _navigationStore.CurrentViewModel = _regControlViewModel;
-        }
         #endregion
 
         #region LoggingIn
@@ -146,25 +137,27 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         {
             List<CompanyUser> companyUserList = await _apiHelper.CompaniesUsers.GetByCompanyId(company.Id, _userByLogin.Id);
             CompanyUser companyUser = companyUserList.First();
-            _navigationStore.Title = companyUser.Company.Title;
             if (companyUser.Role.Title == "Admin")
-                _navigationStore.CurrentViewModel = _adminControlViewModel;
+                _toAdmin.Navigate();
             if (companyUser.Role.Title == "User")
-                _navigationStore.CurrentViewModel = _empControlViewModel;
+                _toEmp.Navigate();
         }
         #endregion
 
-        public LogInControlViewModel(NavigationStore navigationStore, APIHelper apiHelper,
-            RegControlViewModel regControlViewModel, AdminControlViewModel adminControlViewModel,
-            EmpControlViewModel empControlViewModel)
+        public LogInControlViewModel(APIHelper apiHelper,
+            NavigationService<RegControlViewModel> toReg,
+            NavigationService<EmpControlViewModel> toEmp,
+            NavigationService<AdminControlViewModel> toAdmin)
         {
-            _navigationStore = navigationStore;
-            _apiHelper = apiHelper;
-            _regControlViewModel = regControlViewModel;
-            _adminControlViewModel = adminControlViewModel;
-            _empControlViewModel = empControlViewModel;
+            Title = "Logging in";
 
-            ToRegCommand = new RelayCommand(OnToRegCommandExecute);
+            _apiHelper = apiHelper;
+            _toReg = toReg;
+            _toEmp = toEmp;
+            _toAdmin = toAdmin;
+
+
+            ToRegCommand = new RelayCommand(_ => _toReg.Navigate());
             LogInCommand = new RelayCommand(OnLogInCommandExecute, _ => !string.IsNullOrWhiteSpace(Login) &&
                                                                         !string.IsNullOrWhiteSpace(Password) &&
                                                                         CompanyWidth == 0);

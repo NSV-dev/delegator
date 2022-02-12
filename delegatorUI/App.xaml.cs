@@ -1,10 +1,12 @@
-﻿using delegatorUI.Infrastructure.Stores;
+﻿using delegatorUI.Infrastructure.Services;
+using delegatorUI.Infrastructure.Stores;
 using delegatorUI.Library.Api;
 using delegatorUI.View.UserControls;
 using delegatorUI.View.Window;
 using delegatorUI.ViewModel.UserControlViewModels;
 using delegatorUI.ViewModel.WindowViewModel;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Windows;
 
 namespace delegatorUI
@@ -35,6 +37,20 @@ namespace delegatorUI
                 .AddTransient<EmpControl>(s => new EmpControl() { DataContext = s.GetRequiredService<EmpControlViewModel>() })
                 ;
 
+            services.
+                AddSingleton(s => new NavigationService<RegControlViewModel>(
+                    s.GetRequiredService<NavigationStore>(),
+                    () => CreateRegViewModel(s)))
+                .AddSingleton(s => new NavigationService<LogInControlViewModel>(
+                    s.GetRequiredService<NavigationStore>(),
+                    () => CreateLogInViewModel(s)))
+                .AddSingleton(s => new NavigationService<EmpControlViewModel>(
+                    s.GetRequiredService<NavigationStore>(),
+                    () => CreateEmpViewModel(s)))
+                .AddSingleton(s => new NavigationService<AdminControlViewModel>(
+                    s.GetRequiredService<NavigationStore>(),
+                    () => CreateAdminViewModel(s)));
+
             _serviceProvider = services.BuildServiceProvider();
         }
 
@@ -54,5 +70,26 @@ namespace delegatorUI
             base.OnExit(e);
         }
 
+        #region Creating ViewModels
+
+        private LogInControlViewModel CreateLogInViewModel(IServiceProvider serviceProvider) 
+            => new(
+                serviceProvider.GetRequiredService<APIHelper>(),
+                serviceProvider.GetRequiredService<NavigationService<RegControlViewModel>>(),
+                serviceProvider.GetRequiredService<NavigationService<EmpControlViewModel>>(),
+                serviceProvider.GetRequiredService<NavigationService<AdminControlViewModel>>());
+
+        private RegControlViewModel CreateRegViewModel(IServiceProvider serviceProvider) 
+            => new(
+                serviceProvider.GetRequiredService<APIHelper>(),
+                serviceProvider.GetRequiredService<NavigationService<LogInControlViewModel>>());
+
+        private EmpControlViewModel CreateEmpViewModel(IServiceProvider serviceProvider) 
+            => new();
+
+        private AdminControlViewModel CreateAdminViewModel(IServiceProvider serviceProvider) 
+            => new();
+
+        #endregion
     }
 }

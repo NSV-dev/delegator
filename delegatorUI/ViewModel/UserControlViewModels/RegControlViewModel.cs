@@ -367,6 +367,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
                     RoleId = (await _apiHelper.Roles.GetByTitle("User")).Id
                 });
             EndLoading();
+            _toLog.Navigate();
         }
 
         private async Task UpdateCompaniesAsync()

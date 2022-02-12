@@ -14,8 +14,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels
     {
         private readonly APIHelper _apiHelper;
         private readonly NavigationService<RegControlViewModel> _toReg;
-        private readonly NavigationService<EmpControlViewModel> _toEmp;
-        private readonly NavigationService<AdminControlViewModel> _toAdmin;
+        private readonly ParameterNavigationService<CompanyUser, EmpControlViewModel> _toEmp;
+        private readonly ParameterNavigationService<CompanyUser, AdminControlViewModel> _toAdmin;
 
         #region Loading
         private int _loadingOpacity = 0;
@@ -138,16 +138,16 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             List<CompanyUser> companyUserList = await _apiHelper.CompaniesUsers.GetByCompanyId(company.Id, _userByLogin.Id);
             CompanyUser companyUser = companyUserList.First();
             if (companyUser.Role.Title == "Admin")
-                _toAdmin.Navigate();
+                _toAdmin.Navigate(companyUser);
             if (companyUser.Role.Title == "User")
-                _toEmp.Navigate();
+                _toEmp.Navigate(companyUser);
         }
         #endregion
 
         public LogInControlViewModel(APIHelper apiHelper,
             NavigationService<RegControlViewModel> toReg,
-            NavigationService<EmpControlViewModel> toEmp,
-            NavigationService<AdminControlViewModel> toAdmin)
+            ParameterNavigationService<CompanyUser, EmpControlViewModel> toEmp,
+            ParameterNavigationService<CompanyUser, AdminControlViewModel> toAdmin)
         {
             Title = "Logging in";
 

@@ -59,6 +59,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async void Error(string errorText)
         {
+            EndLoading();
             ErrorText = errorText;
             ErrorOpacity = 1;
             await Task.Delay(5000);
@@ -234,7 +235,6 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             if (await _apiHelper.Users.GetByUsername(Login) != null)
             {
                 Error("Такой логин уже существует");
-                EndLoading();
                 return;
             }
             EndLoading();

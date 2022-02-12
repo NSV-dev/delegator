@@ -62,6 +62,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async void ShowError(string errorText)
         {
+            EndLoading();
             ErrorText = errorText;
             ErrorOpacity = 1;
             await Task.Delay(3000);
@@ -135,12 +136,14 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async Task UserRoleRecognition(Company company)
         {
+            StartLoading();
             List<CompanyUser> companyUserList = await _apiHelper.CompaniesUsers.GetByCompanyId(company.Id, _userByLogin.Id);
             CompanyUser companyUser = companyUserList.First();
             if (companyUser.Role.Title == "Admin")
                 _toAdmin.Navigate(companyUser);
             if (companyUser.Role.Title == "User")
                 _toEmp.Navigate(companyUser);
+            EndLoading();
         }
         #endregion
 

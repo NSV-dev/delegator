@@ -1,4 +1,5 @@
 ﻿using delegatorUI.Infrastructure.Commands.Base;
+using delegatorUI.Infrastructure.Interfaces;
 using delegatorUI.Infrastructure.Services;
 using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
@@ -9,7 +10,7 @@ using System.Windows.Input;
 
 namespace delegatorUI.ViewModel.UserControlViewModels
 {
-    public class RegControlViewModel : BaseViewModel
+    public class RegControlViewModel : BaseViewModel, IError, ILoading
     {
         private readonly APIHelper _apiHelper;
         private readonly NavigationService<LogInControlViewModel> _toLog;
@@ -29,11 +30,6 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             set => OnPropertyChanged(ref _loadingZIndex, value);
         }
 
-        private void StartLoading()
-        {
-            LoadingOpacity = 1;
-            LoadingZIndex = 20;
-        }
 
         private void EndLoading()
         {

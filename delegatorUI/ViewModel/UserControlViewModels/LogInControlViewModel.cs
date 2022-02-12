@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using delegatorUI.Infrastructure.Interfaces;
 
 namespace delegatorUI.ViewModel.UserControlViewModels
 {
-    public class LogInControlViewModel : BaseViewModel
+    public class LogInControlViewModel : BaseViewModel, IError, ILoading
     {
         private readonly APIHelper _apiHelper;
         private readonly NavigationService<RegControlViewModel> _toReg;
@@ -46,8 +47,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         #endregion
 
         #region Errors
-        private double _errorOpacity;
-        public double ErrorOpacity
+        private int _errorOpacity;
+        public int ErrorOpacity
         {
             get => _errorOpacity;
             set => OnPropertyChanged(ref _errorOpacity, value);
@@ -60,7 +61,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             set => OnPropertyChanged(ref _errorText, value);
         }
 
-        private async void ShowError(string errorText)
+        private async void Error(string errorText)
         {
             EndLoading();
             ErrorText = errorText;
@@ -114,12 +115,12 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             _userByLogin = await _apiHelper.Users.GetByUsername(Login);
             if (_userByLogin == null)
             {
-                ShowError("Такого пользователя не существует");
+                Error("Такого пользователя не существует");
                 return;
             }
             if (StringCipher.Decrypt(_userByLogin.Password, "delegator") != Password)
             {
-                ShowError("Неверный пароль");
+                Error("Неверный пароль");
                 return;
             }
 

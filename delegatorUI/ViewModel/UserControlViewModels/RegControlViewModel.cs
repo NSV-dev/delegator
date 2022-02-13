@@ -30,6 +30,11 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             set => OnPropertyChanged(ref _loadingZIndex, value);
         }
 
+        private void StartLoading()
+        {
+            LoadingOpacity = 1;
+            LoadingZIndex = 20;
+        }
 
         private void EndLoading()
         {

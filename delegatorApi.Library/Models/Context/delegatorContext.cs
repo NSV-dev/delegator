@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using delegatorApi.Library.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
@@ -22,12 +19,15 @@ namespace delegatorApi.Library.Models.Context
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<CompanyUser> CompanyUsers { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Task> Tasks { get; set; }
+        public virtual DbSet<TasksTask> TasksTasks { get; set; }
+        public virtual DbSet<TasksUser> TasksUsers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-O05LV9C\\SQLEXPRESS;Initial Catalog=delegator;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-O05LV9C\\SQLEXPRESS;Initial Catalog=delegator;Integrated Security=True;");
             }
         }
 
@@ -56,17 +56,14 @@ namespace delegatorApi.Library.Models.Context
                     .HasDefaultValueSql("(newid())")
                     .IsFixedLength(true);
 
-                entity.Property(e => e.Code)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsFixedLength(true);
+                entity.Property(e => e.Code).IsRequired();
 
                 entity.Property(e => e.Title).IsRequired();
             });
 
             modelBuilder.Entity<CompanyUser>(entity =>
             {
-                //entity.HasNoKey();
+                entity.HasNoKey();
 
                 entity.ToTable("CompanyUser");
 
@@ -113,6 +110,77 @@ namespace delegatorApi.Library.Models.Context
                     .IsFixedLength(true);
 
                 entity.Property(e => e.Title).IsRequired();
+            });
+
+            modelBuilder.Entity<Task>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID")
+                    .HasDefaultValueSql("(newid())")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.EndTime).HasColumnType("date");
+
+                entity.Property(e => e.Title).IsRequired();
+            });
+
+            modelBuilder.Entity<TasksTask>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.MainTaskId)
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .HasColumnName("MainTaskID")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.TaskId)
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .HasColumnName("TaskID")
+                    .IsFixedLength(true);
+
+                entity.HasOne(d => d.MainTask)
+                    .WithMany()
+                    .HasForeignKey(d => d.MainTaskId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TasksTasks_Tasks");
+
+                entity.HasOne(d => d.Task)
+                    .WithMany()
+                    .HasForeignKey(d => d.TaskId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TasksTasks_Tasks1");
+            });
+
+            modelBuilder.Entity<TasksUser>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.TaskId)
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .HasColumnName("TaskID")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .HasColumnName("UserID")
+                    .IsFixedLength(true);
+
+                entity.HasOne(d => d.Task)
+                    .WithMany()
+                    .HasForeignKey(d => d.TaskId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TasksUsers_Tasks");
+
+                entity.HasOne(d => d.User)
+                    .WithMany()
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TasksUsers_AppUsers");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -27,7 +27,7 @@ namespace delegatorApi.Library.Models.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-O05LV9C\\SQLEXPRESS;Initial Catalog=delegator;Integrated Security=True;");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-O05LV9C\\SQLEXPRESS;Initial Catalog=delegator;Integrated Security=True");
             }
         }
 
@@ -158,6 +158,12 @@ namespace delegatorApi.Library.Models.Context
             {
                 entity.HasNoKey();
 
+                entity.Property(e => e.CompanyId)
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .HasColumnName("CompanyID")
+                    .IsFixedLength(true);
+
                 entity.Property(e => e.TaskId)
                     .IsRequired()
                     .HasMaxLength(36)
@@ -169,6 +175,12 @@ namespace delegatorApi.Library.Models.Context
                     .HasMaxLength(36)
                     .HasColumnName("UserID")
                     .IsFixedLength(true);
+
+                entity.HasOne(d => d.Company)
+                    .WithMany()
+                    .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TasksUsers_Companies");
 
                 entity.HasOne(d => d.Task)
                     .WithMany()

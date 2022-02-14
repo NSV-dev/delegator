@@ -23,5 +23,8 @@ namespace delegatorApi.Controllers
 
         [Route("ByTaskID")]
         public List<Task> GebByTaskID(string taskID) => _taskData.GetByTaskID(taskID);
+
+        [Route("IsMain")]
+        public bool IsMain(string taskID) => _taskData.IsMain(taskID);
     }
 }

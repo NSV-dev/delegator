@@ -37,5 +37,16 @@ namespace delegatorApi.Library.DataAccess
                     .ToList();
             }
         }
+
+        public bool IsMain(string taskID)
+        {
+            using (delegatorContext db = new())
+            {
+                if (db.TasksTasks.Where(tt => tt.TaskId == taskID).Count() == 0)
+                    return true;
+                else
+                    return false;
+            }
+        }
     }
 }

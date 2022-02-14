@@ -24,6 +24,7 @@ namespace delegatorApi.Library.DataAccess
                 return db.CompanyUsers.Where(cu => cu.CompanyId == CompanyId && cu.AppUserId == AppUserId)
                     .Include(cu => cu.Role)
                     .Include(cu => cu.Company)
+                    .Include(cu => cu.AppUser)
                     .ToList();
             }
         }

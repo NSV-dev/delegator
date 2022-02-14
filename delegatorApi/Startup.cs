@@ -29,7 +29,10 @@ namespace delegatorApi
             services.AddSingleton<AppUserData>()
                 .AddSingleton<CompanyData>()
                 .AddSingleton<CompanyUserData>()
-                .AddSingleton<RoleData>();
+                .AddSingleton<RoleData>()
+                .AddSingleton<TaskData>()
+                .AddSingleton<TaskTaskData>()
+                .AddSingleton<TaskUserData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

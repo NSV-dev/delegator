@@ -28,8 +28,9 @@ namespace delegatorUI.Library.Api.Helpers
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"CompanyUsers/ByCompanyAndUserId?CompanyId={CompanyId}&AppUserId={AppUserId}"))
             {
                 if (resp.IsSuccessStatusCode)
+                {
                     return await resp.Content.ReadAsAsync<List<CompanyUser>>();
-                else
+                } else
                     throw new Exception(resp.ReasonPhrase);
             }
         }

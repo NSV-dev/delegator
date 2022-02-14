@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "delegatorApi.Library", "del
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "delegatorApi", "delegatorApi\delegatorApi.csproj", "{F9FD7CC8-C649-4214-8586-21B521DD8978}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "delegatorUI", "delegatorUI\delegatorUI.csproj", "{B90087A8-8245-40C2-88BB-ACFF943A3938}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "delegatorUI", "delegatorUI\delegatorUI.csproj", "{B90087A8-8245-40C2-88BB-ACFF943A3938}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "delegatorUI.Library", "delegatorUI.Library\delegatorUI.Library.csproj", "{09743F8D-1A72-4477-B71D-A8D009EA9D63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "delegatorUI.Library", "delegatorUI.Library\delegatorUI.Library.csproj", "{09743F8D-1A72-4477-B71D-A8D009EA9D63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

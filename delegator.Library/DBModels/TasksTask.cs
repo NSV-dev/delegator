@@ -1,12 +1,9 @@
 ﻿#nullable disable
 
-using System.ComponentModel.DataAnnotations;
-
-namespace delegatorApi.Library.Models
+namespace delegator.Library.DBModels
 {
     public partial class TasksTask
     {
-        [Key]
         public string MainTaskId { get; set; }
         public string TaskId { get; set; }
 

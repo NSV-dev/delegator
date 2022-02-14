@@ -15,6 +15,13 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         private readonly User _user;
         private readonly Company _company;
 
+        private List<AppTask> _tasks;
+        public List<AppTask> Tasks
+        {
+            get => _tasks;
+            set => OnPropertyChanged(ref _tasks, value);
+        }
+
         public EmpControlViewModel(APIHelper apiHelper, CompanyUser companyUser)
         {
             _apiHelper = apiHelper;
@@ -23,6 +30,13 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             _company = companyUser.Company;
 
             Title = _company.Title;
+
+            LoadAsync();
+        }
+
+        private async Task LoadAsync()
+        {
+            Tasks = await _apiHelper.Tasks.GetByUserAndCompany(_user.Id, _company.Id);
         }
     }
 }

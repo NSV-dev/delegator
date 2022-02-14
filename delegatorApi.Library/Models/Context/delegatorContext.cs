@@ -63,8 +63,6 @@ namespace delegatorApi.Library.Models.Context
 
             modelBuilder.Entity<CompanyUser>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("CompanyUser");
 
                 entity.Property(e => e.AppUserId)
@@ -127,8 +125,6 @@ namespace delegatorApi.Library.Models.Context
 
             modelBuilder.Entity<TasksTask>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.Property(e => e.MainTaskId)
                     .IsRequired()
                     .HasMaxLength(36)
@@ -156,8 +152,6 @@ namespace delegatorApi.Library.Models.Context
 
             modelBuilder.Entity<TasksUser>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.Property(e => e.CompanyId)
                     .IsRequired()
                     .HasMaxLength(36)

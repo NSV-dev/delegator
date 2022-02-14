@@ -11,7 +11,7 @@ namespace delegatorUI.Library.Models
         public DateTime? EndTime { get; set; }
         
         public Company Company { get; set; }
-        public User User { get; set; }
+        public List<User> Users { get; set; }
         public List<AppTask> Tasks { get; set; }
     }
 }

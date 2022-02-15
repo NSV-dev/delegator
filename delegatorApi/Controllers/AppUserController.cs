@@ -23,5 +23,8 @@ namespace delegatorApi.Controllers
 
         [Route("ByComp")]
         public List<AppUser> GetByCompanyId(string compId) => _appUserData.GetByCompanyId(compId);
+
+        [Route("ByTask")]
+        public List<AppUser> GetByTaskId(string taskID) => _appUserData.GetByTask(taskID);
     }
 }

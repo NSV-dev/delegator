@@ -23,7 +23,7 @@ namespace delegatorUI.Library.Api
             Companies = new(_apiClient);
             CompaniesUsers = new(_apiClient);
             Roles = new(_apiClient);
-            Tasks = new(_apiClient);
+            Tasks = new(_apiClient, Users);
         }
         #endregion
 

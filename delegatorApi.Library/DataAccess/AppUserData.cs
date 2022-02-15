@@ -31,5 +31,13 @@ namespace delegatorApi.Library.DataAccess
                 return db.CompanyUsers.Where(cu => cu.CompanyId == compId).Select(x => x.AppUser).ToList();
             }
         }
+
+        public List<AppUser> GetByTask(string taskID)
+        {
+            using (delegatorContext db = new())
+            {
+                return db.TasksUsers.Where(tu => tu.TaskId == taskID).Select(tu => tu.User).ToList();
+            }
+        }
     }
 }

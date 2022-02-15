@@ -2,17 +2,20 @@
 using delegatorUI.Library.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace delegatorUI.Library.Api.Helpers
 {
     public class TaskHelper : BaseHelper
     {
-        public TaskHelper(HttpClient apiClient) 
-            : base(apiClient) {}
+        private readonly AppUserHelper _appUserHelper;
+
+        public TaskHelper(HttpClient apiClient, AppUserHelper appUserHelper)
+            : base(apiClient)
+        {
+            _appUserHelper = appUserHelper;
+        }
 
         public async Task<List<AppTask>> GetByUserAndCompany(string userID, string companyID)
         {
@@ -30,8 +33,11 @@ namespace delegatorUI.Library.Api.Helpers
                     foreach (var task in tasksToRemove)
                         tasks.Remove(task);
 
-                    foreach (AppTask task in tasks)
+                    foreach (var task in tasks)
+                    {
+                        task.Users = await _appUserHelper.GetByTask(task.Id);
                         task.Tasks = await GetByTaskID(task.Id);
+                    }
                     return tasks;
                 } else
                     throw new Exception(resp.ReasonPhrase);
@@ -46,7 +52,10 @@ namespace delegatorUI.Library.Api.Helpers
                 {
                     var tasks = await resp.Content.ReadAsAsync<List<AppTask>>();
                     foreach (var task in tasks)
+                    {
+                        task.Users = await _appUserHelper.GetByTask(task.Id);
                         task.Tasks = await GetByTaskID(task.Id);
+                    }
                     return tasks;
                 } else
                     throw new Exception(resp.ReasonPhrase);

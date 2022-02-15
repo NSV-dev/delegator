@@ -1,6 +1,7 @@
 ﻿using delegatorUI.Library.Api.Helpers.Base;
 using delegatorUI.Library.Models;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -28,6 +29,17 @@ namespace delegatorUI.Library.Api.Helpers
             {
                 if (resp.IsSuccessStatusCode)
                     return await resp.Content.ReadAsAsync<User>();
+                else
+                    throw new Exception(resp.ReasonPhrase);
+            }
+        }
+
+        public async Task<List<User>> GetByTask(string taskID)
+        {
+            using (HttpResponseMessage resp = await _apiClient.GetAsync($"AppUser/ByTask?taskID={taskID}"))
+            {
+                if (resp.IsSuccessStatusCode)
+                    return await resp.Content.ReadAsAsync<List<User>>();
                 else
                     throw new Exception(resp.ReasonPhrase);
             }

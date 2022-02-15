@@ -8,10 +8,305 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TreeView Background="Transparent" ItemsSource="{Binding Tasks}">
+        <TreeView ItemsSource="{Binding Tasks}" Background="Transparent">
+            <TreeView.Resources>
+                <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
+                    <Setter Property="Focusable" Value="False"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ToggleButton">
+                                <Grid RenderTransformOrigin="0.5 0.5"
+                                    Width="20"
+                                    Height="20"
+                                    Background="Transparent">
+                                    <Path x:Name="ExpandPath"
+                                        HorizontalAlignment="Left" 
+                                        VerticalAlignment="Center" 
+                                        Margin="1,1,1,1"
+                                        Fill="White"
+                                        Data="M 6 0 L 12 6 L 6 12 Z"/>
+                                    <Grid.RenderTransform>
+                                        <RotateTransform x:Name="ExpandRotation" Angle="0"/>
+                                    </Grid.RenderTransform>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetName="ExpandRotation"
+                                                        Storyboard.TargetProperty="Angle"
+                                                        Duration="0:0:.2" From="0" To="90"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetName="ExpandRotation"
+                                                        Storyboard.TargetProperty="Angle"
+                                                        Duration="0:0:.2" From="90" To="0"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style x:Key="DescBtnStyle" TargetType="ToggleButton">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="#999999"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Focusable" Value="False"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ToggleButton">
+                                <Border>
+                                    <ContentPresenter/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Duration="0:0:.2"
+                                                            Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
+                                                            To="White"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Duration="0:0:.2"
+                                                            Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
+                                                            To="#999999"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style x:Key="TreeViewItemFocusVisual">
+                    <Setter Property="Control.Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Border>
+                                    <Rectangle Margin="0,0,0,0"
+                                        StrokeThickness="5"
+                                        Stroke="White"
+                                        StrokeDashArray="1 2"
+                                        Opacity="0"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style x:Key="{x:Type TreeViewItem}"
+                    TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment,
+                            RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                    <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment,
+                            RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                    <Setter Property="Padding" Value="1,0,0,0"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                                <Grid Margin="0,5,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" x:Name="HeaderRow"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Border Grid.ColumnSpan="100" Grid.Row="0" 
+                                            Background="#555555" 
+                                            BorderBrush="#999999" BorderThickness="2"
+                                            CornerRadius="5"
+                                            />
+                                    <ToggleButton x:Name="Expander" VerticalAlignment="Top" Margin="4,5,0,0"
+                                        Style="{StaticResource ExpandCollapseToggleStyle}"
+                                        IsChecked="{Binding Path=IsExpanded,
+                                                    RelativeSource={RelativeSource TemplatedParent}}"
+                                        ClickMode="Press"/>
+                                    <Border Name="Bd"
+                                        Grid.Column="1" Height="30"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter x:Name="PART_Header" Margin="0,4,0,0"
+                                            ContentSource="Header" VerticalAlignment="Top"
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                                    </Border>
+                                    <ToggleButton x:Name="DescBtn" Grid.Column="2" Style="{StaticResource DescBtnStyle}"
+                                        Content="● ● ●" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,3,10,0">
+                                        <ToggleButton.Triggers>
+                                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                                <EventTrigger.Actions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation
+                                                                Storyboard.TargetName="Bd"
+                                                                Storyboard.TargetProperty="Height"
+                                                                From="30" To="150" Duration="0:0:.2"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger.Actions>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                                <EventTrigger.Actions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation
+                                                                Storyboard.TargetName="Bd"
+                                                                Storyboard.TargetProperty="Height"
+                                                                From="150" To="30" Duration="0:0:.2"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger.Actions>
+                                            </EventTrigger>
+                                        </ToggleButton.Triggers>
+                                    </ToggleButton>
+                                    <ItemsPresenter x:Name="ItemsHost"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="2">
+                                        <ItemsPresenter.Style>
+                                            <Style TargetType="ItemsPresenter">
+                                                <Style.Triggers>
+                                                    <Trigger Property="Opacity" Value="0">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </Trigger>
+                                                    <Trigger Property="Opacity" Value="1">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ItemsPresenter.Style>
+                                    </ItemsPresenter>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsExpanded" Value="false">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                                            Storyboard.TargetProperty="Opacity"
+                                                            Storyboard.TargetName="ItemsHost"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                                            Storyboard.TargetProperty="Opacity"
+                                                            Storyboard.TargetName="ItemsHost"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                    <Trigger Property="HasItems" Value="false">
+                                        <Setter TargetName="Expander" Property="Visibility" Value="Hidden"/>
+                                    </Trigger>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="HasHeader" Value="false"/>
+                                            <Condition Property="Width" Value="Auto"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter TargetName="PART_Header" Property="MinWidth" Value="75"/>
+                                    </MultiTrigger>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="HasHeader" Value="false"/>
+                                            <Condition Property="Height"  Value="Auto"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter TargetName="PART_Header" Property="MinHeight" Value="19"/>
+                                    </MultiTrigger>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsSelected" Value="true"/>
+                                            <Condition Property="IsSelectionActive"  Value="false"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter TargetName="Bd" Property="Background"
+                                            Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                                        <Setter Property="Foreground"
+                                            Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                                    </MultiTrigger>
+                                    <Trigger Property="IsEnabled" Value="false">
+                                        <Setter Property="Foreground"
+                                            Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TreeView.Resources>
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type models:AppTask}" ItemsSource="{Binding Tasks}">
-                    <TextBlock Text="{Binding Title}" Foreground="White"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding Title}"/>
+
+                        <Rectangle Height="2" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="3,0" Width="50" Fill="White" Grid.Row="1"/>
+
+                        <Grid Grid.Row="1" Margin="0,10,0,0">
+                            <Grid.Resources>
+                                <Style TargetType="ListView">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                </Style>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text=" Описание задачи:"/>
+                            <TextBlock Text="{Binding Description}" Grid.Row="1" TextWrapping="WrapWithOverflow"/>
+
+                            <TextBlock Text=" Дэдлайн:" Grid.Row="2" Margin="0,10,0,0"/>
+                            <TextBlock Text="{Binding EndTime, StringFormat=d}" Grid.Row="3" TextWrapping="WrapWithOverflow"/>
+
+                            <TextBlock Text=" Сотрудники:" Grid.Column="1" Margin="200,0,0,0"/>
+                            <ListView ItemsSource="{Binding Users}" Margin="200,0,0,0"
+                                      Grid.Column="1" Grid.Row="1" Grid.RowSpan="3">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding UserName}"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                    </Grid>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

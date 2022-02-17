@@ -15,7 +15,7 @@ namespace delegatorUI.ViewModel.WindowViewModel
 
         #region Title
         private string _title;
-        public string Title
+        public new string Title
         {
             get => _title;
             set => OnPropertyChanged(ref _title, value);

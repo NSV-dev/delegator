@@ -32,18 +32,6 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             get => _loadingZIndex;
             set => OnPropertyChanged(ref _loadingZIndex, value);
         }
-
-        private void StartLoading()
-        {
-            LoadingOpacity = 1;
-            LoadingZIndex = 20;
-        }
-
-        private void EndLoading()
-        {
-            LoadingOpacity = 0;
-            LoadingZIndex = -20;
-        }
         #endregion
 
         #region Errors
@@ -63,7 +51,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async void Error(string errorText)
         {
-            EndLoading();
+            (this as ILoading).EndLoading();
             ErrorText = errorText;
             ErrorOpacity = 1;
             await Task.Delay(3000);
@@ -111,7 +99,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async void OnLogInCommandExecute(object p)
         {
-            StartLoading();
+            (this as ILoading).StartLoading();
             _userByLogin = await _apiHelper.Users.GetByUsername(Login);
             if (_userByLogin == null)
             {
@@ -127,7 +115,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             List<Company> userCompanies = await _apiHelper.Companies.GetByUserId(_userByLogin.Id);
             if (userCompanies.Count == 1)
                 await UserRoleRecognition(userCompanies.First());
-            EndLoading();
+            (this as ILoading).EndLoading();
 
             CompanyWidth = 200;
             Companies = userCompanies;
@@ -137,14 +125,14 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async Task UserRoleRecognition(Company company)
         {
-            StartLoading();
+            (this as ILoading).StartLoading();
             List<CompanyUser> companyUserList = await _apiHelper.CompaniesUsers.GetByCompanyId(company.Id, _userByLogin.Id);
             CompanyUser companyUser = companyUserList.First();
             if (companyUser.Role.Title == "Admin")
                 _toAdmin.Navigate(companyUser);
             if (companyUser.Role.Title == "User")
                 _toEmp.Navigate(companyUser);
-            EndLoading();
+            (this as ILoading).EndLoading();
         }
         #endregion
 

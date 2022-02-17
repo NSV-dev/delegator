@@ -6,13 +6,13 @@
 
         public int LoadingZIndex { get; set; }
 
-        private void StartLoading()
+        public void StartLoading()
         {
             LoadingOpacity = 1;
             LoadingZIndex = 20;
         }
 
-        private void EndLoading()
+        public void EndLoading()
         {
             LoadingOpacity = 0;
             LoadingZIndex = -20;

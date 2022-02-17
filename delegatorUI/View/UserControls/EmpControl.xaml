@@ -8,7 +8,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TreeView ItemsSource="{Binding Tasks}" Background="Transparent">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        
+        
+        
+        <TreeView ItemsSource="{Binding Tasks}" Background="Transparent" Grid.Column="1">
             <TreeView.Resources>
                 <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
                     <Setter Property="Focusable" Value="False"/>
@@ -94,21 +101,6 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-                <Style x:Key="TreeViewItemFocusVisual">
-                    <Setter Property="Control.Template">
-                        <Setter.Value>
-                            <ControlTemplate>
-                                <Border>
-                                    <Rectangle Margin="0,0,0,0"
-                                        StrokeThickness="5"
-                                        Stroke="White"
-                                        StrokeDashArray="1 2"
-                                        Opacity="0"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
                 <Style x:Key="{x:Type TreeViewItem}"
                     TargetType="{x:Type TreeViewItem}">
                     <Setter Property="Background" Value="Transparent"/>
@@ -119,7 +111,6 @@
                     <Setter Property="Padding" Value="1,0,0,0"/>
                     <Setter Property="Foreground" Value="White"/>
                     <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type TreeViewItem}">
@@ -163,7 +154,7 @@
                                                             <DoubleAnimation
                                                                 Storyboard.TargetName="Bd"
                                                                 Storyboard.TargetProperty="Height"
-                                                                From="30" To="150" Duration="0:0:.2"/>
+                                                                From="30" To="200" Duration="0:0:.2"/>
                                                         </Storyboard>
                                                     </BeginStoryboard>
                                                 </EventTrigger.Actions>
@@ -175,7 +166,7 @@
                                                             <DoubleAnimation
                                                                 Storyboard.TargetName="Bd"
                                                                 Storyboard.TargetProperty="Height"
-                                                                From="150" To="30" Duration="0:0:.2"/>
+                                                                From="200" To="30" Duration="0:0:.2"/>
                                                         </Storyboard>
                                                     </BeginStoryboard>
                                                 </EventTrigger.Actions>
@@ -238,16 +229,6 @@
                                         </MultiTrigger.Conditions>
                                         <Setter TargetName="PART_Header" Property="MinHeight" Value="19"/>
                                     </MultiTrigger>
-                                    <MultiTrigger>
-                                        <MultiTrigger.Conditions>
-                                            <Condition Property="IsSelected" Value="true"/>
-                                            <Condition Property="IsSelectionActive"  Value="false"/>
-                                        </MultiTrigger.Conditions>
-                                        <Setter TargetName="Bd" Property="Background"
-                                            Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-                                        <Setter Property="Foreground"
-                                            Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-                                    </MultiTrigger>
                                     <Trigger Property="IsEnabled" Value="false">
                                         <Setter Property="Foreground"
                                             Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
@@ -291,13 +272,17 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Text=" Описание задачи:"/>
-                            <TextBlock Text="{Binding Description}" Grid.Row="1" TextWrapping="WrapWithOverflow"/>
+                            <ScrollViewer Grid.Row="1" Width="300" Height="75" VerticalScrollBarVisibility="Auto">
+                                <TextBlock Text="{Binding Description}"
+                                            TextWrapping="WrapWithOverflow"/>
+                            </ScrollViewer>
 
                             <TextBlock Text=" Дэдлайн:" Grid.Row="2" Margin="0,10,0,0"/>
-                            <TextBlock Text="{Binding EndTime, StringFormat=d}" Grid.Row="3" TextWrapping="WrapWithOverflow"/>
+                            <TextBlock Text="{Binding EndTime, StringFormat=d}" Grid.Row="3" 
+                                       TextWrapping="WrapWithOverflow"/>
 
-                            <TextBlock Text=" Сотрудники:" Grid.Column="1" Margin="200,0,0,0"/>
-                            <ListView ItemsSource="{Binding Users}" Margin="200,0,0,0"
+                            <TextBlock Text=" Сотрудники:" Grid.Column="1" Margin="50,0,0,0"/>
+                            <ListView ItemsSource="{Binding Users}" Margin="50,0,0,0" Width="200"
                                       Grid.Column="1" Grid.Row="1" Grid.RowSpan="3">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>

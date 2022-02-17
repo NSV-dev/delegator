@@ -1,4 +1,5 @@
-﻿using delegatorUI.Library.Api;
+﻿using delegatorUI.Infrastructure.Interfaces;
+using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace delegatorUI.ViewModel.UserControlViewModels
 {
-    public class EmpControlViewModel : BaseViewModel
+    public class EmpControlViewModel : BaseViewModel, ILoading
     {
         private readonly APIHelper _apiHelper;
         private readonly User _user;
@@ -21,6 +22,22 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             get => _tasks;
             set => OnPropertyChanged(ref _tasks, value);
         }
+
+        #region Loading
+        private int _loadingOpacity;
+        public int LoadingOpacity
+        {
+            get => _loadingOpacity;
+            set => OnPropertyChanged(ref _loadingOpacity, value);
+        }
+
+        private int _loadingZIndex;
+        public int LoadingZIndex 
+        {
+            get => _loadingZIndex;
+            set => OnPropertyChanged(ref _loadingZIndex, value);
+        }
+        #endregion
 
         public EmpControlViewModel(APIHelper apiHelper, CompanyUser companyUser)
         {
@@ -36,7 +53,9 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async Task LoadAsync()
         {
+            (this as ILoading).StartLoading();
             Tasks = await _apiHelper.Tasks.GetByUserAndCompany(_user.Id, _company.Id);
+            (this as ILoading).EndLoading();
         }
     }
 }

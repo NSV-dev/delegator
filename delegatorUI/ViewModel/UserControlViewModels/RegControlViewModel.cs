@@ -29,18 +29,6 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             get => _loadingZIndex;
             set => OnPropertyChanged(ref _loadingZIndex, value);
         }
-
-        private void StartLoading()
-        {
-            LoadingOpacity = 1;
-            LoadingZIndex = 20;
-        }
-
-        private void EndLoading()
-        {
-            LoadingOpacity = 0;
-            LoadingZIndex = -20;
-        }
         #endregion
 
         #region Errors
@@ -60,7 +48,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async void Error(string errorText)
         {
-            EndLoading();
+            (this as ILoading).EndLoading();
             ErrorText = errorText;
             ErrorOpacity = 1;
             await Task.Delay(5000);
@@ -227,7 +215,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async void OnNextCommandExecute(object p)
         {
-            StartLoading();
+            (this as ILoading).StartLoading();
             if (Password != ConfirmPassword)
             {
                 Error("Пароли не совпадают");
@@ -238,7 +226,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
                 Error("Такой логин уже существует");
                 return;
             }
-            EndLoading();
+            (this as ILoading).EndLoading();
 
             DataOpacity = 0;
             DataZIndex = -1;
@@ -352,7 +340,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async void PostCompanyUser(string createdUserId, string createdCompanyId = null)
         {
-            StartLoading();
+            (this as ILoading).StartLoading();
             if (createdCompanyId != null)
                 await _apiHelper.CompaniesUsers.Post(new CompanyUser()
                 {
@@ -367,15 +355,15 @@ namespace delegatorUI.ViewModel.UserControlViewModels
                     CompanyId = _selectedCompany.Id,
                     RoleId = (await _apiHelper.Roles.GetByTitle("User")).Id
                 });
-            EndLoading();
+            (this as ILoading).EndLoading();
             _toLog.Navigate();
         }
 
         private async Task UpdateCompaniesAsync()
         {
-            StartLoading();
+            (this as ILoading).StartLoading();
             CompaniesList = await _apiHelper.Companies.GetWhereTitleContains(_companyTitleToSearch);
-            EndLoading();
+            (this as ILoading).EndLoading();
         }
         #endregion
 

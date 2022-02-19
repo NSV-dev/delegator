@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using delegatorUI.Infrastructure.Interfaces;
+using delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels;
 
 namespace delegatorUI.ViewModel.UserControlViewModels
 {

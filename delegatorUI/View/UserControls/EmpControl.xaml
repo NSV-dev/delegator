@@ -4,296 +4,262 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:delegatorUI.View.UserControls"
-             xmlns:models="clr-namespace:delegatorUI.Library.Models;assembly=delegatorUI.Library"
+             xmlns:vms="clr-namespace:delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels"
+             xmlns:vs="clr-namespace:delegatorUI.View.UserControls.EmpControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
-        
-        
-        <TreeView ItemsSource="{Binding Tasks}" Background="Transparent" Grid.Column="1">
-            <TreeView.Resources>
-                <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
-                    <Setter Property="Focusable" Value="False"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ToggleButton">
-                                <Grid RenderTransformOrigin="0.5 0.5"
-                                    Width="20"
-                                    Height="20"
-                                    Background="Transparent">
-                                    <Path x:Name="ExpandPath"
-                                        HorizontalAlignment="Left" 
-                                        VerticalAlignment="Center" 
-                                        Margin="1,1,1,1"
-                                        Fill="White"
-                                        Data="M 6 0 L 12 6 L 6 12 Z"/>
-                                    <Grid.RenderTransform>
-                                        <RotateTransform x:Name="ExpandRotation" Angle="0"/>
-                                    </Grid.RenderTransform>
-                                </Grid>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsChecked" Value="True">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation
-                                                        Storyboard.TargetName="ExpandRotation"
-                                                        Storyboard.TargetProperty="Angle"
-                                                        Duration="0:0:.2" From="0" To="90"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation
-                                                        Storyboard.TargetName="ExpandRotation"
-                                                        Storyboard.TargetProperty="Angle"
-                                                        Duration="0:0:.2" From="90" To="0"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-                <Style x:Key="DescBtnStyle" TargetType="ToggleButton">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="#999999"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                    <Setter Property="Focusable" Value="False"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ToggleButton">
-                                <Border>
-                                    <ContentPresenter/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsChecked" Value="True">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation Duration="0:0:.2"
-                                                            Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                            To="White"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation Duration="0:0:.2"
-                                                            Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                            To="#999999"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-                <Style x:Key="{x:Type TreeViewItem}"
-                    TargetType="{x:Type TreeViewItem}">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment,
-                            RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
-                    <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment,
-                            RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
-                    <Setter Property="Padding" Value="1,0,0,0"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type TreeViewItem}">
-                                <Grid Margin="0,5,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" x:Name="HeaderRow"/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <Border Grid.ColumnSpan="100" Grid.Row="0" 
-                                            Background="#555555" 
-                                            BorderBrush="#999999" BorderThickness="2"
-                                            CornerRadius="5"
-                                            />
-                                    <ToggleButton x:Name="Expander" VerticalAlignment="Top" Margin="4,5,0,0"
-                                        Style="{StaticResource ExpandCollapseToggleStyle}"
-                                        IsChecked="{Binding Path=IsExpanded,
-                                                    RelativeSource={RelativeSource TemplatedParent}}"
-                                        ClickMode="Press"/>
-                                    <Border Name="Bd"
-                                        Grid.Column="1" Height="30"
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter x:Name="PART_Header" Margin="0,4,0,0"
-                                            ContentSource="Header" VerticalAlignment="Top"
-                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+
+        <Grid x:Name="NavigationPanel" HorizontalAlignment="Left"
+              Width="65" Background="#242424">
+
+            <!--<Grid.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="Width"
+                                BeginTime="0:0:.5"
+                                From="0" To="65" Duration="0:0:.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Grid.Triggers>-->
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="65"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal">
+
+                <StackPanel.Resources>
+                    <Style x:Key="MainTogBtnStyle" TargetType="ToggleButton">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Border Background="Transparent" BorderThickness="0">
+                                        <ContentPresenter />
                                     </Border>
-                                    <ToggleButton x:Name="DescBtn" Grid.Column="2" Style="{StaticResource DescBtnStyle}"
-                                        Content="● ● ●" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,3,10,0">
-                                        <ToggleButton.Triggers>
-                                            <EventTrigger RoutedEvent="ToggleButton.Checked">
-                                                <EventTrigger.Actions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <DoubleAnimation
-                                                                Storyboard.TargetName="Bd"
-                                                                Storyboard.TargetProperty="Height"
-                                                                From="30" To="200" Duration="0:0:.2"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </EventTrigger.Actions>
-                                            </EventTrigger>
-                                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                                                <EventTrigger.Actions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <DoubleAnimation
-                                                                Storyboard.TargetName="Bd"
-                                                                Storyboard.TargetProperty="Height"
-                                                                From="200" To="30" Duration="0:0:.2"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </EventTrigger.Actions>
-                                            </EventTrigger>
-                                        </ToggleButton.Triggers>
-                                    </ToggleButton>
-                                    <ItemsPresenter x:Name="ItemsHost"
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        Grid.ColumnSpan="2">
-                                        <ItemsPresenter.Style>
-                                            <Style TargetType="ItemsPresenter">
-                                                <Style.Triggers>
-                                                    <Trigger Property="Opacity" Value="0">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                    </Trigger>
-                                                    <Trigger Property="Opacity" Value="1">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </ItemsPresenter.Style>
-                                    </ItemsPresenter>
-                                </Grid>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsExpanded" Value="false">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation From="1" To="0" Duration="0:0:.2"
-                                                            Storyboard.TargetProperty="Opacity"
-                                                            Storyboard.TargetName="ItemsHost"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation From="0" To="1" Duration="0:0:.2"
-                                                            Storyboard.TargetProperty="Opacity"
-                                                            Storyboard.TargetName="ItemsHost"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                    <Trigger Property="HasItems" Value="false">
-                                        <Setter TargetName="Expander" Property="Visibility" Value="Hidden"/>
-                                    </Trigger>
-                                    <MultiTrigger>
-                                        <MultiTrigger.Conditions>
-                                            <Condition Property="HasHeader" Value="false"/>
-                                            <Condition Property="Width" Value="Auto"/>
-                                        </MultiTrigger.Conditions>
-                                        <Setter TargetName="PART_Header" Property="MinWidth" Value="75"/>
-                                    </MultiTrigger>
-                                    <MultiTrigger>
-                                        <MultiTrigger.Conditions>
-                                            <Condition Property="HasHeader" Value="false"/>
-                                            <Condition Property="Height"  Value="Auto"/>
-                                        </MultiTrigger.Conditions>
-                                        <Setter TargetName="PART_Header" Property="MinHeight" Value="19"/>
-                                    </MultiTrigger>
-                                    <Trigger Property="IsEnabled" Value="false">
-                                        <Setter Property="Foreground"
-                                            Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </TreeView.Resources>
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type models:AppTask}" ItemsSource="{Binding Tasks}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding Title}"/>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <Style x:Key="MainTextBlockStyle" TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="20"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="15"/>
+                    </Style>
+                </StackPanel.Resources>
 
-                        <Rectangle Height="2" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="3,0" Width="50" Fill="White" Grid.Row="1"/>
+                <ToggleButton x:Name="Tb"
+                    Width="35" Height="35" Margin="15"
+                              Style="{StaticResource MainTogBtnStyle}">
 
-                        <Grid Grid.Row="1" Margin="0,10,0,0">
-                            <Grid.Resources>
-                                <Style TargetType="ListView">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="BorderBrush" Value="Transparent"/>
-                                </Style>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="Foreground" Value="White"/>
-                                </Style>
-                            </Grid.Resources>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
+                    <Path x:Name="TbIcon" Fill="#474747" Stretch="Uniform"
+                        Data="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
 
-                            <TextBlock Text=" Описание задачи:"/>
-                            <ScrollViewer Grid.Row="1" Width="300" Height="75" VerticalScrollBarVisibility="Auto">
-                                <TextBlock Text="{Binding Description}"
-                                            TextWrapping="WrapWithOverflow"/>
-                            </ScrollViewer>
+                    <ToggleButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                            <BeginStoryboard>
+                                <Storyboard x:Name="Open">
+                                    <DoubleAnimation Storyboard.TargetName="NavigationPanel"
+                                                     Storyboard.TargetProperty="Width"
+                                                     To="200"
+                                                     Duration="0:0:.2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation
+                                        Storyboard.TargetName="TbIcon"
+                                        Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)"
+                                        To="White" Duration="0:0:.2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                            <BeginStoryboard>
+                                <Storyboard x:Name="Close">
+                                    <DoubleAnimation Storyboard.TargetName="NavigationPanel"
+                                                     Storyboard.TargetProperty="Width"
+                                                     To="65"
+                                                     Duration="0:0:.2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation
+                                        Storyboard.TargetName="TbIcon"
+                                        Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)"
+                                        To="#474747" Duration="0:0:.2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ToggleButton.Triggers>
 
-                            <TextBlock Text=" Дэдлайн:" Grid.Row="2" Margin="0,10,0,0"/>
-                            <TextBlock Text="{Binding EndTime, StringFormat=d}" Grid.Row="3" 
-                                       TextWrapping="WrapWithOverflow"/>
+                </ToggleButton>
+                <TextBlock Text="Меню" Style="{StaticResource MainTextBlockStyle}"/>
+            </StackPanel>
 
-                            <TextBlock Text=" Сотрудники:" Grid.Column="1" Margin="50,0,0,0"/>
-                            <ListView ItemsSource="{Binding Users}" Margin="50,0,0,0" Width="200"
-                                      Grid.Column="1" Grid.Row="1" Grid.RowSpan="3">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding UserName}"/>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </Grid>
-                    </Grid>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>
+            <StackPanel Grid.Row="1">
+                
+                <StackPanel.Resources>
+                    <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="20"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="32.5,0,0,0"/>
+                    </Style>
+                    <Style x:Key="IconStyle" TargetType="Path">
+                        <Setter Property="Height" Value="30"/>
+                        <Setter Property="Width" Value="30"/>
+                        <Setter Property="Stretch" Value="Uniform"/>
+                    </Style>
+                    <Style x:Key="ButtonStyle" TargetType="RadioButton">
+                        <Setter Property="Height" Value="50"/>
+                        <Setter Property="Width" Value="200"/>
+                        <Setter Property="Foreground" Value="#474747"/>
+                        <Setter Property="Margin" Value="0,5"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Grid x:Name="grid" Background="Transparent">
+                                        <Rectangle x:Name="LeftRect" Fill="White" Height="0"
+                                            Width="2" HorizontalAlignment="Left"/>
+                                        <Rectangle x:Name="DownRect" Fill="White"
+                                            VerticalAlignment="Bottom" Height="2" Margin="10,0,0,0"
+                                            HorizontalAlignment="Left"/>
+                                        <ContentPresenter Margin="15,10,10,10"/>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                        </Trigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsChecked, ElementName=Tb}" Value="True"/>
+                                                <Condition Binding="{Binding IsMouseOver, ElementName=grid}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <MultiDataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation
+                                                            Storyboard.TargetName="DownRect"
+                                                            Storyboard.TargetProperty="Width"
+                                                            From="0" To="180" Duration="0:0:.2"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </MultiDataTrigger.EnterActions>
+                                            <MultiDataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation
+                                                            Storyboard.TargetName="DownRect"
+                                                            Storyboard.TargetProperty="Width"
+                                                            From="180" To="0" Duration="0:0:.2"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </MultiDataTrigger.ExitActions>
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsChecked, ElementName=Tb}" Value="False"/>
+                                                <Condition Binding="{Binding IsMouseOver, ElementName=grid}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <MultiDataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation
+                                                            Storyboard.TargetName="LeftRect"
+                                                            Storyboard.TargetProperty="Height"
+                                                            From="0" To="40" Duration="0:0:.2"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </MultiDataTrigger.EnterActions>
+                                            <MultiDataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation
+                                                            Storyboard.TargetName="LeftRect"
+                                                            Storyboard.TargetProperty="Height"
+                                                            To="0" Duration="0:0:.2"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </MultiDataTrigger.ExitActions>
+                                        </MultiDataTrigger>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation 
+                                                            Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
+                                                            To="White" Duration="0:0:.2"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation 
+                                                            Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
+                                                            To="#474747" Duration="0:0:.2"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </StackPanel.Resources>
+
+                <RadioButton x:Name="TasksRB" Style="{StaticResource ButtonStyle}" Command="{Binding ToTasksCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource IconStyle}" Fill="{Binding Foreground, ElementName=TasksRB}"
+                            Data="M22,7h-9v2h9V7z M22,15h-9v2h9V15z M5.54,11L2,7.46l1.41-1.41l2.12,2.12l4.24-4.24l1.41,1.41L5.54,11z M5.54,19L2,15.46 l1.41-1.41l2.12,2.12l4.24-4.24l1.41,1.41L5.54,19z"/>
+                        <TextBlock Text="Задачи" Style="{StaticResource TextBlockStyle}" Foreground="{Binding Foreground, ElementName=TasksRB}"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton x:Name="AccRB" Style="{StaticResource ButtonStyle}" Command="{Binding ToAccCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource IconStyle}" Fill="{Binding Foreground, ElementName=AccRB}"
+                            Data="M12 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2m0 10c2.7 0 5.8 1.29 6 2H6c.23-.72 3.31-2 6-2m0-12C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 10c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        <TextBlock Text="Аккаунт" Style="{StaticResource TextBlockStyle}" Foreground="{Binding Foreground, ElementName=AccRB}"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton x:Name="ExitRB" Style="{StaticResource ButtonStyle}" Command="{Binding ExitCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource IconStyle}" Fill="{Binding Foreground, ElementName=ExitRB}"
+                            Data="M17,8l-1.41,1.41L17.17,11H9v2h8.17l-1.58,1.58L17,16l4-4L17,8z M5,5h7V3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h7v-2H5V5z"/>
+                        <TextBlock Text="Выход" Style="{StaticResource TextBlockStyle}" Foreground="{Binding Foreground, ElementName=ExitRB}"/>
+                    </StackPanel>
+                </RadioButton>
+            </StackPanel>
+            
+        </Grid>
+
+        <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type vms:TasksControlViewModel}">
+                    <vs:TasksControl/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vms:AccControlViewModel}">
+                    <vs:AccControl/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
     </Grid>
 </UserControl>

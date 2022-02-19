@@ -1,61 +1,52 @@
-﻿using delegatorUI.Infrastructure.Interfaces;
+﻿using delegatorUI.Infrastructure.Commands.Base;
+using delegatorUI.Infrastructure.Interfaces;
+using delegatorUI.Infrastructure.Services;
 using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
+using delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace delegatorUI.ViewModel.UserControlViewModels
 {
-    public class EmpControlViewModel : BaseViewModel, ILoading
+    public class EmpControlViewModel : BaseViewModel
     {
-        private readonly APIHelper _apiHelper;
-        private readonly User _user;
-        private readonly Company _company;
+        private User _user;
+        private Company _company;
 
-        private List<AppTask> _tasks;
-        public List<AppTask> Tasks
+        private BaseViewModel _currentViewModel;
+        public BaseViewModel CurrentViewModel
         {
-            get => _tasks;
-            set => OnPropertyChanged(ref _tasks, value);
+            get => _currentViewModel;
+            set => OnPropertyChanged(ref _currentViewModel, value);
         }
 
-        #region Loading
-        private int _loadingOpacity;
-        public int LoadingOpacity
-        {
-            get => _loadingOpacity;
-            set => OnPropertyChanged(ref _loadingOpacity, value);
-        }
-
-        private int _loadingZIndex;
-        public int LoadingZIndex 
-        {
-            get => _loadingZIndex;
-            set => OnPropertyChanged(ref _loadingZIndex, value);
-        }
+        #region Commands
+        public ICommand ExitCommand { get; }
+        public ICommand ToTasksCommand { get; }
+        public ICommand ToAccCommand { get; }
         #endregion
 
-        public EmpControlViewModel(APIHelper apiHelper, CompanyUser companyUser)
+        public EmpControlViewModel(
+            Func<TasksControlViewModel> tasksControlViewModel,
+            Func<AccControlViewModel> accControlViewModel,
+            NavigationService<LogInControlViewModel> exit,
+            CompanyUser companyUser)
         {
-            _apiHelper = apiHelper;
-
             _user = companyUser.User;
             _company = companyUser.Company;
 
+            ExitCommand = new RelayCommand(_ => exit.Navigate());
+            ToTasksCommand = new RelayCommand(_ => CurrentViewModel = tasksControlViewModel());
+            ToAccCommand = new RelayCommand(_ => CurrentViewModel = accControlViewModel());
+
             Title = _company.Title;
-
-            LoadAsync();
-        }
-
-        private async Task LoadAsync()
-        {
-            (this as ILoading).StartLoading();
-            Tasks = await _apiHelper.Tasks.GetByUserAndCompany(_user.Id, _company.Id);
-            (this as ILoading).EndLoading();
+            ToTasksCommand.Execute(null);
         }
     }
 }

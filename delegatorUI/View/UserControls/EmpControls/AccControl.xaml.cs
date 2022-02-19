@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace delegatorUI.ViewResources
+namespace delegatorUI.View.UserControls.EmpControls
 {
     /// <summary>
-    /// Логика взаимодействия для TaskControl.xaml
+    /// Логика взаимодействия для AccControl.xaml
     /// </summary>
-    public partial class TaskControl : UserControl
+    public partial class AccControl : UserControl
     {
-        public TaskControl()
+        public AccControl()
         {
             InitializeComponent();
         }

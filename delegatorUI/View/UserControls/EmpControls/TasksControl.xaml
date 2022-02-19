@@ -8,6 +8,22 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="Loaded">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ThicknessAnimation
+                            Storyboard.TargetProperty="Margin"
+                            From="0,-2000,0,0" To="0" Duration="0:0:.5">
+                            <ThicknessAnimation.EasingFunction>
+                                <QuinticEase EasingMode="EaseOut"/>
+                            </ThicknessAnimation.EasingFunction>
+                        </ThicknessAnimation>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Grid.Triggers>
+        
         <TreeView ItemsSource="{Binding Tasks}" Background="Transparent" Grid.Column="1" BorderBrush="Transparent" Padding="0,0,5,0">
             <TreeView.Resources>
                 <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">

@@ -6,6 +6,10 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="\viewresources\styles\navigationpanelstyle.xaml"/>
+                <ResourceDictionary Source="\viewresources\styles\buttons.xaml"/>
+                <ResourceDictionary Source="\viewresources\styles\textboxes.xaml"/>
+                <ResourceDictionary Source="\viewresources\styles\listviews.xaml"/>
+                <ResourceDictionary Source="\viewresources\styles\datepickers.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

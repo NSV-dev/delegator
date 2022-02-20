@@ -28,19 +28,24 @@ namespace delegatorUI
                 .AddSingleton<APIHelper>()
                 .AddSingleton<NavigationStore>()
                 .AddSingleton<WindowViewModel>()
-                .AddSingleton<MainWindow>(s => new MainWindow() { DataContext = s.GetRequiredService<WindowViewModel>() })
+                .AddSingleton<MainWindow>(s => new() 
+                    { DataContext = s.GetRequiredService<WindowViewModel>() })
                 .AddTransient<LogInControlViewModel>()
-                .AddTransient<LogInControl>(s => new LogInControl() { DataContext = s.GetRequiredService<LogInControlViewModel>() })
+                .AddTransient<LogInControl>(s => new() 
+                    { DataContext = s.GetRequiredService<LogInControlViewModel>() })
                 .AddTransient<RegControlViewModel>()
-                .AddTransient<RegControl>(s => new RegControl() { DataContext = s.GetRequiredService<RegControlViewModel>() })
+                .AddTransient<RegControl>(s => new()     
+                    { DataContext = s.GetRequiredService<RegControlViewModel>() })
                 .AddTransient<AdminControlViewModel>()
-                .AddTransient<AdminControl>(s => new AdminControl() { DataContext = s.GetRequiredService<AdminControlViewModel>() })
+                .AddTransient<AdminControl>(s => new() 
+                    { DataContext = s.GetRequiredService<AdminControlViewModel>() })
                 .AddTransient<EmpControlViewModel>()
-                .AddTransient<EmpControl>(s => new EmpControl() { DataContext = s.GetRequiredService<EmpControlViewModel>() })
+                .AddTransient<EmpControl>(s => new() 
+                    { DataContext = s.GetRequiredService<EmpControlViewModel>() })
                 ;
 
-            services.
-                AddSingleton(s => new NavigationService<RegControlViewModel>(
+            services
+                .AddSingleton(s => new NavigationService<RegControlViewModel>(
                     s.GetRequiredService<NavigationStore>(),
                     () => CreateViewModels.CreateRegViewModel(s)))
                 .AddSingleton(s => new NavigationService<LogInControlViewModel>(

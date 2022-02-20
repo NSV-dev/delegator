@@ -34,6 +34,17 @@ namespace delegatorUI.Library.Api.Helpers
             }
         }
 
+        public async Task<List<User>> GetByCompany(string companyID)
+        {
+            using (HttpResponseMessage resp = await _apiClient.GetAsync($"AppUser/ByCompanyID?companyID={companyID}"))
+            {
+                if (resp.IsSuccessStatusCode)
+                    return await resp.Content.ReadAsAsync<List<User>>();
+                else
+                    throw new Exception(resp.ReasonPhrase);
+            }
+        }
+
         public async Task<List<User>> GetByTask(string taskID)
         {
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"AppUser/ByTask?taskID={taskID}"))

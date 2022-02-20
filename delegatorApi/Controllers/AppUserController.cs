@@ -21,8 +21,8 @@ namespace delegatorApi.Controllers
         [Route("ByUsername")]
         public AppUser GetByUesrname(string name) => _appUserData.GetByUsername(name);
 
-        [Route("ByComp")]
-        public List<AppUser> GetByCompanyId(string compId) => _appUserData.GetByCompanyId(compId);
+        [Route("ByCompanyID")]
+        public List<AppUser> GetByCompanyId(string companyID) => _appUserData.GetByCompanyId(companyID);
 
         [Route("ByTask")]
         public List<AppUser> GetByTaskId(string taskID) => _appUserData.GetByTask(taskID);

@@ -26,5 +26,8 @@ namespace delegatorApi.Controllers
 
         [Route("ByTask")]
         public List<AppUser> GetByTaskId(string taskID) => _appUserData.GetByTask(taskID);
+
+        [Route("WhereNameContains")]
+        public List<AppUser> GetWhereTitleContains(string s) => _appUserData.GetWhereNameContains(s);
     }
 }

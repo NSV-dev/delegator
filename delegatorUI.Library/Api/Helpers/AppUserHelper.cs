@@ -55,5 +55,18 @@ namespace delegatorUI.Library.Api.Helpers
                     throw new Exception(resp.ReasonPhrase);
             }
         }
+
+        public async Task<List<User>> GetWhereNameContains(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s))
+                return null;
+            using (HttpResponseMessage resp = await _apiClient.GetAsync($"AppUser/WhereNameContains?s={s}"))
+            {
+                if (resp.IsSuccessStatusCode)
+                    return await resp.Content.ReadAsAsync<List<User>>();
+                else
+                    throw new Exception(resp.ReasonPhrase);
+            }
+        }
     }
 }

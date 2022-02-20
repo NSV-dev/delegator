@@ -39,5 +39,13 @@ namespace delegatorApi.Library.DataAccess
                 return db.TasksUsers.Where(tu => tu.TaskId == taskID).Select(tu => tu.User).ToList();
             }
         }
+
+        public List<AppUser> GetWhereNameContains(string s)
+        {
+            using (delegatorContext db = new())
+            {
+                return db.AppUsers.Where(c => c.UserName.ToLower().Contains(s.ToLower())).ToList();
+            }
+        }
     }
 }

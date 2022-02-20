@@ -16,6 +16,17 @@ namespace delegatorApi.Library.DataAccess
             }
         }
 
+        public List<Task> GetByCompanyID(string companyID)
+        {
+            using (delegatorContext db = new())
+            {
+                return db.TasksUsers
+                    .Where(tu => tu.CompanyId == companyID)
+                    .Select(tu => tu.Task)
+                    .ToList();
+            }
+        }
+
         public List<Task> GetByUserIDAndCompanyID(string userID, string companyID)
         {
             using (delegatorContext db = new())

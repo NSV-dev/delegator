@@ -18,6 +18,9 @@ namespace delegatorApi.Controllers
 
         public void Post(Task task) => _taskData.Post(task);
 
+        [Route("ByCompanyID")]
+        public List<Task> GetCompanyID(string companyID) => _taskData.GetByCompanyID(companyID);
+
         [Route("ByUserIDAndCompanyID")]
         public List<Task> GetByUserIDAndCompanyID(string userID, string companyID) => _taskData.GetByUserIDAndCompanyID(userID, companyID);
 

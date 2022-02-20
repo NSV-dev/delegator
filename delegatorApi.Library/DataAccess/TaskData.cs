@@ -7,12 +7,13 @@ namespace delegatorApi.Library.DataAccess
 {
     public class TaskData
     {
-        public void Post(Task task)
+        public string Post(Task task)
         {
             using (delegatorContext db = new())
             {
                 db.Tasks.Add(task);
                 db.SaveChanges();
+                return db.Tasks.Where(t => t == task).Single().Id;
             }
         }
 

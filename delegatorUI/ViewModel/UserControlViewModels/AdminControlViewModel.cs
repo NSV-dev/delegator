@@ -1,28 +1,44 @@
-﻿using delegatorUI.Library.Api;
+﻿using delegatorUI.Infrastructure.Commands.Base;
+using delegatorUI.Infrastructure.Services;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
+using delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace delegatorUI.ViewModel.UserControlViewModels
 {
     public class AdminControlViewModel : BaseViewModel
     {
-        private readonly APIHelper _apiHelper;
-        private readonly User _user;
-        private readonly Company _company;
-
-        public AdminControlViewModel(APIHelper apiHelper, CompanyUser companyUser)
+        private BaseViewModel _currentViewModel;
+        public BaseViewModel CurrentViewModel
         {
-            _apiHelper = apiHelper;
+            get => _currentViewModel;
+            set => OnPropertyChanged(ref _currentViewModel, value);
+        }
 
-            _user = companyUser.User;
-            _company = companyUser.Company;
+        #region Commands
+        public ICommand ExitCommand { get; }
+        public ICommand ToTasksCommand { get; }
+        public ICommand ToAccCommand { get; }
+        public ICommand ToCompanyCommand { get; }
+        #endregion
 
-            Title = _company.Title;
+        public AdminControlViewModel(
+            Func<AccControlViewModel> createAccControlViewModel,
+            Func<TasksControlViewModel> createTasksControlViewModel,
+            Func<CompanyControlViewModel> createCompanyControlViewModel,
+            NavigationService<LogInControlViewModel> exit,
+            CompanyUser companyUser)
+        {
+            Title = companyUser.Company.Title;
+
+            ExitCommand = new RelayCommand(_ => exit.Navigate());
+            ToAccCommand = new RelayCommand(_ => CurrentViewModel = createAccControlViewModel());
+            ToTasksCommand = new RelayCommand(_ => CurrentViewModel = createTasksControlViewModel());
+            ToCompanyCommand = new RelayCommand(_ => CurrentViewModel = createCompanyControlViewModel());
+
+            ToTasksCommand.Execute(null);
         }
     }
 }

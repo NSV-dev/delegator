@@ -3,10 +3,9 @@ using delegatorUI.Infrastructure.Stores;
 using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.View.UserControls;
-using delegatorUI.View.UserControls.EmpControls;
 using delegatorUI.View.Window;
+using delegatorUI.ViewModel.CreatingViewModels;
 using delegatorUI.ViewModel.UserControlViewModels;
-using delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels;
 using delegatorUI.ViewModel.WindowViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -38,27 +37,18 @@ namespace delegatorUI
                 .AddTransient<AdminControl>(s => new AdminControl() { DataContext = s.GetRequiredService<AdminControlViewModel>() })
                 .AddTransient<EmpControlViewModel>()
                 .AddTransient<EmpControl>(s => new EmpControl() { DataContext = s.GetRequiredService<EmpControlViewModel>() })
-                .AddTransient<TasksControlViewModel>()
-                .AddTransient<TasksControl>(s => new TasksControl() { DataContext = s.GetRequiredService<TasksControlViewModel>() })
-                .AddTransient<AccControlViewModel>()
-                .AddTransient<AccControl>(s => new AccControl() { DataContext = s.GetRequiredService<AccControlViewModel>() })
                 ;
 
             services.
                 AddSingleton(s => new NavigationService<RegControlViewModel>(
                     s.GetRequiredService<NavigationStore>(),
-                    () => CreateRegViewModel(s)))
+                    () => CreateViewModels.CreateRegViewModel(s)))
                 .AddSingleton(s => new NavigationService<LogInControlViewModel>(
                     s.GetRequiredService<NavigationStore>(),
-                    () => CreateLogInViewModel(s)))
-                .AddSingleton(s => new ParameterNavigationService<CompanyUser, AdminControlViewModel>(
-                    s.GetRequiredService<NavigationStore>(),
-                    (p) => CreateAdminViewModel(s, p)));
+                    () => CreateViewModels.CreateLogInViewModel(s)));
 
-            services
-                .AddSingleton(s => new ParameterNavigationService<CompanyUser, EmpControlViewModel>(
-                    s.GetRequiredService<NavigationStore>(),
-                    (p) => CreateEmpViewModel(s, p)));
+            ConfigureEmpServices(services);
+            ConfigureAdminServices(services);
 
             _serviceProvider = services.BuildServiceProvider();
         }
@@ -79,42 +69,39 @@ namespace delegatorUI
             base.OnExit(e);
         }
 
-        #region Creating ViewModels
+        private void ConfigureEmpServices(IServiceCollection services)
+        {
+            services
+                .AddTransient<ViewModel.UserControlViewModels.EmpControlViewModels.TasksControlViewModel>()
+                .AddTransient<View.UserControls.EmpControls.TasksControl>(s => new() 
+                    { DataContext = s.GetRequiredService<ViewModel.UserControlViewModels.EmpControlViewModels.TasksControlViewModel>() })
+                .AddTransient<ViewModel.UserControlViewModels.EmpControlViewModels.AccControlViewModel>()
+                .AddTransient<View.UserControls.EmpControls.AccControl>(s => new() 
+                    { DataContext = s.GetRequiredService<ViewModel.UserControlViewModels.EmpControlViewModels.AccControlViewModel>() });
 
-        private LogInControlViewModel CreateLogInViewModel(IServiceProvider serviceProvider) 
-            => new(
-                serviceProvider.GetRequiredService<APIHelper>(),
-                serviceProvider.GetRequiredService<NavigationService<RegControlViewModel>>(),
-                serviceProvider.GetRequiredService<ParameterNavigationService<CompanyUser, EmpControlViewModel>>(),
-                serviceProvider.GetRequiredService<ParameterNavigationService<CompanyUser, AdminControlViewModel>>());
+            services
+                .AddSingleton(s => new ParameterNavigationService<CompanyUser, EmpControlViewModel>(
+                    s.GetRequiredService<NavigationStore>(),
+                    (p) => CreateViewModels.CreateEmpViewModel(s, p)));
+        }
 
-        private RegControlViewModel CreateRegViewModel(IServiceProvider serviceProvider) 
-            => new(
-                serviceProvider.GetRequiredService<APIHelper>(),
-                serviceProvider.GetRequiredService<NavigationService<LogInControlViewModel>>());
+        private void ConfigureAdminServices(IServiceCollection services)
+        {
+            services
+                .AddTransient<ViewModel.UserControlViewModels.AdminControlViewModels.AccControlViewModel>()
+                .AddTransient<View.UserControls.AdminControls.AccControl>(s => new() 
+                    { DataContext = s.GetRequiredService< ViewModel.UserControlViewModels.AdminControlViewModels.AccControlViewModel>() })
+                .AddTransient<ViewModel.UserControlViewModels.AdminControlViewModels.TasksControlViewModel>()
+                .AddTransient<View.UserControls.AdminControls.TasksControl>(s => new()
+                    { DataContext = s.GetRequiredService<ViewModel.UserControlViewModels.AdminControlViewModels.TasksControlViewModel>() })
+                .AddTransient<ViewModel.UserControlViewModels.AdminControlViewModels.CompanyControlViewModel>()
+                .AddTransient<View.UserControls.AdminControls.CompanyControl>(s => new()
+                    { DataContext = s.GetRequiredService<ViewModel.UserControlViewModels.AdminControlViewModels.CompanyControlViewModel>() });
 
-        private AdminControlViewModel CreateAdminViewModel(IServiceProvider serviceProvider, CompanyUser p) 
-            => new(
-                serviceProvider.GetRequiredService<APIHelper>(),
-                p);
-
-        private EmpControlViewModel CreateEmpViewModel(IServiceProvider serviceProvider, CompanyUser p)
-            => new(
-                () => CreateTasksViewModel(serviceProvider, p),
-                () => CreateAccViewModel(serviceProvider, p),
-                serviceProvider.GetRequiredService<NavigationService<LogInControlViewModel>>(),
-                p);
-
-
-        private TasksControlViewModel CreateTasksViewModel(IServiceProvider serviceProvider, CompanyUser p)
-            => new(
-                serviceProvider.GetRequiredService<APIHelper>(),
-                p);
-
-        private AccControlViewModel CreateAccViewModel(IServiceProvider serviceProvider, CompanyUser p)
-            => new(
-                serviceProvider.GetRequiredService<APIHelper>(),
-                p);
-        #endregion
+            services
+                .AddSingleton(s => new ParameterNavigationService<CompanyUser, AdminControlViewModel>(
+                    s.GetRequiredService<NavigationStore>(),
+                    (p) => CreateViewModels.CreateAdminViewModel(s, p)));
+        }
     }
 }

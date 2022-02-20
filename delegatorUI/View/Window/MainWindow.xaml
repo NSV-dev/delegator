@@ -9,7 +9,8 @@
         WindowState="{Binding WindowState}"
         WindowStartupLocation="CenterScreen"
         Title="{Binding Title}"
-        Height="450" Width="800">
+        MinHeight="675" MinWidth="1200"
+        Height="675" Width="1200">
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" ResizeBorderThickness="4" CornerRadius="0" CaptionHeight="25"/>
     </WindowChrome.WindowChrome>

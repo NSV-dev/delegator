@@ -330,7 +330,7 @@
             <resources:BindablePasswordBox x:Name="PasswordBox" Margin="0,20,0,0" Grid.Row="1" Width="200" Password="{Binding Password}"/>
             <TextBlock Text="Пароль" Grid.Row="1" Panel.ZIndex="-1" Style="{StaticResource PasswordDescription}"/>
 
-            <Button Content="Войти" Command="{Binding LogInCommand}" Grid.Row="2" Width="100" Height="30"/>
+            <Button Content="Войти" Command="{Binding LogInCommand}" Grid.Row="2" Width="100" Height="30" IsDefault="True"/>
 
             <Grid Grid.RowSpan="100" Grid.Column="2" Width="{Binding CompanyWidth}"
                   HorizontalAlignment="Center" Style="{StaticResource CompaniesGrid}">

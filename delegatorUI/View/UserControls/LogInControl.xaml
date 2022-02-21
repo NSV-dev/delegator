@@ -91,34 +91,6 @@
                     <Setter Property="Foreground" Value="#999999"/>
                     <Setter Property="VerticalAlignment" Value="Bottom"/>
                 </Style>
-                <Style x:Key="ErrorTextBlockStyle" TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="18"/>
-                    <Setter Property="Foreground" Value="#a6444e"/>
-                    <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
-                    <Setter Property="TextAlignment" Value="Center"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ErrorOpacity}" Value="0">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation
-                                                Storyboard.TargetProperty="Opacity"
-                                                To="0" Duration="0:0:.3"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation
-                                                Storyboard.TargetProperty="Opacity"
-                                                To="1" Duration="0:0:.3"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.ExitActions>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
                 <Style TargetType="TextBlock" x:Key="LoginDescription"
                        BasedOn="{StaticResource TextBlockStyle}">
                     <Style.Triggers>

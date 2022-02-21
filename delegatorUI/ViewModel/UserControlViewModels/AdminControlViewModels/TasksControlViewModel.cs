@@ -18,6 +18,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         private readonly User _user;
         private readonly Company _company;
 
+        public string CompanyName { get; }
+
         private List<AppTask> _tasks;
         public List<AppTask> Tasks
         {
@@ -179,13 +181,21 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             };
 
             (this as ILoading).StartLoading();
-            await _apiHelper.Tasks.Post(task, _company.Id, _mainTask.Id);
+            await _apiHelper.Tasks.Post(task, _company.Id, _mainTask?.Id);
             AddTaskZIndex = -1;
             AddTaskUserZIndex = -1;
+            NewTaskTitle = "";
+            NewTaskDesc = "";
+            NewTaskEndDate = DateTime.Today;
+            foreach (User user in NewTaskUsers)
+                CompanyUsers.Add(user);
+            NewTaskUsers = new();
             LoadTasks();
             (this as ILoading).EndLoading();
         }
         #endregion
+
+        public ICommand ReloadTasksCommand { get; }
 
         public TasksControlViewModel(APIHelper apiHelper, CompanyUser companyUser)
         {
@@ -193,12 +203,17 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             _user = companyUser.User;
             _company = companyUser.Company;
 
+            CompanyName = _company.Title;
+
             ToAddTaskCommand = new RelayCommand(OnToAddTaskCommandExecute);
             BackFromAddTaskCommand = new RelayCommand(OnBackFromAddTaskCommandExecute);
             DeleteUserCommand = new RelayCommand(OnDeleteUserCommandExecute);
             ToAddTaskUserCommand = new RelayCommand(OnToAddTaskUserCommandExecute);
             BackFromAddTaskUserCommand = new RelayCommand(OnBackFromAddTaskUserCommandExecute);
-            AddTaskCommand = new RelayCommand(OnAddTaskCommandExecute);
+            AddTaskCommand = new RelayCommand(OnAddTaskCommandExecute, _ =>
+                !string.IsNullOrWhiteSpace(NewTaskTitle) &&
+                !string.IsNullOrWhiteSpace(NewTaskDesc));
+            ReloadTasksCommand = new RelayCommand(_ => LoadTasks());
 
             LoadTasks();
             LoadUsers();

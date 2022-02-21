@@ -13,5 +13,14 @@ namespace delegatorApi.Library.DataAccess
                 db.SaveChanges();
             }
         }
+
+        public void Delete(TasksUser tasksUser)
+        {
+            using (delegatorContext db = new())
+            {
+                db.TasksUsers.Remove(tasksUser);
+                db.SaveChanges();
+            }
+        }
     }
 }

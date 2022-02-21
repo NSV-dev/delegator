@@ -16,6 +16,15 @@ namespace delegatorApi.Library.DataAccess
             }
         }
 
+        public void Delete(Task task)
+        {
+            using (delegatorContext db = new())
+            {
+                db.Tasks.Remove(task);
+                db.SaveChanges();
+            }
+        }
+
         public List<Task> GetByCompanyID(string companyID)
         {
             using (delegatorContext db = new())

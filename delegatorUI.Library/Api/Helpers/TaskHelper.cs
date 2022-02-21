@@ -55,6 +55,62 @@ namespace delegatorUI.Library.Api.Helpers
             }
         }
 
+        public async Task Delete(AppTask task, string companyID)
+        {
+            foreach (AppTask subtask in task.Tasks)
+                Delete(subtask, companyID);
+
+            foreach (AppTask subtask in task.Tasks)
+            {
+                using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskTask/Delete", new TaskTasks()
+                {
+                    MainTaskId = task.Id,
+                    TaskId = subtask.Id
+                }))
+                {
+                    if (!resp.IsSuccessStatusCode)
+                        throw new Exception(resp.ReasonPhrase);
+                }
+            }
+
+            foreach (User user in task.Users)
+            {
+                using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser/Delete", new TaskUsers()
+                {
+                    TaskId = task.Id,
+                    UserId = user.Id,
+                    CompanyId = companyID
+                }))
+                {
+                    if (!resp.IsSuccessStatusCode)
+                        throw new Exception(resp.ReasonPhrase);
+                }
+            }
+
+            TaskTasks taskTasks = null;
+            using (HttpResponseMessage resp = await _apiClient.GetAsync($"TaskTask/ByTaskID?taskID={task.Id}"))
+            {
+                if (resp.IsSuccessStatusCode)
+                    taskTasks = await resp.Content.ReadAsAsync<TaskTasks>();
+                else
+                    throw new Exception(resp.ReasonPhrase);
+            }
+            if (taskTasks != null)
+            {
+                using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskTask/Delete", taskTasks))
+                {
+                    if (!resp.IsSuccessStatusCode)
+                        throw new Exception(resp.ReasonPhrase);
+                }
+            }
+
+            using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("Task/Delete", task))
+            {
+                if (!resp.IsSuccessStatusCode)
+                    throw new Exception(resp.ReasonPhrase);
+            }
+        }
+
         public async Task<List<AppTask>> GetByCompany(string companyID)
         {
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"Task/ByCompanyID?companyID={companyID}"))

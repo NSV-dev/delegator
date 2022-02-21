@@ -8,6 +8,7 @@ namespace delegatorApi.Library.Models
     {
         [Key]
         public string CompanyId { get; set; }
+        [Key]
         public string AppUserId { get; set; }
         public string RoleId { get; set; }
 

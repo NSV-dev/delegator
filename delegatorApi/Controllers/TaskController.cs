@@ -18,6 +18,9 @@ namespace delegatorApi.Controllers
 
         public void Post(Task task) => _taskData.Post(task);
 
+        [Route("Delete")]
+        public void Delete(Task task) => _taskData.Delete(task);
+
         [Route("ByCompanyID")]
         public List<Task> GetCompanyID(string companyID) => _taskData.GetByCompanyID(companyID);
 

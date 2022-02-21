@@ -1,10 +1,6 @@
 ﻿using delegatorApi.Library.DataAccess;
 using delegatorApi.Library.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace delegatorApi.Controllers
 {
@@ -20,5 +16,11 @@ namespace delegatorApi.Controllers
         }
 
         public void Post(TasksTask tasksTask) => _taskTaskData.Post(tasksTask);
+
+        [Route("Delete")]
+        public void Delete(TasksTask tasksTask) => _taskTaskData.Delete(tasksTask);
+
+        [Route("ByTaskID")]
+        public TasksTask GetByTaskId(string taskID) => _taskTaskData.GetByTaskID(taskID);
     }
 }

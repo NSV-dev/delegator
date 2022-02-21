@@ -6,8 +6,8 @@ namespace delegatorApi.Library.Models
 {
     public partial class TasksTask
     {
-        [Key]
         public string MainTaskId { get; set; }
+        [Key]
         public string TaskId { get; set; }
 
         public virtual Task MainTask { get; set; }

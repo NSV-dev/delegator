@@ -16,5 +16,8 @@ namespace delegatorApi.Controllers
         }
 
         public void Post(TasksUser tasksUser) => _taskUserData.Post(tasksUser);
+
+        [Route("Delete")]
+        public void Delete(TasksUser tasksUser) => _taskUserData.Delete(tasksUser);
     }
 }

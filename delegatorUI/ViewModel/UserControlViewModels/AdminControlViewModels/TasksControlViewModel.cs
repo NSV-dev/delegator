@@ -36,7 +36,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
 
         #region Loading
         private int _loadingOpacity;
-        public int LoadingOpacity 
+        public int LoadingOpacity
         {
             get => _loadingOpacity;
             set => OnPropertyChanged(ref _loadingOpacity, value);
@@ -47,6 +47,54 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         {
             get => _loadingZIndex;
             set => OnPropertyChanged(ref _loadingZIndex, value);
+        }
+        #endregion
+
+        #region Deleting Tasks
+        #region Grid Prop
+        private int _delTaskOpacity = 0;
+        public int DelTaskOpacity
+        {
+            get => _delTaskOpacity;
+            set => OnPropertyChanged(ref _delTaskOpacity, value);
+        }
+
+        private int _delTaskZIndex = -1;
+        public int DelTaskZIndex
+        {
+            get => _delTaskZIndex;
+            set => OnPropertyChanged(ref _delTaskZIndex, value);
+        }
+        #endregion
+
+        private AppTask _taskToDelete;
+        public AppTask TaskToDel
+        {
+            get => _taskToDelete;
+            set => OnPropertyChanged(ref _taskToDelete, value);
+        }
+
+        public ICommand ToDelTaskCommand { get; }
+        private void OnToDelTaskCommandExecute(object p)
+        {
+            TaskToDel = p as AppTask;
+            DelTaskZIndex = 1;
+        }
+
+        public ICommand BackFromDelTaskCommand { get; }
+        private void OnBackFromDelTaskCommandExecute(object p)
+        {
+            DelTaskZIndex = -1;
+        }
+
+        public ICommand DelTaskCommand { get; }
+        private async void OnDelTaskCommandExecute(object p)
+        {
+            (this as ILoading).StartLoading();
+            await _apiHelper.Tasks.Delete(TaskToDel, _company.Id);
+            DelTaskZIndex = -1;
+            LoadTasks();
+            (this as ILoading).EndLoading();
         }
         #endregion
 
@@ -215,6 +263,10 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
                 !string.IsNullOrWhiteSpace(NewTaskDesc));
             ReloadTasksCommand = new RelayCommand(_ => LoadTasks());
 
+            ToDelTaskCommand = new RelayCommand(OnToDelTaskCommandExecute);
+            BackFromDelTaskCommand = new RelayCommand(OnBackFromDelTaskCommandExecute);
+            DelTaskCommand = new RelayCommand(OnDelTaskCommandExecute);
+
             LoadTasks();
             LoadUsers();
         }
@@ -223,7 +275,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         {
             (this as ILoading).StartLoading();
             Tasks = await _apiHelper.Tasks.GetByCompany(_company.Id);
-            await Task.Delay(300);
+            await Task.Delay(200);
             (this as ILoading).EndLoading();
         }
 

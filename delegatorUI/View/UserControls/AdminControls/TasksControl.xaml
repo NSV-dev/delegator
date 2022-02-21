@@ -13,13 +13,14 @@
             <EventTrigger RoutedEvent="Loaded">
                 <BeginStoryboard>
                     <Storyboard>
-                        <ThicknessAnimation
-                            Storyboard.TargetProperty="Margin"
-                            From="0,-2000,0,0" To="0" Duration="0:0:.5">
-                            <ThicknessAnimation.EasingFunction>
-                                <QuinticEase EasingMode="EaseOut"/>
-                            </ThicknessAnimation.EasingFunction>
-                        </ThicknessAnimation>
+                        <DoubleAnimation
+                            Storyboard.TargetProperty="Opacity"
+                            From="0" To="1" Duration="0:0:1"/>
+                        <DoubleAnimation
+                            Storyboard.TargetName="tv"
+                            Storyboard.TargetProperty="Opacity"
+                            BeginTime="0:0:1"
+                            From="0" To="1" Duration="0:0:1"/>
                     </Storyboard>
                 </BeginStoryboard>
             </EventTrigger>
@@ -89,7 +90,7 @@
 
             </Grid>
 
-            <TreeView x:Name="tv" ItemsSource="{Binding Tasks}" 
+            <TreeView x:Name="tv" ItemsSource="{Binding Tasks}" Opacity="0"
                       Background="Transparent" Grid.Row="1" BorderBrush="Transparent" Padding="0,0,5,0">
                 <TreeView.Resources>
                     <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
@@ -210,7 +211,7 @@
                                         <ToggleButton x:Name="Expander" VerticalAlignment="Top" Margin="4,5,0,0"
                                             Style="{StaticResource ExpandCollapseToggleStyle}"
                                             IsChecked="{Binding Path=IsExpanded,
-                                                        RelativeSource={RelativeSource TemplatedParent}}"
+                                                RelativeSource={RelativeSource TemplatedParent}}"
                                             ClickMode="Press"/>
                                         <Border Name="Bd"
                                             Grid.Column="1" Height="30"
@@ -223,7 +224,7 @@
                                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
                                         </Border>
                                         <Border Background="Transparent" BorderThickness="0"
-                                                Height="20" Width="20" Margin="0,4,60,0"
+                                                Height="20" Width="20" Margin="0,4,40,0"
                                                 HorizontalAlignment="Right" VerticalAlignment="Top"
                                                 Grid.Column="2">
                                             <Path Data="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
@@ -243,8 +244,29 @@
                                                 </Style>
                                             </Border.Style>
                                         </Border>
+                                        <Border Background="Transparent" BorderThickness="0"
+                                            Height="20" Width="20" Margin="0,4,10,0"
+                                            Grid.Column="2" VerticalAlignment="Top"
+                                            HorizontalAlignment="Right">
+                                            <Path Data="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
+                                                Fill="#999999"/>
+                                            <Border.InputBindings>
+                                                <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=tv,
+                                                    Path=DataContext.ToDelTaskCommand}"
+                                                    CommandParameter="{Binding}"/>
+                                            </Border.InputBindings>
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Cursor" Value="Hand"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                        </Border>
                                         <ToggleButton x:Name="DescBtn" Grid.Column="2"
-                                            Content="● ● ●" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,3,10,0">
+                                            Content="● ● ●" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,3,70,0">
                                             <ToggleButton.Triggers>
                                                 <EventTrigger RoutedEvent="ToggleButton.Checked">
                                                     <EventTrigger.Actions>
@@ -337,10 +359,6 @@
                                             </MultiTrigger.Conditions>
                                             <Setter TargetName="PART_Header" Property="MinHeight" Value="19"/>
                                         </MultiTrigger>
-                                        <Trigger Property="IsEnabled" Value="false">
-                                            <Setter Property="Foreground"
-                                                Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-                                        </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Setter.Value>
@@ -648,8 +666,67 @@
 
             </Border>
 
+            <Border Opacity="{Binding DelTaskOpacity}" Panel.ZIndex="{Binding DelTaskZIndex}"
+                Grid.RowSpan="100" Height="200" Width="300" CornerRadius="10" Background="#2e2e2e">
+
+                <Border.Effect>
+                    <DropShadowEffect
+                        ShadowDepth="1" Direction="275"
+                        Opacity=".6" BlurRadius="20"/>
+                </Border.Effect>
+
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <Trigger Property="Panel.ZIndex" Value="1">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Grid Margin="10">
+
+                    <TextBlock Margin="20,-20,20,0" Height="120" Style="{StaticResource TextBlockStyle}"
+                        TextWrapping="WrapWithOverflow" TextAlignment="Center" Foreground="White">
+                        <Run 
+                            Text="Вы уверен что хотите удалить "/><Run
+                            Text="{Binding TaskToDel.Title}"/><Run
+                            Text="?"/>
+                    </TextBlock>
+
+                    <Button Grid.Row="100" Style="{StaticResource ButtonBase}" 
+                            Width="100" Height="30" Content="Назад"
+                            HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                            Command="{Binding BackFromDelTaskCommand}" IsCancel="True"/>
+
+                    <Button Grid.Row="100" Grid.Column="1" Style="{StaticResource ButtonBase}" 
+                            Width="100" Height="30" Content="Удалить"
+                            HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                            Command="{Binding DelTaskCommand}"
+                            IsDefault="True"/>
+
+                </Grid>
+                
+            </Border>
+            
         </Grid>
 
-        <!--<res:LoadingAnimation Opacity="{Binding LoadingOpacity}" Panel.ZIndex="{Binding LoadingZIndex}"/>-->
+        <res:LoadingAnimation Opacity="{Binding LoadingOpacity}" Panel.ZIndex="{Binding LoadingZIndex}"/>
     </Grid>
 </UserControl>

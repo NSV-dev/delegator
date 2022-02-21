@@ -171,6 +171,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         {
             AppTask task = new()
             {
+                Id = Guid.NewGuid().ToString().ToUpper(),
                 Title = NewTaskTitle,
                 Description = NewTaskDesc,
                 EndTime = NewTaskEndDate,
@@ -207,7 +208,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         {
             (this as ILoading).StartLoading();
             Tasks = await _apiHelper.Tasks.GetByCompany(_company.Id);
-            await Task.Delay(200);
+            await Task.Delay(300);
             (this as ILoading).EndLoading();
         }
 

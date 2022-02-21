@@ -21,9 +21,7 @@ namespace delegatorUI.Library.Api.Helpers
         {
             using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("Task", task))
             {
-                if (resp.IsSuccessStatusCode)
-                    task.Id = await resp.Content.ReadAsAsync<string>();
-                else
+                if (!resp.IsSuccessStatusCode)
                     throw new Exception(resp.ReasonPhrase);
             }
 

@@ -24,6 +24,15 @@ namespace delegatorApi.Library.DataAccess
             }
         }
 
+        public void Update(TasksTask tasksTask)
+        {
+            using (delegatorContext db = new())
+            {
+                db.TasksTasks.Update(tasksTask);
+                db.SaveChanges();
+            }
+        }
+
         public TasksTask GetByTaskID(string taskId)
         {
             using (delegatorContext db = new())

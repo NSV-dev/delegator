@@ -19,5 +19,8 @@ namespace delegatorApi.Controllers
 
         [Route("Delete")]
         public void Delete(TasksUser tasksUser) => _taskUserData.Delete(tasksUser);
+
+        [Route("Update")]
+        public void Update(TasksUser tasksUser) => _taskUserData.Update(tasksUser);
     }
 }

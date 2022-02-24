@@ -22,5 +22,14 @@ namespace delegatorApi.Library.DataAccess
                 db.SaveChanges();
             }
         }
+
+        public void Update(TasksUser tasksUser)
+        {
+            using (delegatorContext db = new())
+            {
+                db.TasksUsers.Update(tasksUser);
+                db.SaveChanges();
+            }
+        }
     }
 }

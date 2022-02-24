@@ -111,6 +111,59 @@ namespace delegatorUI.Library.Api.Helpers
             }
         }
 
+        public async Task Update(AppTask oldTask, AppTask newTask, string companyID)
+        {
+            newTask.Id = oldTask.Id;
+            using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("Task/Update", newTask))
+            {
+                if (!resp.IsSuccessStatusCode)
+                    throw new Exception(resp.ReasonPhrase);
+            }
+
+            foreach (User user in newTask.Users)
+            {
+                if (!oldTask.Users.Contains(user))
+                {
+                    using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser", new TaskUsers()
+                    {
+                        CompanyId = companyID,
+                        TaskId = oldTask.Id,
+                        UserId = user.Id
+                    }))
+                    {
+                        if (!resp.IsSuccessStatusCode)
+                            throw new Exception(resp.ReasonPhrase);
+                    }
+                }
+            }
+
+            foreach (User user in oldTask.Users)
+            {
+                if (!newTask.Users.Contains(user))
+                {
+                    TaskUsers taskUsers = new()
+                    {
+                        CompanyId = companyID,
+                        TaskId = oldTask.Id,
+                        UserId = user.Id
+                    };
+                    TaskUsers taskUsersWithID;
+                    using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser/Get", taskUsers))
+                    {
+                        if (resp.IsSuccessStatusCode)
+                            taskUsersWithID = await resp.Content.ReadAsAsync<TaskUsers>();
+                        else
+                            throw new Exception(resp.ReasonPhrase);
+                    }
+                    using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser/Delete", taskUsersWithID))
+                    {
+                        if (!resp.IsSuccessStatusCode)
+                            throw new Exception(resp.ReasonPhrase);
+                    }
+                }
+            }
+        }
+
         public async Task<List<AppTask>> GetByCompany(string companyID)
         {
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"Task/ByCompanyID?companyID={companyID}"))

@@ -1,12 +1,11 @@
 ﻿#nullable disable
 
-using System.ComponentModel.DataAnnotations;
 
 namespace delegatorApi.Library.Models
 {
     public partial class TasksUser
     {
-        [Key]
+        public string Id { get; set; }
         public string TaskId { get; set; }
         public string UserId { get; set; }
         public string CompanyId { get; set; }

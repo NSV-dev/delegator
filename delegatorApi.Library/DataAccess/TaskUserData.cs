@@ -1,5 +1,6 @@
 ﻿using delegatorApi.Library.Models;
 using delegatorApi.Library.Models.Context;
+using System.Linq;
 
 namespace delegatorApi.Library.DataAccess
 {
@@ -29,6 +30,17 @@ namespace delegatorApi.Library.DataAccess
             {
                 db.TasksUsers.Update(tasksUser);
                 db.SaveChanges();
+            }
+        }
+
+        public TasksUser Get(TasksUser tasksUser)
+        {
+            using (delegatorContext db = new())
+            {
+                return db.TasksUsers.Where(tu =>
+                    tu.CompanyId == tasksUser.CompanyId &&
+                    tu.TaskId == tasksUser.TaskId &&
+                    tu.UserId == tasksUser.UserId).Single();
             }
         }
     }

@@ -63,6 +63,12 @@ namespace delegatorApi.Library.Models.Context
 
             modelBuilder.Entity<CompanyUser>(entity =>
             {
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID")
+                    .HasDefaultValueSql("(newid())")
+                    .IsFixedLength(true);
+
                 entity.ToTable("CompanyUser");
 
                 entity.Property(e => e.AppUserId)
@@ -125,6 +131,12 @@ namespace delegatorApi.Library.Models.Context
 
             modelBuilder.Entity<TasksTask>(entity =>
             {
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID")
+                    .HasDefaultValueSql("(newid())")
+                    .IsFixedLength(true);
+
                 entity.Property(e => e.MainTaskId)
                     .IsRequired()
                     .HasMaxLength(36)
@@ -152,6 +164,12 @@ namespace delegatorApi.Library.Models.Context
 
             modelBuilder.Entity<TasksUser>(entity =>
             {
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID")
+                    .HasDefaultValueSql("(newid())")
+                    .IsFixedLength(true);
+
                 entity.Property(e => e.CompanyId)
                     .IsRequired()
                     .HasMaxLength(36)

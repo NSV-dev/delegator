@@ -22,5 +22,8 @@ namespace delegatorApi.Controllers
 
         [Route("Update")]
         public void Update(TasksUser tasksUser) => _taskUserData.Update(tasksUser);
+
+        [Route("Get")]
+        public TasksUser Get(TasksUser tasksUser) => _taskUserData.Get(tasksUser);
     }
 }

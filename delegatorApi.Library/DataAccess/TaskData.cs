@@ -41,6 +41,7 @@ namespace delegatorApi.Library.DataAccess
                 return db.TasksUsers
                     .Where(tu => tu.CompanyId == companyID)
                     .Select(tu => tu.Task)
+                    .Distinct()
                     .ToList();
             }
         }

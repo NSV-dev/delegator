@@ -98,7 +98,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         }
         #endregion
 
-        #region Adding Tasks
+        #region Adding and Updating Tasks
+        #region Shared
         #region Grid Prop
         private int _addTaskOpacity = 0;
         public int AddTaskOpacity
@@ -129,6 +130,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         }
         #endregion
 
+        #region Task Prop
         private ObservableCollection<User> _newTaskUsers = new();
         public ObservableCollection<User> NewTaskUsers
         {
@@ -156,8 +158,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             get => _newTaskEndDate;
             set => OnPropertyChanged(ref _newTaskEndDate, value);
         }
-
-        private AppTask _mainTask;
+        #endregion
 
         private string _searchTaskText;
         public string SearchTaskText
@@ -178,17 +179,16 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
                 CompanyUsers = new(await _apiHelper.Users.GetWhereNameContains(name));
         }
 
-        public ICommand ToAddTaskCommand { get; }
-        private void OnToAddTaskCommandExecute(object p)
-        {
-            _mainTask = p as AppTask;
-            AddTaskZIndex = 1;
-        }
-
         public ICommand BackFromAddTaskCommand { get; }
-        private void OnBackFromAddTaskCommandExecute(object p)
+        private async void OnBackFromAddTaskCommandExecute(object p)
         {
+            CompanyUsers = new(await _apiHelper.Users.GetByCompany(_company.Id));
             _mainTask = null;
+            NewTaskTitle = "";
+            NewTaskDesc = "";
+            NewTaskEndDate = DateTime.Today;
+            NewTaskUsers = new();
+            oldUpdateTask = null;
             AddTaskZIndex = -1;
         }
 
@@ -229,7 +229,12 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             };
 
             (this as ILoading).StartLoading();
-            await _apiHelper.Tasks.Post(task, _company.Id, _mainTask?.Id);
+
+            if (oldUpdateTask == null)
+                await _apiHelper.Tasks.Post(task, _company.Id, _mainTask?.Id);
+            else
+                await _apiHelper.Tasks.Update(oldUpdateTask, task, _company.Id);
+
             AddTaskZIndex = -1;
             AddTaskUserZIndex = -1;
             NewTaskTitle = "";
@@ -241,6 +246,46 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             LoadTasks();
             (this as ILoading).EndLoading();
         }
+        #endregion
+
+        #region Adding Tasks
+        private AppTask _mainTask;
+
+        public ICommand ToAddTaskCommand { get; }
+        private void OnToAddTaskCommandExecute(object p)
+        {
+            _mainTask = p as AppTask;
+            AddTaskZIndex = 1;
+        }
+        #endregion
+
+        #region Updating Tasks
+        private AppTask oldUpdateTask;
+
+        public ICommand ToUpdateTaskCommand { get; }
+        private void OnToUpdateTaskCommandExecute(object p)
+        {
+            NewTaskTitle = (p as AppTask).Title;
+            NewTaskDesc = (p as AppTask).Description;
+            NewTaskEndDate = (DateTime)(p as AppTask).EndTime;
+
+            NewTaskUsers = new((p as AppTask).Users);
+            foreach (User user in NewTaskUsers)
+                if (CompanyUsers.Where(u => u.Id == user.Id).Count() == 1)
+                    CompanyUsers.Remove(CompanyUsers.Where(u => u.Id == user.Id).Single());
+
+            oldUpdateTask = new()
+            {
+                Id = (p as AppTask).Id,
+                Title = (p as AppTask).Title,
+                Description = (p as AppTask).Description,
+                EndTime = (p as AppTask).EndTime,
+                Users = (p as AppTask).Users
+            };
+
+            AddTaskZIndex = 1;
+        }
+        #endregion
         #endregion
 
         public ICommand ReloadTasksCommand { get; }
@@ -266,6 +311,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             ToDelTaskCommand = new RelayCommand(OnToDelTaskCommandExecute);
             BackFromDelTaskCommand = new RelayCommand(OnBackFromDelTaskCommandExecute);
             DelTaskCommand = new RelayCommand(OnDelTaskCommandExecute);
+            ToUpdateTaskCommand = new RelayCommand(OnToUpdateTaskCommandExecute);
 
             LoadTasks();
             LoadUsers();

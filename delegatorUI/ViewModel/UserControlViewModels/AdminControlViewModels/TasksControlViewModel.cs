@@ -240,6 +240,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             NewTaskTitle = "";
             NewTaskDesc = "";
             NewTaskEndDate = DateTime.Today;
+            oldUpdateTask = null;
+            _mainTask = null;
             foreach (User user in NewTaskUsers)
                 CompanyUsers.Add(user);
             NewTaskUsers = new();

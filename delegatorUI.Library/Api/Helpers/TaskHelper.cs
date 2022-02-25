@@ -62,11 +62,15 @@ namespace delegatorUI.Library.Api.Helpers
 
             foreach (AppTask subtask in task.Tasks)
             {
-                using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskTask/Delete", new TaskTasks()
+                TaskTasks taskTasksWithID;
+                using (HttpResponseMessage resp = await _apiClient.GetAsync($"TaskTask/ByTaskID?taskID={subtask.Id}"))
                 {
-                    MainTaskId = task.Id,
-                    TaskId = subtask.Id
-                }))
+                    if (resp.IsSuccessStatusCode)
+                        taskTasksWithID = await resp.Content.ReadAsAsync<TaskTasks>();
+                    else
+                        throw new Exception(resp.ReasonPhrase);
+                }
+                using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskTask/Delete", taskTasksWithID))
                 {
                     if (!resp.IsSuccessStatusCode)
                         throw new Exception(resp.ReasonPhrase);
@@ -75,12 +79,21 @@ namespace delegatorUI.Library.Api.Helpers
 
             foreach (User user in task.Users)
             {
-                using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser/Delete", new TaskUsers()
+                TaskUsers taskUsers = new()
                 {
+                    CompanyId = companyID,
                     TaskId = task.Id,
-                    UserId = user.Id,
-                    CompanyId = companyID
-                }))
+                    UserId = user.Id
+                };
+                TaskUsers taskUsersWithID;
+                using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser/Get", taskUsers))
+                {
+                    if (resp.IsSuccessStatusCode)
+                        taskUsersWithID = await resp.Content.ReadAsAsync<TaskUsers>();
+                    else
+                        throw new Exception(resp.ReasonPhrase);
+                }
+                using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser/Delete", taskUsersWithID))
                 {
                     if (!resp.IsSuccessStatusCode)
                         throw new Exception(resp.ReasonPhrase);

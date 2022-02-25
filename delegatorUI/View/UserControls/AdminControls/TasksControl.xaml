@@ -188,36 +188,6 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type TreeViewItem}">
                                     <Grid Margin="0,5,0,0">
-                                        <Grid.Triggers>
-                                            <EventTrigger RoutedEvent="MouseEnter">
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation
-                                                            Storyboard.TargetName="EditPanel"
-                                                            Storyboard.TargetProperty="Width"
-                                                            From="0" To="80" Duration="0:0:.2"/>
-                                                        <ThicknessAnimation
-                                                            Storyboard.TargetName="DescBtn"
-                                                            Storyboard.TargetProperty="Margin"
-                                                            From="0,3,10,0" To="0,3,100,0" Duration="0:0:.2"/>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </EventTrigger>
-                                            <EventTrigger RoutedEvent="MouseLeave">
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation
-                                                            Storyboard.TargetName="EditPanel"
-                                                            Storyboard.TargetProperty="Width"
-                                                            From="80" To="0" Duration="0:0:.2"/>
-                                                        <ThicknessAnimation
-                                                            Storyboard.TargetName="DescBtn"
-                                                            Storyboard.TargetProperty="Margin"
-                                                            From="0,3,100,0" To="0,3,10,0" Duration="0:0:.2"/>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </EventTrigger>
-                                        </Grid.Triggers>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="Auto"/>
@@ -256,9 +226,10 @@
                                         <StackPanel x:Name="EditPanel" Width="0"
                                             Orientation="Horizontal" Grid.Column="2"
                                             HorizontalAlignment="Right" VerticalAlignment="Top"
-                                            Margin="0,4,10,0" Height="20">
+                                            Margin="0,0,10,0" Height="30"
+                                            Background="Transparent">
                                             <Border Background="Transparent" BorderThickness="0"
-                                                Height="20" Width="20" Padding="1" Margin="0,1,0,0">
+                                                Height="20" Width="20" Padding="1" Margin="10,0,0,0">
                                                 <Path Data="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
                                                   Fill="#999999" Stretch="Uniform"/>
                                                 <Border.InputBindings>
@@ -278,7 +249,7 @@
                                             </Border>
                                             <Border Background="Transparent" BorderThickness="0"
                                                     VerticalAlignment="Top"
-                                                Height="20" Width="20" Padding="1" Margin="10,1,10,0">
+                                                Height="20" Width="20" Padding="1" Margin="10,4,10,0">
                                                 <Path Data="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"
                                                   Fill="#999999" Stretch="Uniform"/>
                                                 <Border.InputBindings>
@@ -327,6 +298,14 @@
                                                                     Storyboard.TargetName="Bd"
                                                                     Storyboard.TargetProperty="Height"
                                                                     From="30" To="200" Duration="0:0:.2"/>
+                                                                <DoubleAnimation
+                                                                    Storyboard.TargetName="EditPanel"
+                                                                    Storyboard.TargetProperty="Width"
+                                                                    From="0" To="90" Duration="0:0:.2"/>
+                                                                <ThicknessAnimation
+                                                                    Storyboard.TargetName="DescBtn"
+                                                                    Storyboard.TargetProperty="Margin"
+                                                                    From="0,3,10,0" To="0,3,100,0" Duration="0:0:.2"/>
                                                             </Storyboard>
                                                         </BeginStoryboard>
                                                     </EventTrigger.Actions>
@@ -339,6 +318,14 @@
                                                                     Storyboard.TargetName="Bd"
                                                                     Storyboard.TargetProperty="Height"
                                                                     From="200" To="30" Duration="0:0:.2"/>
+                                                                <DoubleAnimation
+                                                                    Storyboard.TargetName="EditPanel"
+                                                                    Storyboard.TargetProperty="Width"
+                                                                    From="90" To="0" Duration="0:0:.2"/>
+                                                                <ThicknessAnimation
+                                                                    Storyboard.TargetName="DescBtn"
+                                                                    Storyboard.TargetProperty="Margin"
+                                                                    From="0,3,100,0" To="0,3,10,0" Duration="0:0:.2"/>
                                                             </Storyboard>
                                                         </BeginStoryboard>
                                                     </EventTrigger.Actions>

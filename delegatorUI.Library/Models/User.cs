@@ -7,6 +7,11 @@
         public string Password { get; set; }
         public string Email { get; set; }
 
+        public User()
+        {
+
+        }
+
         public User(AppUser user)
         {
             Id = user.Id;

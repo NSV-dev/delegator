@@ -15,7 +15,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
     public class TasksControlViewModel : BaseViewModel, ILoading
     {
         private readonly APIHelper _apiHelper;
-        private readonly User _user;
+        private readonly AppUser _user;
         private readonly Company _company;
 
         public string CompanyName { get; }

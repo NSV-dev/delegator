@@ -2,9 +2,9 @@
 using delegatorUI.Library.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace delegatorUI.Library.Api.Helpers
 {
@@ -34,8 +34,13 @@ namespace delegatorUI.Library.Api.Helpers
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"AppUser/ByUsername?name={name}"))
             {
                 if (resp.IsSuccessStatusCode)
-                    return new AppUser(await resp.Content.ReadAsAsync<User>());
-                else
+                {
+                    User user = await resp.Content.ReadAsAsync<User>();
+                    if (user is null)
+                        return null;
+                    else
+                        return new AppUser(user);
+                } else
                     throw new Exception(resp.ReasonPhrase);
             }
         }
@@ -84,7 +89,7 @@ namespace delegatorUI.Library.Api.Helpers
 
             return result;
         }
-        
+
         public async Task<List<AppUser>> ConvertToAppUsersWithRole(List<User> users, string companyID)
         {
             List<AppUser> result = new();

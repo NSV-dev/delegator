@@ -12,7 +12,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
     public class AccControlViewModel : BaseViewModel
     {
         private readonly APIHelper _apiHelper;
-        private readonly User _user;
+        private readonly AppUser _user;
         private readonly Company _company;
 
         public AccControlViewModel(APIHelper apiHelper, CompanyUser companyUser)

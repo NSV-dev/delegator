@@ -9,6 +9,11 @@
 
         public Role Role { get; set; }
 
+        public AppUser()
+        {
+
+        }
+
         public AppUser(User user)
         {
             Id = user.Id;

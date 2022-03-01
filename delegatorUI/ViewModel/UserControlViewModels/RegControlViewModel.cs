@@ -291,9 +291,9 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         #endregion
 
         #region Extra Funcs
-        private User CreateUser()
+        private AppUser CreateUser()
         {
-            return new User()
+            return new AppUser()
             {
                 UserName = Login,
                 Email = Email,
@@ -312,7 +312,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async void PostUser()
         {
-            User createdUser = CreateUser();
+            AppUser createdUser = CreateUser();
             if (createdUser == null)
                 return;
 
@@ -322,7 +322,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
 
         private async void PostCompany()
         {
-            User createdUser = CreateUser();
+            AppUser createdUser = CreateUser();
             if (createdUser == null)
                 return;
 

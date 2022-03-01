@@ -65,7 +65,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         #endregion
 
         #region LoggingIn
-        private User _userByLogin;
+        private AppUser _userByLogin;
 
         private string _login;
         public string Login

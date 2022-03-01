@@ -10,7 +10,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
     public class TasksControlViewModel : BaseViewModel, ILoading
     {
         private readonly APIHelper _apiHelper;
-        private readonly User _user;
+        private readonly AppUser _user;
         private readonly Company _company;
 
         private List<AppTask> _tasks;

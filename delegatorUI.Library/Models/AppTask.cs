@@ -10,7 +10,7 @@ namespace delegatorUI.Library.Models
         public string Description { get; set; }
         public DateTime? EndTime { get; set; }
         
-        public List<User> Users { get; set; }
+        public List<AppUser> Users { get; set; }
         public List<AppTask> Tasks { get; set; }
     }
 }

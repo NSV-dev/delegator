@@ -19,9 +19,9 @@ namespace delegatorUI.Library.Api
 
         private void InitializeHelpers()
         {
-            Users = new(_apiClient);
             Companies = new(_apiClient);
             CompaniesUsers = new(_apiClient);
+            Users = new(_apiClient, CompaniesUsers);
             Roles = new(_apiClient);
             Tasks = new(_apiClient, Users);
         }

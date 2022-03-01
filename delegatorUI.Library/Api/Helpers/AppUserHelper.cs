@@ -4,17 +4,23 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace delegatorUI.Library.Api.Helpers
 {
     public class AppUserHelper : BaseHelper
     {
-        public AppUserHelper(HttpClient apiClient) 
-            : base(apiClient) { }
+        private readonly CompaniesUsersHelper _companiesUsersHelper;
 
-        public async Task Post(User user)
+        public AppUserHelper(HttpClient apiClient, CompaniesUsersHelper companiesUsersHelper)
+            : base(apiClient)
         {
-            using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("AppUser", user))
+            _companiesUsersHelper = companiesUsersHelper;
+        }
+
+        public async Task Post(AppUser user)
+        {
+            using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("AppUser", new User(user)))
             {
                 if (resp.IsSuccessStatusCode)
                     return;
@@ -23,50 +29,73 @@ namespace delegatorUI.Library.Api.Helpers
             }
         }
 
-        public async Task<User> GetByUsername(string name)
+        public async Task<AppUser> GetByUsername(string name)
         {
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"AppUser/ByUsername?name={name}"))
             {
                 if (resp.IsSuccessStatusCode)
-                    return await resp.Content.ReadAsAsync<User>();
+                    return new AppUser(await resp.Content.ReadAsAsync<User>());
                 else
                     throw new Exception(resp.ReasonPhrase);
             }
         }
 
-        public async Task<List<User>> GetByCompany(string companyID)
+        public async Task<List<AppUser>> GetByCompany(string companyID)
         {
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"AppUser/ByCompanyID?companyID={companyID}"))
             {
                 if (resp.IsSuccessStatusCode)
-                    return await resp.Content.ReadAsAsync<List<User>>();
+                    return await ConvertToAppUsersWithRole(await resp.Content.ReadAsAsync<List<User>>(), companyID);
                 else
                     throw new Exception(resp.ReasonPhrase);
             }
         }
 
-        public async Task<List<User>> GetByTask(string taskID)
+        public async Task<List<AppUser>> GetByTask(string taskID)
         {
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"AppUser/ByTask?taskID={taskID}"))
             {
                 if (resp.IsSuccessStatusCode)
-                    return await resp.Content.ReadAsAsync<List<User>>();
+                    return ConvertToAppUsersWithoutRole(await resp.Content.ReadAsAsync<List<User>>());
                 else
                     throw new Exception(resp.ReasonPhrase);
             }
         }
 
-        public async Task<List<User>> GetWhereNameContains(string s)
+        public async Task<List<AppUser>> GetWhereNameContains(string s)
         {
             if (string.IsNullOrWhiteSpace(s))
                 return null;
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"AppUser/WhereNameContains?s={s}"))
             {
                 if (resp.IsSuccessStatusCode)
-                    return await resp.Content.ReadAsAsync<List<User>>();
+                    return ConvertToAppUsersWithoutRole(await resp.Content.ReadAsAsync<List<User>>());
                 else
                     throw new Exception(resp.ReasonPhrase);
             }
+        }
+
+        public List<AppUser> ConvertToAppUsersWithoutRole(List<User> users)
+        {
+            List<AppUser> result = new();
+
+            foreach (User user in users)
+                result.Add(new AppUser(user));
+
+            return result;
+        }
+        
+        public async Task<List<AppUser>> ConvertToAppUsersWithRole(List<User> users, string companyID)
+        {
+            List<AppUser> result = new();
+
+            foreach (User user in users)
+                result.Add(new AppUser(user)
+                {
+                    Role = (await _companiesUsersHelper.GetByCompanyId(companyID, user.Id)).Single().Role
+                });
+
+            return result;
         }
     }
 }

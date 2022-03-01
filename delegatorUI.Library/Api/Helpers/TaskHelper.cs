@@ -25,7 +25,7 @@ namespace delegatorUI.Library.Api.Helpers
                     throw new Exception(resp.ReasonPhrase);
             }
 
-            foreach (User user in task.Users)
+            foreach (AppUser user in task.Users)
             {
                 TaskUsers taskUser = new()
                 {
@@ -77,7 +77,7 @@ namespace delegatorUI.Library.Api.Helpers
                 }
             }
 
-            foreach (User user in task.Users)
+            foreach (AppUser user in task.Users)
             {
                 TaskUsers taskUsers = new()
                 {
@@ -133,7 +133,7 @@ namespace delegatorUI.Library.Api.Helpers
                     throw new Exception(resp.ReasonPhrase);
             }
 
-            foreach (User user in newTask.Users)
+            foreach (AppUser user in newTask.Users)
             {
                 if (!oldTask.Users.Contains(user))
                 {
@@ -150,7 +150,7 @@ namespace delegatorUI.Library.Api.Helpers
                 }
             }
 
-            foreach (User user in oldTask.Users)
+            foreach (AppUser user in oldTask.Users)
             {
                 if (!newTask.Users.Contains(user))
                 {

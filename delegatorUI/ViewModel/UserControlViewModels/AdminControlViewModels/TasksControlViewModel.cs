@@ -27,8 +27,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             set => OnPropertyChanged(ref _tasks, value);
         }
 
-        private ObservableCollection<User> _companyUsers;
-        public ObservableCollection<User> CompanyUsers
+        private ObservableCollection<AppUser> _companyUsers;
+        public ObservableCollection<AppUser> CompanyUsers
         {
             get => _companyUsers;
             set => OnPropertyChanged(ref _companyUsers, value);
@@ -131,8 +131,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         #endregion
 
         #region Task Prop
-        private ObservableCollection<User> _newTaskUsers = new();
-        public ObservableCollection<User> NewTaskUsers
+        private ObservableCollection<AppUser> _newTaskUsers = new();
+        public ObservableCollection<AppUser> NewTaskUsers
         {
             get => _newTaskUsers;
             set => OnPropertyChanged(ref _newTaskUsers, value);
@@ -195,8 +195,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         public ICommand DeleteUserCommand { get; }
         private void OnDeleteUserCommandExecute(object p)
         {
-            NewTaskUsers.Remove(p as User);
-            CompanyUsers.Add(p as User);
+            NewTaskUsers.Remove(p as AppUser);
+            CompanyUsers.Add(p as AppUser);
         }
 
         public ICommand ToAddTaskUserCommand { get; }
@@ -210,7 +210,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         {
             if (p != null)
             {
-                NewTaskUsers.Add(p as User);
+                NewTaskUsers.Add(p as AppUser);
                 CompanyUsers.Remove(CompanyUsers.Where(cu => cu.Id == (p as User).Id).Single());
             }
             AddTaskUserZIndex = -1;
@@ -242,7 +242,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             NewTaskEndDate = DateTime.Today;
             oldUpdateTask = null;
             _mainTask = null;
-            foreach (User user in NewTaskUsers)
+            foreach (AppUser user in NewTaskUsers)
                 CompanyUsers.Add(user);
             NewTaskUsers = new();
             LoadTasks();
@@ -272,7 +272,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             NewTaskEndDate = (DateTime)(p as AppTask).EndTime;
 
             NewTaskUsers = new((p as AppTask).Users);
-            foreach (User user in NewTaskUsers)
+            foreach (AppUser user in NewTaskUsers)
                 if (CompanyUsers.Where(u => u.Id == user.Id).Count() == 1)
                     CompanyUsers.Remove(CompanyUsers.Where(u => u.Id == user.Id).Single());
 

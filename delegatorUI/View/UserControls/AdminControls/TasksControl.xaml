@@ -749,15 +749,15 @@
                     </TextBlock>
 
                     <Button Grid.Row="100" Style="{StaticResource ButtonBase}" 
-                            Width="100" Height="30" Content="Назад"
-                            HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                            Command="{Binding BackFromDelTaskCommand}" IsCancel="True"/>
+                        Width="100" Height="30" Content="Назад"
+                        HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                        Command="{Binding BackFromDelTaskCommand}" IsCancel="True"/>
 
                     <Button Grid.Row="100" Grid.Column="1" Style="{StaticResource ButtonBase}" 
-                            Width="100" Height="30" Content="Удалить"
-                            HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                            Command="{Binding DelTaskCommand}"
-                            IsDefault="True"/>
+                        Width="100" Height="30" Content="Удалить"
+                        HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                        Command="{Binding DelTaskCommand}"
+                        IsDefault="True"/>
 
                 </Grid>
                 

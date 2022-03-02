@@ -211,7 +211,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             if (p != null)
             {
                 NewTaskUsers.Add(p as AppUser);
-                CompanyUsers.Remove(CompanyUsers.Where(cu => cu.Id == (p as User).Id).Single());
+                CompanyUsers.Remove(CompanyUsers.Where(cu => cu.Id == (p as AppUser).Id).Single());
             }
             AddTaskUserZIndex = -1;
         }

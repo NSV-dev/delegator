@@ -29,6 +29,13 @@ namespace delegatorUI.Library.Api.Helpers
             }
         }
 
+        public async Task UpdateRole(AppUser user, string companyID)
+        {
+            CompanyUser cu = (await _companiesUsersHelper.GetByCompanyId(companyID, user.Id)).Single();
+            cu.Role = user.Role;
+            await _companiesUsersHelper.Update(cu);
+        }
+
         public async Task<AppUser> GetByUsername(string name)
         {
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"AppUser/ByUsername?name={name}"))

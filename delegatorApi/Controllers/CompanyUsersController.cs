@@ -17,6 +17,9 @@ namespace delegatorApi.Controllers
         }
 
         public void Post(CompanyUser companyUser) => _companyUserData.Post(companyUser);
+        
+        [Route("Update")]
+        public void Update(CompanyUser companyUser) => _companyUserData.Update(companyUser);
 
         [Route("ByCompanyAndUserId")]
         public List<CompanyUser> GetByCompanyId(string CompanyId, string AppUserId) => _companyUserData.GetByCompanyAndUserId(CompanyId, AppUserId);

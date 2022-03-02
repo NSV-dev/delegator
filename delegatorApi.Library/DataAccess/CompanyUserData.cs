@@ -16,6 +16,15 @@ namespace delegatorApi.Library.DataAccess
                 db.SaveChanges();
             }
         }
+        
+        public void Update(CompanyUser companyUser)
+        {
+            using (delegatorContext db = new())
+            {
+                db.CompanyUsers.Update(companyUser);
+                db.SaveChanges();
+            }
+        }
 
         public List<CompanyUser> GetByCompanyAndUserId(string CompanyId, string AppUserId)
         {

@@ -1,15 +1,20 @@
 ﻿using delegatorApi.Library.Models;
 using delegatorApi.Library.Models.Context;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace delegatorApi.Library.DataAccess
 {
     public class RoleData
     {
+        public List<Role> Get()
+        {
+            using (delegatorContext db = new())
+            {
+                return db.Roles.ToList();
+            }
+        }
+
         public Role GetByTitle(string title)
         {
             using (delegatorContext db = new())

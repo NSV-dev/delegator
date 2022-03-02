@@ -1,6 +1,7 @@
 ﻿using delegatorApi.Library.DataAccess;
 using delegatorApi.Library.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace delegatorApi.Controllers
 {
@@ -14,6 +15,8 @@ namespace delegatorApi.Controllers
         {
             _roleData = roleData;
         }
+
+        public List<Role> Get() => _roleData.Get();
 
         [Route("ByTitle")]
         public Role GetByTitle(string title) => _roleData.GetByTitle(title);

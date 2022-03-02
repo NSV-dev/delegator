@@ -59,9 +59,9 @@
                             </Style.Triggers>
                         </Style>
                     </StackPanel.Resources>
-                    <Button Content="_" Command="{Binding MinimazeCommand}"/>
-                    <Button Content="▢" Command="{Binding MaximazeCommand}"/>
-                    <Button Content="✕" Command="{Binding CloseCommand}"/>
+                    <Button Content="—" Command="{Binding MinimazeCommand}"/>
+                    <Button Content="❐" Command="{Binding MaximazeCommand}" FontSize="16"/>
+                    <Button Content="✕" Command="{Binding CloseCommand}" FontSize="16"/>
                 </StackPanel>
             </DockPanel>
             <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">

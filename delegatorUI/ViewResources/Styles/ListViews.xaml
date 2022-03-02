@@ -4,5 +4,17 @@
     <Style x:Key="ListViewBase" TargetType="ListView">
         <Setter Property="Background" Value="Transparent"/>
     </Style>
+
+    <Style x:Key="ListViewNoHover" TargetType="ListViewItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border>
+                        <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     
 </ResourceDictionary>

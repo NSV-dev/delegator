@@ -200,17 +200,6 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-                <Style TargetType="ListViewItem" x:Key="CompanyStyle">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListViewItem">
-                                <Border>
-                                    <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
             </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -247,13 +236,13 @@
 
                 <ListView x:Name="CompanyListView"
                           ItemsSource="{Binding Companies}"
-                          Width="160" Grid.Row="1" ItemContainerStyle="{StaticResource CompanyStyle}"
+                          Width="160" Grid.Row="1" ItemContainerStyle="{StaticResource ListViewNoHover}"
                           Background="Transparent" BorderBrush="Transparent" Foreground="White">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Button Content="{Binding Title}" Style="{StaticResource CompanyButton}"
                                     Command="{Binding DataContext.CompanySelectedCommand, 
-                                                        ElementName=CompanyListView}"
+                                        ElementName=CompanyListView}"
                                     CommandParameter="{Binding}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>

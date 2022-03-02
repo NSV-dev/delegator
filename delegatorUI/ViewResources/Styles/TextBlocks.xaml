@@ -30,4 +30,9 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="SmallTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="15"/>
+    </Style>
+    
 </ResourceDictionary>

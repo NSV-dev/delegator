@@ -16,6 +16,15 @@ namespace delegatorApi.Library.DataAccess
             }
         }
 
+        public void Update(AppUser appUser)
+        {
+            using (delegatorContext db = new())
+            {
+                db.AppUsers.Update(appUser);
+                db.SaveChanges();
+            }
+        }
+
         public AppUser GetByUsername(string name)
         {
             using (delegatorContext db = new())

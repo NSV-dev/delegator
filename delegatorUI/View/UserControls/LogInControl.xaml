@@ -77,15 +77,6 @@
                 </EventTrigger>
             </Grid.Triggers>
             <Grid.Resources>
-                <Style TargetType="PasswordBox">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="FontSize" Value="18"/>
-                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                    <Setter Property="VerticalContentAlignment" Value="Bottom"/>
-                    <Setter Property="Margin" Value="0,0,0,2"/>
-                    <Setter Property="CaretBrush" Value="White"/>
-                </Style>
                 <Style TargetType="TextBlock" x:Key="LoginDescription"
                        BasedOn="{StaticResource TextBlockStyleBase}">
                     <Style.Triggers>

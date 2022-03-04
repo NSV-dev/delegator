@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace delegatorUI.View.UserControls.AdminControls
+namespace delegatorUI.View.UserControls.SharedViews
 {
     /// <summary>
     /// Логика взаимодействия для AccControl.xaml

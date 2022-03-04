@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:delegatorUI.View.UserControls" 
              xmlns:vs="clr-namespace:delegatorUI.View.UserControls.AdminControls"
+             xmlns:vsShared="clr-namespace:delegatorUI.View.UserControls.SharedViews"
              xmlns:vms="clr-namespace:delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels"
+             xmlns:vmsShared="clr-namespace:delegatorUI.ViewModel.UserControlViewModels.SharedViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -133,8 +135,8 @@
                 <DataTemplate DataType="{x:Type vms:CompanyControlViewModel}">
                     <vs:CompanyControl/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type vms:AccControlViewModel}">
-                    <vs:AccControl/>
+                <DataTemplate DataType="{x:Type vmsShared:AccControlViewModel}">
+                    <vsShared:AccControl/>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

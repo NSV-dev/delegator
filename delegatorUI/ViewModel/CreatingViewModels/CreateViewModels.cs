@@ -1,12 +1,12 @@
 ﻿using delegatorUI.Infrastructure.Services;
+using delegatorUI.Infrastructure.Stores;
 using delegatorUI.Library.Api;
-using delegatorUI.Library.Models;
-using delegatorUI.ViewModel.CreatingViewModels.EmpViewModels;
 using delegatorUI.ViewModel.CreatingViewModels.AdminViewModels;
+using delegatorUI.ViewModel.CreatingViewModels.EmpViewModels;
+using delegatorUI.ViewModel.CreatingViewModels.SharedViewModels;
 using delegatorUI.ViewModel.UserControlViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using delegatorUI.Infrastructure.Stores;
 
 namespace delegatorUI.ViewModel.CreatingViewModels
 {
@@ -27,7 +27,7 @@ namespace delegatorUI.ViewModel.CreatingViewModels
 
         public static AdminControlViewModel CreateAdminViewModel(IServiceProvider serviceProvider)
             => new(
-                () => CreateAdminViewModels.CreateAccViewModel(serviceProvider),
+                () => CreateSharedViewModels.CreateAccViewModel(serviceProvider),
                 () => CreateAdminViewModels.CreateTasksViewModel(serviceProvider),
                 () => CreateAdminViewModels.CreateCompanyViewModel(serviceProvider),
                 serviceProvider.GetRequiredService<NavigationService<LogInControlViewModel>>(),
@@ -36,7 +36,7 @@ namespace delegatorUI.ViewModel.CreatingViewModels
         public static EmpControlViewModel CreateEmpViewModel(IServiceProvider serviceProvider)
             => new(
                 () => CreateEmpViewModels.CreateTasksViewModel(serviceProvider),
-                () => CreateEmpViewModels.CreateAccViewModel(serviceProvider),
+                () => CreateSharedViewModels.CreateAccViewModel(serviceProvider),
                 serviceProvider.GetRequiredService<NavigationService<LogInControlViewModel>>(),
                 serviceProvider.GetRequiredService<CompanyUserStore>().CompanyUser);
     }

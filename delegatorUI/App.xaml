@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="\viewresources\styles\listviews.xaml"/>
                 <ResourceDictionary Source="\viewresources\styles\datepickers.xaml"/>
                 <ResourceDictionary Source="\viewresources\styles\textblocks.xaml"/>
+                <ResourceDictionary Source="\viewresources\styles\borders.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

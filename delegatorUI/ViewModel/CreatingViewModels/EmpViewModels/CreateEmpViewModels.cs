@@ -13,10 +13,5 @@ namespace delegatorUI.ViewModel.CreatingViewModels.EmpViewModels
             => new(
                 serviceProvider.GetRequiredService<APIHelper>(),
                 serviceProvider.GetRequiredService<CompanyUserStore>().CompanyUser);
-
-        public static AccControlViewModel CreateAccViewModel(IServiceProvider serviceProvider)
-            => new(
-                serviceProvider.GetRequiredService<APIHelper>(),
-                serviceProvider.GetRequiredService<CompanyUserStore>());
     }
 }

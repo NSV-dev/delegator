@@ -3,6 +3,7 @@ using delegatorUI.Infrastructure.Services;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
 using delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels;
+using delegatorUI.ViewModel.UserControlViewModels.SharedViewModels;
 using System;
 using System.Windows.Input;
 

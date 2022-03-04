@@ -1,14 +1,14 @@
 ﻿using delegatorUI.Infrastructure.Services;
 using delegatorUI.Infrastructure.Stores;
 using delegatorUI.Library.Api;
-using delegatorUI.Library.Models;
 using delegatorUI.View.UserControls;
+using delegatorUI.View.UserControls.SharedViews;
 using delegatorUI.View.Window;
 using delegatorUI.ViewModel.CreatingViewModels;
 using delegatorUI.ViewModel.UserControlViewModels;
+using delegatorUI.ViewModel.UserControlViewModels.SharedViewModels;
 using delegatorUI.ViewModel.WindowViewModel;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Windows;
 
 namespace delegatorUI
@@ -29,19 +29,19 @@ namespace delegatorUI
                 .AddSingleton<NavigationStore>()
                 .AddSingleton<CompanyUserStore>()
                 .AddSingleton<WindowViewModel>()
-                .AddSingleton<MainWindow>(s => new() 
+                .AddSingleton<MainWindow>(s => new()
                     { DataContext = s.GetRequiredService<WindowViewModel>() })
                 .AddTransient<LogInControlViewModel>()
-                .AddTransient<LogInControl>(s => new() 
+                .AddTransient<LogInControl>(s => new()
                     { DataContext = s.GetRequiredService<LogInControlViewModel>() })
                 .AddTransient<RegControlViewModel>()
-                .AddTransient<RegControl>(s => new()     
+                .AddTransient<RegControl>(s => new()
                     { DataContext = s.GetRequiredService<RegControlViewModel>() })
                 .AddTransient<AdminControlViewModel>()
-                .AddTransient<AdminControl>(s => new() 
+                .AddTransient<AdminControl>(s => new()
                     { DataContext = s.GetRequiredService<AdminControlViewModel>() })
                 .AddTransient<EmpControlViewModel>()
-                .AddTransient<EmpControl>(s => new() 
+                .AddTransient<EmpControl>(s => new()
                     { DataContext = s.GetRequiredService<EmpControlViewModel>() })
                 ;
 
@@ -55,6 +55,7 @@ namespace delegatorUI
 
             ConfigureEmpServices(services);
             ConfigureAdminServices(services);
+            ConfigureSharedServices(services);
 
             _serviceProvider = services.BuildServiceProvider();
         }
@@ -67,7 +68,7 @@ namespace delegatorUI
 
             base.OnStartup(e);
         }
-        
+
         protected override void OnExit(ExitEventArgs e)
         {
             _serviceProvider.Dispose();
@@ -79,11 +80,8 @@ namespace delegatorUI
         {
             services
                 .AddTransient<ViewModel.UserControlViewModels.EmpControlViewModels.TasksControlViewModel>()
-                .AddTransient<View.UserControls.EmpControls.TasksControl>(s => new() 
-                    { DataContext = s.GetRequiredService<ViewModel.UserControlViewModels.EmpControlViewModels.TasksControlViewModel>() })
-                .AddTransient<ViewModel.UserControlViewModels.EmpControlViewModels.AccControlViewModel>()
-                .AddTransient<View.UserControls.EmpControls.AccControl>(s => new() 
-                    { DataContext = s.GetRequiredService<ViewModel.UserControlViewModels.EmpControlViewModels.AccControlViewModel>() });
+                .AddTransient<View.UserControls.EmpControls.TasksControl>(s => new()
+                    { DataContext = s.GetRequiredService<ViewModel.UserControlViewModels.EmpControlViewModels.TasksControlViewModel>() });
 
             services
                 .AddSingleton(s => new NavigationService<EmpControlViewModel>(
@@ -94,9 +92,6 @@ namespace delegatorUI
         private void ConfigureAdminServices(IServiceCollection services)
         {
             services
-                .AddTransient<ViewModel.UserControlViewModels.AdminControlViewModels.AccControlViewModel>()
-                .AddTransient<View.UserControls.AdminControls.AccControl>(s => new() 
-                    { DataContext = s.GetRequiredService< ViewModel.UserControlViewModels.AdminControlViewModels.AccControlViewModel>() })
                 .AddTransient<ViewModel.UserControlViewModels.AdminControlViewModels.TasksControlViewModel>()
                 .AddTransient<View.UserControls.AdminControls.TasksControl>(s => new()
                     { DataContext = s.GetRequiredService<ViewModel.UserControlViewModels.AdminControlViewModels.TasksControlViewModel>() })
@@ -108,6 +103,14 @@ namespace delegatorUI
                 .AddSingleton(s => new NavigationService<AdminControlViewModel>(
                     s.GetRequiredService<NavigationStore>(),
                     () => CreateViewModels.CreateAdminViewModel(s)));
+        }
+
+        private void ConfigureSharedServices(IServiceCollection services)
+        {
+            services
+                .AddTransient<AccControlViewModel>()
+                .AddTransient<AccControl>(s => new()
+                    { DataContext = s.GetRequiredService<AccControlViewModel>() });
         }
     }
 }

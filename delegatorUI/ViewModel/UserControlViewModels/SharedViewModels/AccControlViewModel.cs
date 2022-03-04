@@ -1,22 +1,18 @@
 ﻿using delegatorUI.Infrastructure.Stores;
 using delegatorUI.Library.Api;
-using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
+namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
 {
     public class AccControlViewModel : BaseViewModel
     {
         private readonly APIHelper _apiHelper;
+        private readonly CompanyUserStore _companyUserStore;
 
         public AccControlViewModel(APIHelper apiHelper, CompanyUserStore companyUserStore)
         {
             _apiHelper = apiHelper;
+            _companyUserStore = companyUserStore;
         }
     }
 }

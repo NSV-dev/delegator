@@ -9,11 +9,6 @@ namespace delegatorUI.ViewModel.CreatingViewModels.AdminViewModels
 {
     public class CreateAdminViewModels
     {
-        public static AccControlViewModel CreateAccViewModel(IServiceProvider serviceProvider)
-            => new(
-                serviceProvider.GetRequiredService<APIHelper>(),
-                serviceProvider.GetRequiredService<CompanyUserStore>());
-
         public static TasksControlViewModel CreateTasksViewModel(IServiceProvider serviceProvider)
             => new(
                 serviceProvider.GetRequiredService<APIHelper>(),

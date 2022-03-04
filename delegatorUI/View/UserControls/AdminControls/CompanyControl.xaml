@@ -196,25 +196,7 @@
         </Border>
 
         <Border Grid.Column="1" Margin="30" Opacity="0"
-              Background="#3e3e3e" CornerRadius="10">
-            <Border.Triggers>
-                <EventTrigger RoutedEvent="Loaded">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation BeginTime="0:0:1"
-                                Storyboard.TargetProperty="Opacity"
-                                From="0" To="1" Duration="0:0:.3"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-            </Border.Triggers>
-
-            <Border.Effect>
-                <DropShadowEffect
-                        ShadowDepth="1" Direction="275"
-                        Opacity=".6" BlurRadius="20"/>
-            </Border.Effect>
-
+              Style="{StaticResource PlateStyle}">
             <Grid Margin="10">
 
                 <TextBlock Style="{StaticResource MainTextBlockStyle}"

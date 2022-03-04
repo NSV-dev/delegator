@@ -3,6 +3,7 @@ using delegatorUI.Infrastructure.Services;
 using delegatorUI.Infrastructure.Stores;
 using delegatorUI.ViewModel.Base;
 using delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels;
+using delegatorUI.ViewModel.UserControlViewModels.SharedViewModels;
 using System;
 using System.Windows.Input;
 

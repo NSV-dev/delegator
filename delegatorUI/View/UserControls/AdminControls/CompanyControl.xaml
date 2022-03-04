@@ -11,18 +11,379 @@
             <EventTrigger RoutedEvent="Loaded">
                 <BeginStoryboard>
                     <Storyboard>
-                        <ThicknessAnimation
-                            Storyboard.TargetProperty="Margin"
-                            From="0,-2000,0,0" To="0" Duration="0:0:.5">
-                            <ThicknessAnimation.EasingFunction>
-                                <QuinticEase EasingMode="EaseOut"/>
-                            </ThicknessAnimation.EasingFunction>
-                        </ThicknessAnimation>
+                        <DoubleAnimation
+                            Storyboard.TargetProperty="Opacity"
+                            From="0" To="1" Duration="0:0:1"/>
                     </Storyboard>
                 </BeginStoryboard>
             </EventTrigger>
         </Grid.Triggers>
 
-        <TextBlock Text="Company"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".5*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Margin="20,0,0,0" Grid.RowSpan="100">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Style="{StaticResource MainTextBlockStyle}">
+                <Run Text="Сотрудники "/><Run 
+                    Text="{Binding CompanyName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/><Run 
+                    Text=":"/>
+            </TextBlock>
+
+            <ListView x:Name="UsersLw" 
+                Style="{StaticResource ListViewBase}"
+                ItemContainerStyle="{StaticResource ListViewNoHover}"
+                BorderThickness="0" Grid.Row="1"
+                ItemsSource="{Binding Users}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="#666666" CornerRadius="5" 
+                                Height="30" Width="300" Margin="10,8,0,0">
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="UpdateBtn"
+                                                Storyboard.TargetProperty="Opacity"
+                                                Duration="0:0:.2" From="0" To="1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="UpdateBtn"
+                                                Storyboard.TargetProperty="Opacity"
+                                                Duration="0:0:.2" From="1" To="0"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Border.Triggers>
+                            
+                            <Grid VerticalAlignment="Center">
+                                <TextBlock Text="{Binding UserName}" Margin="10,0,0,0" Style="{StaticResource SmallTextBlockStyle}"/>
+                                <TextBlock Margin="100,0,0,0" Style="{StaticResource SmallTextBlockStyle}">
+                                    <Run Text="Роль:"/>
+                                    <Run Text="{Binding Role.Title}"/>
+                                </TextBlock>
+                                <Border x:Name="UpdateBtn"
+                                    Background="Transparent" BorderThickness="0"
+                                    HorizontalAlignment="Right" Opacity="0"
+                                    Height="20" Width="20" Padding="1" Margin="0,0,10,0">
+                                    <Path Data="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"
+                                        Fill="#999999" Stretch="Uniform"/>
+                                    <Border.InputBindings>
+                                        <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=UsersLw,
+                                            Path=DataContext.ToUpdateUserCommand}"
+                                            CommandParameter="{Binding}"/>
+                                    </Border.InputBindings>
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Cursor" Value="Hand"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                </Border>
+                            </Grid>
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    ShadowDepth="1" Direction="275"
+                                    Opacity=".6" BlurRadius="20"/>
+                            </Border.Effect>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        
+        </Grid>
+
+        <Border x:Name="EditUser" Panel.ZIndex="{Binding UserEditZIndex}" Opacity="0"
+              Grid.ColumnSpan="100" Grid.RowSpan="100"
+              Height="200" Width="350" CornerRadius="10" Background="#2e2e2e"
+              HorizontalAlignment="Center" VerticalAlignment="Center">
+
+            <Border.Effect>
+                <DropShadowEffect
+                        ShadowDepth="1" Direction="275"
+                        Opacity=".6" BlurRadius="20"/>
+            </Border.Effect>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="Panel.ZIndex" Value="1">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid>
+                <TextBlock Style="{StaticResource SmallTextBlockStyle}"
+                    HorizontalAlignment="Center" VerticalAlignment="Top"
+                    Margin="0,30,0,0" Width="290" Height="100"
+                    FontSize="18" TextWrapping="WrapWithOverflow" TextAlignment="Center">
+                    <Run Text="Текущая роль"/>
+                    <Run Text="{Binding UserToEdit.UserName, UpdateSourceTrigger=PropertyChanged}"/><Run
+                        Text=":"/>
+                    <Run Text="{Binding EditedRole.Title, UpdateSourceTrigger=PropertyChanged}"/>
+                </TextBlock>
+
+                <Border Grid.Column="1" 
+                    Background="#2e2e2e" BorderBrush="Transparent"
+                    Width="30" Height="30" Margin="0,0,20,50"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <Path Data="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z" 
+                        Stretch="Uniform" Fill="#999999" Width="20" Height="20"/>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding ChangeRoleCommand}"/>
+                    </Border.InputBindings>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+
+                <Button Content="Назад" 
+                    Width="100" Height="30" Margin="10"
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                    Style="{StaticResource ButtonBase}"
+                    Command="{Binding BackFromEditUserCommand}"/>
+
+                <Button Content="Готово" 
+                    Width="100" Height="30" Margin="10"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    Style="{StaticResource ButtonBase}"
+                    Command="{Binding EditUserCommand}"/>
+            </Grid>
+
+        </Border>
+
+        <Border Grid.Column="1" Margin="30" Opacity="0"
+              Background="#3e3e3e" CornerRadius="10">
+            <Border.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation BeginTime="0:0:1"
+                                Storyboard.TargetProperty="Opacity"
+                                From="0" To="1" Duration="0:0:.3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Border.Triggers>
+
+            <Border.Effect>
+                <DropShadowEffect
+                        ShadowDepth="1" Direction="275"
+                        Opacity=".6" BlurRadius="20"/>
+            </Border.Effect>
+
+            <Grid Margin="10">
+
+                <TextBlock Style="{StaticResource MainTextBlockStyle}"
+                    Height="50" Margin="0"
+                    TextWrapping="WrapWithOverflow"
+                    VerticalAlignment="Top">
+                    <Run Text="Компания:"/>
+                    <Run Text="{Binding CompanyName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </TextBlock>
+                
+                <TextBlock Style="{StaticResource MainTextBlockStyle}"
+                    Height="50" Margin="0,50,0,0"
+                    TextWrapping="WrapWithOverflow"
+                    VerticalAlignment="Top">
+                    <Run Text="Код компании:"/>
+                    <Run Text="{Binding CompanyCode, Mode=OneTime, UpdateSourceTrigger=PropertyChanged}"/>
+                </TextBlock>
+
+                <Border x:Name="UpdateBtn"
+                    Background="Transparent" BorderThickness="0"
+                    Height="25" Width="25" Padding="1" Margin="5"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <Path Data="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"
+                        Fill="#999999" Stretch="Uniform"/>
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding ToEditCompanyCommand}"/>
+                    </Border.InputBindings>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border x:Name="EditComp"
+            Opacity="0"
+            Panel.ZIndex="{Binding EditCompZIndex}" 
+            Grid.RowSpan="100" Grid.ColumnSpan="100"
+            Width="350" Height="200"
+            Background="#2e2e2e" CornerRadius="10">
+
+            <Border.Effect>
+                <DropShadowEffect
+                        ShadowDepth="1" Direction="275"
+                        Opacity=".6" BlurRadius="20"/>
+            </Border.Effect>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="Panel.ZIndex" Value="1">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid>
+
+                <Grid.Resources>
+                    <Style TargetType="TextBlock" x:Key="CompNameDescription"
+                       BasedOn="{StaticResource TextBlockStyleBase}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=CompNameTb}" Value="">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation
+                                                Storyboard.TargetProperty="Margin"
+                                                To="20,0,0,12" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation
+                                                Storyboard.TargetProperty="Margin"
+                                                To="20,0,0,-4" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="TextBlock" x:Key="CompCodeDescription"
+                       BasedOn="{StaticResource TextBlockStyleBase}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=CompCodeTb}" Value="">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation
+                                                Storyboard.TargetProperty="Margin"
+                                                To="20,0,0,12" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation
+                                                Storyboard.TargetProperty="Margin"
+                                                To="20,0,0,-4" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+
+                </Grid.Resources>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBox x:Name="CompNameTb" Margin="20,10,0,0"
+                    Style="{StaticResource TextBoxBase}" Width="300"
+                    HorizontalAlignment="Left" Height="30"
+                    Text="{Binding CompNameToEdit, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Название компании" Panel.ZIndex="-1"
+                    Margin="20,0,0,0" Style="{StaticResource CompNameDescription}"/>
+
+                <TextBox x:Name="CompCodeTb" Margin="20,10,0,0" Grid.Row="1"
+                    Style="{StaticResource TextBoxBase}" Width="300"
+                    HorizontalAlignment="Left" Height="30"
+                    Text="{Binding CompCodeToEdit, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Код компании" Panel.ZIndex="-1" Grid.Row="1"
+                    Margin="20,0,0,0" Style="{StaticResource CompCodeDescription}"/>
+
+
+                <Button Content="Назад" Grid.Row="100"
+                    Width="100" Height="30" Margin="10"
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                    Style="{StaticResource ButtonBase}"
+                    Command="{Binding BackFromEditCompanyCommand}"/>
+
+                <Button Content="Готово" Grid.Row="100"
+                    Width="100" Height="30" Margin="10"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    Style="{StaticResource ButtonBase}"
+                    Command="{Binding EditCompCommand}"/>
+            </Grid>
+
+        </Border>
+        
     </Grid>
 </UserControl>

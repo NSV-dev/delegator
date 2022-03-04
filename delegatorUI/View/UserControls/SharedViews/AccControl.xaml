@@ -13,12 +13,13 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
         <Border Style="{StaticResource PlateStyle}" 
-            Opacity="0" d:Opacity="1">
+            Opacity="0" d:Opacity="1" Grid.Row="1">
 
             <Grid>
 
@@ -147,5 +148,394 @@
             </Grid>
             
         </Border>
+
+        <Border Style="{StaticResource PlateStyle}"
+            Grid.Column="1" Grid.Row="1" 
+            Opacity="0" d:Opacity="1">
+
+            <Grid>
+
+                <TextBlock Text="Выберете компанию, чтобы войти в неё" Style="{StaticResource MainTextBlockStyle}"
+                    VerticalAlignment="Top"/>
+
+                <Border Grid.Column="1" Grid.Row="1" 
+                    Background="Transparent" BorderBrush="Transparent"
+                    Width="20" Height="20" Margin="0,21,15,0"
+                    HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Path Data="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" 
+                        Stretch="Uniform" Fill="#999999"/>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding ToAddCompanyCommand}"/>
+                    </Border.InputBindings>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+
+                <ListView x:Name="CompanyLw" Margin="10,60,10,10" ItemsSource="{Binding Companies}" BorderThickness="0"
+                    Style="{StaticResource ListViewBase}" ItemContainerStyle="{StaticResource ListViewNoHover}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="4"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#666666" BorderThickness="1" CornerRadius="5" Width="200" Height="40" Margin="5,0">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Trigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <ColorAnimation
+                                                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                                To="#4e4e4e" Duration="0:0:.1"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.EnterActions>
+                                                <Trigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <ColorAnimation
+                                                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                                To="#666666" Duration="0:0:.1"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.ExitActions>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Border.InputBindings>
+                                    <MouseBinding Gesture="LeftClick"
+                                        Command="{Binding DataContext.ChangeCompanyCommand, ElementName=CompanyLw}"
+                                        CommandParameter="{Binding}"/>
+                                </Border.InputBindings>
+                                <TextBlock Text="{Binding Title}" Style="{StaticResource SmallTextBlockStyle}"
+                                    VerticalAlignment="Center" Margin="10,0,10,0"/>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                
+            </Grid>
+            
+        </Border>
+
+        <Border x:Name="AddComp" Panel.ZIndex="{Binding AddCompanyZIndex}"
+            Grid.ColumnSpan="100" Grid.RowSpan="100" Opacity="0"
+            Height="250"  Width="450" CornerRadius="10" Background="#2e2e2e">
+
+            <Border.Effect>
+                <DropShadowEffect
+                        ShadowDepth="1" Direction="275"
+                        Opacity=".6" BlurRadius="20"/>
+            </Border.Effect>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="Panel.ZIndex" Value="1">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid Margin="10">
+                <Grid.Resources>
+                    <Style TargetType="TextBlock" x:Key="TitleDescription"
+                       BasedOn="{StaticResource TextBlockStyleBase}">
+                        <Setter Property="Margin" Value="0,0,0,4"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=TitleTb}" Value="">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="1" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="0" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Resources>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Text="Выберите компанию или " Margin="10,0,0,0" 
+                    Style="{StaticResource MainTextBlockStyle}" FontSize="16"/>
+                <Button Content="Создать" Margin="0,0,10,0" HorizontalAlignment="Right" Width="100" Height="30"
+                    Command="{Binding ToCompanyDataCommand}" Style="{StaticResource ButtonBase}"/>
+
+                <TextBox x:Name="TitleTb" Grid.Row="1" Style="{StaticResource TextBoxBase}" Margin="10,0"
+                    Text="{Binding CompanyTitleToSearch, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Начните вводить название компании..." Margin="14,0"
+                    Grid.Row="1" Panel.ZIndex="-1" Style="{StaticResource TitleDescription}"/>
+
+                <ListView x:Name="CompanyListView" Grid.Row="2" 
+                    Background="Transparent" BorderBrush="Transparent" Foreground="White"
+                    ItemsSource="{Binding CompaniesList}" ItemContainerStyle="{StaticResource ListViewNoHover}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding Title}" Style="{StaticResource CompanyButton}"
+                                Command="{Binding DataContext.CompanySelectedCommand, 
+                                    ElementName=CompanyListView}"
+                                CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Button Content="Назад" Grid.Row="100"
+                    Width="100" Height="30" Margin="0"
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                    Style="{StaticResource ButtonBase}"
+                    Command="{Binding BackFromAddCompanyCommand}"/>
+
+            </Grid>
+        </Border>
+
+        <Border x:Name="ConfirmComp" Panel.ZIndex="{Binding ConfirmCompanyZIndex}"
+            Grid.ColumnSpan="100" Grid.RowSpan="100" Opacity="0"
+            Height="250"  Width="450" CornerRadius="10" Background="#2e2e2e">
+
+            <Border.Effect>
+                <DropShadowEffect
+                        ShadowDepth="1" Direction="275"
+                        Opacity=".6" BlurRadius="20"/>
+            </Border.Effect>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="Panel.ZIndex" Value="1">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid Margin="10">
+
+                <Grid.Resources>
+                    <Style TargetType="TextBlock" x:Key="CompanyCodeDescription"
+                       BasedOn="{StaticResource TextBlockStyleBase}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=SelectedCompanyCodeTb}" Value="">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation
+                                                Storyboard.TargetProperty="Margin"
+                                                To="2,0,0,4" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation
+                                                Storyboard.TargetProperty="Margin"
+                                                To="2,0,0,-15" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Resources>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBox x:Name="SelectedCompanyCodeTb" Grid.Row="0" Style="{StaticResource TextBoxBase}"
+                    Text="{Binding SelectedCompanyCode, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Введите код компании" Grid.Row="0" Panel.ZIndex="-1" Style="{StaticResource CompanyCodeDescription}"/>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="1">
+                    <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                        Margin="20,0,160,0" Command="{Binding BackFromConfirmCommand}"/>
+                    <Button Content="Готово" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                        Command="{Binding CompanyConfirmedCommand}"/>
+                </StackPanel>
+
+            </Grid>
+        </Border>
+
+        <Border x:Name="CompanyData"
+            Background="#2e2e2e" CornerRadius="10"
+            Height="250" Width="450" Opacity="0"
+            Grid.ColumnSpan="100" Grid.RowSpan="100"
+            Panel.ZIndex="{Binding CompanyDataZIndex}">
+
+            <Border.Effect>
+                <DropShadowEffect
+                        ShadowDepth="1" Direction="275"
+                        Opacity=".6" BlurRadius="20"/>
+            </Border.Effect>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="Panel.ZIndex" Value="1">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid Margin="10">
+                
+                <Grid.Resources>
+                    <Style TargetType="TextBlock" x:Key="CompanyTitleDescription"
+                       BasedOn="{StaticResource TextBlockStyleBase}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=CompanyTitleTb}" Value="">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation
+                                                Storyboard.TargetProperty="Margin"
+                                                To="2,0,0,4" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation
+                                                Storyboard.TargetProperty="Margin"
+                                                To="2,0,0,-15" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="TextBlock" x:Key="CompanyCodeDescription"
+                       BasedOn="{StaticResource TextBlockStyleBase}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=CompanyCodeTb}" Value="">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation
+                                                Storyboard.TargetProperty="Margin"
+                                                To="2,0,0,4" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation
+                                                Storyboard.TargetProperty="Margin"
+                                                To="2,0,0,-15" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Resources>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBox x:Name="CompanyTitleTb" Grid.Row="0" Style="{StaticResource TextBoxBase}"
+                Text="{Binding NewCompanyTitle, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Название" Grid.Row="0" Panel.ZIndex="-1" Style="{StaticResource CompanyTitleDescription}"/>
+
+                <TextBox x:Name="CompanyCodeTb" Grid.Row="1" Style="{StaticResource TextBoxBase}"
+                Text="{Binding NewCompanyCode, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Код компании" Grid.Row="1" Panel.ZIndex="-1" Style="{StaticResource CompanyCodeDescription}"/>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="2">
+                    <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                        Margin="20,0,140,0" Command="{Binding BackFromCompanyDataCommand}"/>
+                    <Button Content="Готово" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                        Command="{Binding CreateCompanyCommand}"/>
+                </StackPanel>
+            </Grid>
+
+        </Border>
+        
+        <TextBlock Text="{Binding ErrorText}" Opacity="{Binding ErrorOpacity}" Panel.ZIndex="-10"
+            Margin="0,15,0,0" TextAlignment="Center" TextWrapping="WrapWithOverflow"
+            Grid.ColumnSpan="100" Style="{StaticResource ErrorTextBlockStyle}"/>
     </Grid>
 </UserControl>

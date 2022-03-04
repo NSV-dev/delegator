@@ -8,7 +8,7 @@ namespace delegatorUI.Infrastructure.Interfaces
 
         public int ErrorOpacity { get; set; }
 
-        private async void Error(string errorText)
+        public async void Error(string errorText)
         {
             ErrorText = errorText;
             ErrorOpacity = 1;

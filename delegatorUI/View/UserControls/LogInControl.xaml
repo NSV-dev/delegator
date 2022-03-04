@@ -217,7 +217,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 
-                <TextBlock Text="Выберите компанию: " Style="{StaticResource TextBlockStyle}"
+                <TextBlock Text="Выберите компанию: " Style="{StaticResource TextBlockStyleBase}"
                            HorizontalAlignment="Center"/>
 
                 <ListView x:Name="CompanyListView"

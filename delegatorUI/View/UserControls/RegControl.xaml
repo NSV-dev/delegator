@@ -371,27 +371,8 @@
             </Grid.Style>
 
             <Grid.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                </Style>
-                <Style TargetType="TextBox">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="FontSize" Value="18"/>
-                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                    <Setter Property="VerticalContentAlignment" Value="Bottom"/>
-                    <Setter Property="Margin" Value="0,0,0,4"/>
-                    <Setter Property="CaretBrush" Value="White"/>
-                </Style>
-                <Style x:Key="TextBlockStyle" TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="Foreground" Value="#999999"/>
-                    <Setter Property="VerticalAlignment" Value="Bottom"/>
-                </Style>
                 <Style TargetType="TextBlock" x:Key="TitleDescription"
-                       BasedOn="{StaticResource TextBlockStyle}">
+                       BasedOn="{StaticResource TextBlockStyleBase}">
                     <Setter Property="Margin" Value="0,0,0,4"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Text, ElementName=TitleTb}" Value="">
@@ -416,123 +397,6 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-                <Style TargetType="Button">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="VerticalAlignment" Value="Bottom"/>
-                    <Setter Property="FontSize" Value="18"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="border" BorderBrush="White" BorderThickness="1" CornerRadius="7">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="border" Property="Background" Value="#363636"/>
-                                    </Trigger>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ThicknessAnimation
-                                                        Storyboard.TargetName="border"
-                                                        Storyboard.TargetProperty="BorderThickness"
-                                                        To="0" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                        To="#474747" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ThicknessAnimation
-                                                        Storyboard.TargetName="border"
-                                                        Storyboard.TargetProperty="BorderThickness"
-                                                        To="1" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                        To="White" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                    <Trigger Property="IsPressed" Value="True">
-                                        <Setter TargetName="border" Property="Width" Value="95"/>
-                                        <Setter TargetName="border" Property="Height" Value="28.5"/>
-                                        <Setter Property="FontSize" Value="17"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-                <Style TargetType="ListViewItem" x:Key="CompanyStyle">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListViewItem">
-                                <Border>
-                                    <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-                <Style TargetType="Button" x:Key="CompanyButton">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,0,0,1"
-                                        MinWidth="100" Margin="0, 2">
-                                    <ContentPresenter Margin="1" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetName="border"
-                                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
-                                                        To="White" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetName="border"
-                                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
-                                                        To="Transparent" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                    <Trigger Property="IsPressed" Value="True">
-                                        <Setter Property="FontSize" Value="14"/>
-                                        <Setter Property="BorderBrush" Value="#999999"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-
             </Grid.Resources>
             
             <Grid.RowDefinitions>
@@ -541,15 +405,15 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Выберите компанию или " Margin="10,0,0,0"/>
+            <TextBlock Text="Выберите компанию или " Margin="10,0,0,0" Style="{StaticResource MainTextBlockStyle}" FontSize="16"/>
             <Button Content="Создать" Margin="0,0,10,0" HorizontalAlignment="Right" Width="100" Height="30"
-                    Command="{Binding NewCompanyCommand}"/>
+                    Command="{Binding NewCompanyCommand}" Style="{StaticResource ButtonBase}"/>
 
-            <TextBox x:Name="TitleTb" Grid.Row="1" Text="{Binding CompanyTitleToSearch, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox x:Name="TitleTb" Grid.Row="1" Style="{StaticResource TextBoxBase}" Text="{Binding CompanyTitleToSearch, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Начните вводить название компании..." Grid.Row="1" Panel.ZIndex="-1" Style="{StaticResource TitleDescription}"/>
 
             <ListView x:Name="CompanyListView" Grid.Row="2" Background="Transparent" BorderBrush="Transparent" Foreground="White"
-                      ItemsSource="{Binding CompaniesList}" ItemContainerStyle="{StaticResource CompanyStyle}">
+                      ItemsSource="{Binding CompaniesList}" ItemContainerStyle="{StaticResource ListViewNoHover}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Button Content="{Binding Title}" Style="{StaticResource CompanyButton}"
@@ -593,96 +457,8 @@
             </Grid.Style>
 
             <Grid.Resources>
-                <Style TargetType="TextBox">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="FontSize" Value="18"/>
-                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                    <Setter Property="VerticalContentAlignment" Value="Bottom"/>
-                    <Setter Property="Margin" Value="0,0,0,4"/>
-                    <Setter Property="CaretBrush" Value="White"/>
-                </Style>
-                <Style TargetType="Button" x:Key="BaseButton">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="VerticalAlignment" Value="Bottom"/>
-                    <Setter Property="FontSize" Value="18"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="border" BorderBrush="White" BorderThickness="1" Width="{TemplateBinding Width}" CornerRadius="7">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="border" Property="Background" Value="#363636"/>
-                                    </Trigger>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ThicknessAnimation
-                                                        Storyboard.TargetName="border"
-                                                        Storyboard.TargetProperty="BorderThickness"
-                                                        To="0" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                        To="#474747" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ThicknessAnimation
-                                                        Storyboard.TargetName="border"
-                                                        Storyboard.TargetProperty="BorderThickness"
-                                                        To="1" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                        To="White" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-                <Style TargetType="Button" x:Key="BackButton" BasedOn="{StaticResource BaseButton}">
-                    <Style.Triggers>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Width" Value="95"/>
-                            <Setter Property="Height" Value="28.5"/>
-                            <Setter Property="FontSize" Value="17"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-                <Style TargetType="Button" x:Key="SaveButton" BasedOn="{StaticResource BaseButton}">
-                    <Style.Triggers>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Width" Value="114"/>
-                            <Setter Property="Height" Value="28.5"/>
-                            <Setter Property="FontSize" Value="17"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-                <Style x:Key="TextBlockStyle" TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="Foreground" Value="#999999"/>
-                    <Setter Property="VerticalAlignment" Value="Bottom"/>
-                </Style>
                 <Style TargetType="TextBlock" x:Key="CompanyTitleDescription"
-                       BasedOn="{StaticResource TextBlockStyle}">
+                       BasedOn="{StaticResource TextBlockStyleBase}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Text, ElementName=CompanyTitleTb}" Value="">
                             <DataTrigger.EnterActions>
@@ -707,7 +483,7 @@
                     </Style.Triggers>
                 </Style>
                 <Style TargetType="TextBlock" x:Key="CompanyCodeDescription"
-                       BasedOn="{StaticResource TextBlockStyle}">
+                       BasedOn="{StaticResource TextBlockStyleBase}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Text, ElementName=CompanyCodeTb}" Value="">
                             <DataTrigger.EnterActions>
@@ -731,7 +507,6 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-
             </Grid.Resources>
             
             <Grid.RowDefinitions>
@@ -740,16 +515,18 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBox x:Name="CompanyTitleTb" Grid.Row="0" Text="{Binding NewCompanyTitle, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox x:Name="CompanyTitleTb" Grid.Row="0" Style="{StaticResource TextBoxBase}"
+                Text="{Binding NewCompanyTitle, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Название" Grid.Row="0" Panel.ZIndex="-1" Style="{StaticResource CompanyTitleDescription}"/>
             
-            <TextBox x:Name="CompanyCodeTb" Grid.Row="1" Text="{Binding NewCompanyCode, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox x:Name="CompanyCodeTb" Grid.Row="1" Style="{StaticResource TextBoxBase}"
+                Text="{Binding NewCompanyCode, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Код компании" Grid.Row="1" Panel.ZIndex="-1" Style="{StaticResource CompanyCodeDescription}"/>
 
             <StackPanel Orientation="Horizontal" Grid.Row="2">
-                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource BackButton}"
+                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
                         Margin="20,0,140,0" Command="{Binding BackToCompaniesCommand}"/>
-                <Button Content="Сохранить" Width="120" Height="30" Style="{StaticResource SaveButton}"
+                <Button Content="Готово" Width="100" Height="30" Style="{StaticResource ButtonBase}"
                         Command="{Binding CreateCompanyCommand}"/>
             </StackPanel>
         </Grid>
@@ -783,83 +560,8 @@
             </Grid.Style>
 
             <Grid.Resources>
-                <Style TargetType="TextBox">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="FontSize" Value="18"/>
-                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                    <Setter Property="VerticalContentAlignment" Value="Bottom"/>
-                    <Setter Property="Margin" Value="0,0,0,4"/>
-                    <Setter Property="CaretBrush" Value="White"/>
-                </Style>
-                <Style TargetType="Button">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="VerticalAlignment" Value="Bottom"/>
-                    <Setter Property="FontSize" Value="18"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="border" BorderBrush="White" BorderThickness="1" Width="{TemplateBinding Width}" CornerRadius="7">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="border" Property="Background" Value="#363636"/>
-                                    </Trigger>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ThicknessAnimation
-                                                        Storyboard.TargetName="border"
-                                                        Storyboard.TargetProperty="BorderThickness"
-                                                        To="0" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                        To="#474747" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ThicknessAnimation
-                                                        Storyboard.TargetName="border"
-                                                        Storyboard.TargetProperty="BorderThickness"
-                                                        To="1" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                        To="White" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                    <Trigger Property="IsPressed" Value="True">
-                                        <Setter Property="Width" Value="95"/>
-                                        <Setter Property="Height" Value="28.5"/>
-                                        <Setter Property="FontSize" Value="17"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-                <Style x:Key="TextBlockStyle" TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="Foreground" Value="#999999"/>
-                    <Setter Property="VerticalAlignment" Value="Bottom"/>
-                </Style>
                 <Style TargetType="TextBlock" x:Key="CompanyCodeDescription"
-                       BasedOn="{StaticResource TextBlockStyle}">
+                       BasedOn="{StaticResource TextBlockStyleBase}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Text, ElementName=SelectedCompanyCodeTb}" Value="">
                             <DataTrigger.EnterActions>
@@ -890,22 +592,24 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             
-            <TextBox x:Name="SelectedCompanyCodeTb" Grid.Row="0" Text="{Binding SelectedCompanyCode, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox x:Name="SelectedCompanyCodeTb" Grid.Row="0" Style="{StaticResource TextBoxBase}"
+                Text="{Binding SelectedCompanyCode, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Введите код компании" Grid.Row="0" Panel.ZIndex="-1" Style="{StaticResource CompanyCodeDescription}"/>
 
             <StackPanel Orientation="Horizontal" Grid.Row="1">
-                <Button Content="Назад" Width="100" Height="30"
+                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
                         Margin="20,0,160,0" Command="{Binding BackToCompaniesFromCodeCommand}"/>
-                <Button Content="Войти" Width="100" Height="30"
+                <Button Content="Войти" Width="100" Height="30" Style="{StaticResource ButtonBase}"
                         Command="{Binding CompanyConfirmedCommand}"/>
             </StackPanel>
 
         </Grid>
         
         <TextBlock Text="{Binding ErrorText}" Opacity="{Binding ErrorOpacity}" Style="{StaticResource ErrorTextBlockStyle}" 
-                   Grid.Row="1" Width="250" Height="100" Margin="0,0,0,200" Panel.ZIndex="-2"/>
+            Grid.Row="1" Width="250" Height="100" Margin="0,0,0,200" Panel.ZIndex="-2"/>
 
-        <resources:LoadingAnimation Grid.Row="1" Opacity="{Binding LoadingOpacity}" Panel.ZIndex="{Binding LoadingZIndex}"/>
+        <resources:LoadingAnimation Grid.Row="1" d:Opacity="0" d:Panel.ZIndex="-10"
+            Opacity="{Binding LoadingOpacity}" Panel.ZIndex="{Binding LoadingZIndex}"/>
 
     </Grid>
 </UserControl>

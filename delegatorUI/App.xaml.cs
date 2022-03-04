@@ -27,6 +27,7 @@ namespace delegatorUI
             services
                 .AddSingleton<APIHelper>()
                 .AddSingleton<NavigationStore>()
+                .AddSingleton<CompanyUserStore>()
                 .AddSingleton<WindowViewModel>()
                 .AddSingleton<MainWindow>(s => new() 
                     { DataContext = s.GetRequiredService<WindowViewModel>() })
@@ -85,9 +86,9 @@ namespace delegatorUI
                     { DataContext = s.GetRequiredService<ViewModel.UserControlViewModels.EmpControlViewModels.AccControlViewModel>() });
 
             services
-                .AddSingleton(s => new ParameterNavigationService<CompanyUser, EmpControlViewModel>(
+                .AddSingleton(s => new NavigationService<EmpControlViewModel>(
                     s.GetRequiredService<NavigationStore>(),
-                    (p) => CreateViewModels.CreateEmpViewModel(s, p)));
+                    () => CreateViewModels.CreateEmpViewModel(s)));
         }
 
         private void ConfigureAdminServices(IServiceCollection services)
@@ -104,9 +105,9 @@ namespace delegatorUI
                     { DataContext = s.GetRequiredService<ViewModel.UserControlViewModels.AdminControlViewModels.CompanyControlViewModel>() });
 
             services
-                .AddSingleton(s => new ParameterNavigationService<CompanyUser, AdminControlViewModel>(
+                .AddSingleton(s => new NavigationService<AdminControlViewModel>(
                     s.GetRequiredService<NavigationStore>(),
-                    (p) => CreateViewModels.CreateAdminViewModel(s, p)));
+                    () => CreateViewModels.CreateAdminViewModel(s)));
         }
     }
 }

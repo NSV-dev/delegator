@@ -1,4 +1,5 @@
-﻿using delegatorUI.Library.Api;
+﻿using delegatorUI.Infrastructure.Stores;
+using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
 using System;
@@ -15,11 +16,11 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         private readonly AppUser _user;
         private readonly Company _company;
 
-        public AccControlViewModel(APIHelper apiHelper, CompanyUser companyUser)
+        public AccControlViewModel(APIHelper apiHelper, CompanyUserStore companyUserStore)
         {
             _apiHelper = apiHelper;
-            _user = companyUser.User;
-            _company = companyUser.Company;
+            _user = companyUserStore.CompanyUser.User;
+            _company = companyUserStore.CompanyUser.Company;
         }
     }
 }

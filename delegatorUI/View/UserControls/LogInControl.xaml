@@ -86,13 +86,8 @@
                     <Setter Property="Margin" Value="0,0,0,2"/>
                     <Setter Property="CaretBrush" Value="White"/>
                 </Style>
-                <Style x:Key="TextBlockStyle" TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="Foreground" Value="#999999"/>
-                    <Setter Property="VerticalAlignment" Value="Bottom"/>
-                </Style>
                 <Style TargetType="TextBlock" x:Key="LoginDescription"
-                       BasedOn="{StaticResource TextBlockStyle}">
+                       BasedOn="{StaticResource TextBlockStyleBase}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Text, ElementName=LogTb}" Value="">
                             <DataTrigger.EnterActions>
@@ -117,7 +112,7 @@
                     </Style.Triggers>
                 </Style>
                 <Style TargetType="TextBlock" x:Key="PasswordDescription"
-                       BasedOn="{StaticResource TextBlockStyle}">
+                       BasedOn="{StaticResource TextBlockStyleBase}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Password, ElementName=PasswordBox}" Value="">
                             <DataTrigger.EnterActions>

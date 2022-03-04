@@ -6,6 +6,7 @@ using delegatorUI.ViewModel.CreatingViewModels.AdminViewModels;
 using delegatorUI.ViewModel.UserControlViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using delegatorUI.Infrastructure.Stores;
 
 namespace delegatorUI.ViewModel.CreatingViewModels
 {
@@ -15,27 +16,28 @@ namespace delegatorUI.ViewModel.CreatingViewModels
             => new(
                 serviceProvider.GetRequiredService<APIHelper>(),
                 serviceProvider.GetRequiredService<NavigationService<RegControlViewModel>>(),
-                serviceProvider.GetRequiredService<ParameterNavigationService<CompanyUser, EmpControlViewModel>>(),
-                serviceProvider.GetRequiredService<ParameterNavigationService<CompanyUser, AdminControlViewModel>>());
+                serviceProvider.GetRequiredService<NavigationService<EmpControlViewModel>>(),
+                serviceProvider.GetRequiredService<NavigationService<AdminControlViewModel>>(),
+                serviceProvider.GetRequiredService<CompanyUserStore>());
 
         public static RegControlViewModel CreateRegViewModel(IServiceProvider serviceProvider)
             => new(
                 serviceProvider.GetRequiredService<APIHelper>(),
                 serviceProvider.GetRequiredService<NavigationService<LogInControlViewModel>>());
 
-        public static AdminControlViewModel CreateAdminViewModel(IServiceProvider serviceProvider, CompanyUser p)
+        public static AdminControlViewModel CreateAdminViewModel(IServiceProvider serviceProvider)
             => new(
-                () => CreateAdminViewModels.CreateAccViewModel(serviceProvider, p),
-                () => CreateAdminViewModels.CreateTasksViewModel(serviceProvider, p),
-                () => CreateAdminViewModels.CreateCompanyViewModel(serviceProvider, p),
+                () => CreateAdminViewModels.CreateAccViewModel(serviceProvider),
+                () => CreateAdminViewModels.CreateTasksViewModel(serviceProvider),
+                () => CreateAdminViewModels.CreateCompanyViewModel(serviceProvider),
                 serviceProvider.GetRequiredService<NavigationService<LogInControlViewModel>>(),
-                p);
+                serviceProvider.GetRequiredService<CompanyUserStore>());
 
-        public static EmpControlViewModel CreateEmpViewModel(IServiceProvider serviceProvider, CompanyUser p)
+        public static EmpControlViewModel CreateEmpViewModel(IServiceProvider serviceProvider)
             => new(
-                () => CreateEmpViewModels.CreateTasksViewModel(serviceProvider, p),
-                () => CreateEmpViewModels.CreateAccViewModel(serviceProvider, p),
+                () => CreateEmpViewModels.CreateTasksViewModel(serviceProvider),
+                () => CreateEmpViewModels.CreateAccViewModel(serviceProvider),
                 serviceProvider.GetRequiredService<NavigationService<LogInControlViewModel>>(),
-                p);
+                serviceProvider.GetRequiredService<CompanyUserStore>().CompanyUser);
     }
 }

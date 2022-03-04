@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using delegatorUI.Infrastructure.Interfaces;
 using delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels;
+using delegatorUI.Infrastructure.Stores;
 
 namespace delegatorUI.ViewModel.UserControlViewModels
 {
@@ -16,8 +17,9 @@ namespace delegatorUI.ViewModel.UserControlViewModels
     {
         private readonly APIHelper _apiHelper;
         private readonly NavigationService<RegControlViewModel> _toReg;
-        private readonly ParameterNavigationService<CompanyUser, EmpControlViewModel> _toEmp;
-        private readonly ParameterNavigationService<CompanyUser, AdminControlViewModel> _toAdmin;
+        private readonly NavigationService<EmpControlViewModel> _toEmp;
+        private readonly NavigationService<AdminControlViewModel> _toAdmin;
+        private readonly CompanyUserStore _companyUserStore;
 
         #region Loading
         private int _loadingOpacity = 0;
@@ -127,20 +129,20 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         private async Task UserRoleRecognition(Company company)
         {
             (this as ILoading).StartLoading();
-            List<CompanyUser> companyUserList = await _apiHelper.CompaniesUsers.GetByCompanyId(company.Id, _userByLogin.Id);
-            CompanyUser companyUser = companyUserList.First();
-            if (companyUser.Role.Title == "Admin")
-                _toAdmin.Navigate(companyUser);
-            if (companyUser.Role.Title == "User")
-                _toEmp.Navigate(companyUser);
+            await _companyUserStore.LoadCompanyUser(company.Id, _userByLogin.Id);
+            if (_companyUserStore.CompanyUser.Role.Title == "Admin")
+                _toAdmin.Navigate();
+            if (_companyUserStore.CompanyUser.Role.Title == "User")
+                _toEmp.Navigate();
             (this as ILoading).EndLoading();
         }
         #endregion
 
         public LogInControlViewModel(APIHelper apiHelper,
             NavigationService<RegControlViewModel> toReg,
-            ParameterNavigationService<CompanyUser, EmpControlViewModel> toEmp,
-            ParameterNavigationService<CompanyUser, AdminControlViewModel> toAdmin)
+            NavigationService<EmpControlViewModel> toEmp,
+            NavigationService<AdminControlViewModel> toAdmin,
+            CompanyUserStore companyUserStore)
         {
             Title = "Logging in";
 
@@ -148,7 +150,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             _toReg = toReg;
             _toEmp = toEmp;
             _toAdmin = toAdmin;
-
+            _companyUserStore = companyUserStore;
 
             ToRegCommand = new RelayCommand(_ => _toReg.Navigate());
             LogInCommand = new RelayCommand(OnLogInCommandExecute, _ => !string.IsNullOrWhiteSpace(Login) &&

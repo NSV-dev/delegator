@@ -1,4 +1,5 @@
-﻿using delegatorUI.Library.Api;
+﻿using delegatorUI.Infrastructure.Stores;
+using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,14 +9,14 @@ namespace delegatorUI.ViewModel.CreatingViewModels.EmpViewModels
 {
     public class CreateEmpViewModels
     {
-        public static TasksControlViewModel CreateTasksViewModel(IServiceProvider serviceProvider, CompanyUser p)
+        public static TasksControlViewModel CreateTasksViewModel(IServiceProvider serviceProvider)
             => new(
                 serviceProvider.GetRequiredService<APIHelper>(),
-                p);
+                serviceProvider.GetRequiredService<CompanyUserStore>().CompanyUser);
 
-        public static AccControlViewModel CreateAccViewModel(IServiceProvider serviceProvider, CompanyUser p)
+        public static AccControlViewModel CreateAccViewModel(IServiceProvider serviceProvider)
             => new(
                 serviceProvider.GetRequiredService<APIHelper>(),
-                p);
+                serviceProvider.GetRequiredService<CompanyUserStore>());
     }
 }

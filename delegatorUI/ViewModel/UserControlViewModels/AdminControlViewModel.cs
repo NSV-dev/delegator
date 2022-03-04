@@ -1,6 +1,6 @@
 ﻿using delegatorUI.Infrastructure.Commands.Base;
 using delegatorUI.Infrastructure.Services;
-using delegatorUI.Library.Models;
+using delegatorUI.Infrastructure.Stores;
 using delegatorUI.ViewModel.Base;
 using delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels;
 using System;
@@ -11,6 +11,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels
     public class AdminControlViewModel : BaseViewModel
     {
         private BaseViewModel _currentViewModel;
+        private readonly CompanyUserStore _companyUserStore;
+
         public BaseViewModel CurrentViewModel
         {
             get => _currentViewModel;
@@ -29,9 +31,10 @@ namespace delegatorUI.ViewModel.UserControlViewModels
             Func<TasksControlViewModel> createTasksControlViewModel,
             Func<CompanyControlViewModel> createCompanyControlViewModel,
             NavigationService<LogInControlViewModel> exit,
-            CompanyUser companyUser)
+            CompanyUserStore companyUserStore)
         {
-            Title = companyUser.Company.Title;
+            _companyUserStore = companyUserStore;
+            Title = _companyUserStore.CompanyUser.Company.Title;
 
             ExitCommand = new RelayCommand(_ => exit.Navigate());
             ToAccCommand = new RelayCommand(_ => CurrentViewModel = createAccControlViewModel());

@@ -23,6 +23,28 @@ namespace delegatorUI.Library.Api.Helpers
             }
         }
 
+        public async Task Update(Company company)
+        {
+            using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("Company/Update", company))
+            {
+                if (resp.IsSuccessStatusCode)
+                    return;
+                else
+                    throw new Exception(resp.ReasonPhrase);
+            }
+        }
+
+        public async Task<Company> GetById(string id)
+        {
+            using (HttpResponseMessage resp = await _apiClient.GetAsync($"Company/ById?id={id}"))
+            {
+                if (resp.IsSuccessStatusCode)
+                    return await resp.Content.ReadAsAsync<Company>();
+                else
+                    throw new Exception(resp.ReasonPhrase);
+            }
+        }
+
         public async Task<List<Company>> GetByUserId(string id)
         {
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"Company/ByUserId?id={id}"))

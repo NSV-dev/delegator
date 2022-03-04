@@ -18,6 +18,12 @@ namespace delegatorApi.Controllers
 
         public void Post(Company company) => _companyData.Post(company);
 
+        [Route("Update")]
+        public void Update(Company company) => _companyData.Update(company);
+
+        [Route("ById")]
+        public Company GetById(string id) => _companyData.GetById(id);
+
         [Route("ByUserId")]
         public List<Company> GetByUserId(string id) => _companyData.GetByUserId(id);
 

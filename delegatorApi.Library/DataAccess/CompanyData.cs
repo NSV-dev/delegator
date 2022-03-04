@@ -16,6 +16,23 @@ namespace delegatorApi.Library.DataAccess
             }
         }
 
+        public void Update(Company company)
+        {
+            using (delegatorContext db = new())
+            {
+                db.Companies.Update(company);
+                db.SaveChanges();
+            }
+        }
+
+        public Company GetById(string id)
+        {
+            using (delegatorContext db = new())
+            {
+                return db.Companies.FirstOrDefault(c => c.Id== id);
+            }
+        }
+
         public List<Company> GetByUserId(string id)
         {
             using (delegatorContext db = new())

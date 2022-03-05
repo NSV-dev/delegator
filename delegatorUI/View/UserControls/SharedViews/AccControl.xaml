@@ -617,7 +617,6 @@
             </Border.Style>
 
             <Grid>
-
                 <TextBlock Style="{StaticResource MainTextBlockStyle}"
                     VerticalAlignment="Top" TextAlignment="Center" TextWrapping="WrapWithOverflow"
                     Margin="30,50,30,0">

@@ -5,6 +5,7 @@ using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 
 namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
@@ -157,6 +158,50 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         }
         #endregion
 
+        #region Delete User
+        private AppUser _userToDelete;
+
+        private string _userToDeleteName;
+        public string UserToDeleteName
+        {
+            get => _userToDeleteName;
+            set => OnPropertyChanged(ref _userToDeleteName, value);
+        }
+
+        private int _deleteUserZIndex;
+        public int DeleteUserZIndex
+        {
+            get => _deleteUserZIndex;
+            set => OnPropertyChanged(ref _deleteUserZIndex, value);
+        }
+
+        public ICommand ToDeleteUserCommand { get; }
+        private void OnToDeleteUserCommandExecute(object p)
+        {
+            _userToDelete = p as AppUser;
+            UserToDeleteName = _userToDelete.UserName;
+            if (_userToDelete.Id != _companyUserStore.CompanyUser.AppUserId)
+                DeleteUserZIndex = 1;
+        }
+
+        public ICommand BackFromDeleteUserCommand { get; }
+        private void OnBackFromDeleteUserCommandExecute(object p)
+        {
+            DeleteUserZIndex = -1;
+        }
+
+        public ICommand DeleteUserCommand { get; }
+        private async void OnDeleteUserCommandExecute(object p)
+        {
+            await _apiHelper.CompaniesUsers.Delete(
+                (await _apiHelper.CompaniesUsers.GetByCompanyId(_companyUserStore.CompanyUser.CompanyId, _userToDelete.Id)).Single());
+
+            LoadUsers();
+
+            DeleteUserZIndex = -1;
+        }
+        #endregion
+
         public CompanyControlViewModel(APIHelper apiHelper, CompanyUserStore companyUserStore)
         {
             _apiHelper = apiHelper;
@@ -170,6 +215,10 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             ToEditCompanyCommand = new RelayCommand(OnToEditCompanyCommandExecute);
             BackFromEditCompanyCommand = new RelayCommand(_ => EditCompZIndex = 0);
             EditCompCommand = new RelayCommand(OnEditCompCommandExecute);
+
+            ToDeleteUserCommand = new RelayCommand(OnToDeleteUserCommandExecute);
+            BackFromDeleteUserCommand = new RelayCommand(OnBackFromDeleteUserCommandExecute);
+            DeleteUserCommand = new RelayCommand(OnDeleteUserCommandExecute);
 
             CompanyName = _companyUserStore.CompanyUser.Company.Title;
             CompanyCode = StringCipher.Decrypt(_companyUserStore.CompanyUser.Company.Code, "delegator");

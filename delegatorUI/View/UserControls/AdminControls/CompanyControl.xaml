@@ -58,6 +58,10 @@
                                                 Storyboard.TargetName="UpdateBtn"
                                                 Storyboard.TargetProperty="Opacity"
                                                 Duration="0:0:.2" From="0" To="1"/>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="DeleteBtn"
+                                                Storyboard.TargetProperty="Opacity"
+                                                Duration="0:0:.2" From="0" To="1"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </EventTrigger>
@@ -66,6 +70,10 @@
                                         <Storyboard>
                                             <DoubleAnimation
                                                 Storyboard.TargetName="UpdateBtn"
+                                                Storyboard.TargetProperty="Opacity"
+                                                Duration="0:0:.2" From="1" To="0"/>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="DeleteBtn"
                                                 Storyboard.TargetProperty="Opacity"
                                                 Duration="0:0:.2" From="1" To="0"/>
                                         </Storyboard>
@@ -82,12 +90,33 @@
                                 <Border x:Name="UpdateBtn"
                                     Background="Transparent" BorderThickness="0"
                                     HorizontalAlignment="Right" Opacity="0"
-                                    Height="20" Width="20" Padding="1" Margin="0,0,10,0">
+                                    Height="20" Width="20" Padding="1" Margin="0,0,40,0">
                                     <Path Data="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"
                                         Fill="#999999" Stretch="Uniform"/>
                                     <Border.InputBindings>
                                         <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=UsersLw,
                                             Path=DataContext.ToUpdateUserCommand}"
+                                            CommandParameter="{Binding}"/>
+                                    </Border.InputBindings>
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Cursor" Value="Hand"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                </Border>
+                                <Border x:Name="DeleteBtn"
+                                    Background="Transparent" BorderThickness="0"
+                                    HorizontalAlignment="Right" Opacity="0"
+                                    Height="20" Width="20" Padding="1" Margin="0,0,10,0">
+                                    <Path Data="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
+                                        Fill="#999999" Stretch="Uniform"/>
+                                    <Border.InputBindings>
+                                        <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=UsersLw,
+                                            Path=DataContext.ToDeleteUserCommand}"
                                             CommandParameter="{Binding}"/>
                                     </Border.InputBindings>
                                     <Border.Style>
@@ -363,6 +392,65 @@
                     HorizontalAlignment="Right" VerticalAlignment="Bottom"
                     Style="{StaticResource ButtonBase}"
                     Command="{Binding EditCompCommand}"/>
+            </Grid>
+
+        </Border>
+        
+        <Border x:Name="DeleteUser"
+            Opacity="0"
+            Panel.ZIndex="{Binding DeleteUserZIndex}" 
+            Grid.RowSpan="100" Grid.ColumnSpan="100"
+            Width="350" Height="200"
+            Background="#2e2e2e" CornerRadius="10">
+
+            <Border.Effect>
+                <DropShadowEffect
+                        ShadowDepth="1" Direction="275"
+                        Opacity=".6" BlurRadius="20"/>
+            </Border.Effect>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="Panel.ZIndex" Value="1">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid>
+
+                <TextBlock Style="{StaticResource MainTextBlockStyle}"
+                    VerticalAlignment="Top" TextAlignment="Center" TextWrapping="WrapWithOverflow"
+                    Margin="30,50,30,0">
+                    <Run Text="Вы действительно хотите удалить"/>
+                    <Run Text="{Binding UserToDeleteName}"/><Run Text="?"/>
+                </TextBlock>
+
+                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10"
+                    Command="{Binding BackFromDeleteUserCommand}"/>
+
+                <Button Content="Удалить" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"
+                    Command="{Binding DeleteUserCommand}"/>
+
             </Grid>
 
         </Border>

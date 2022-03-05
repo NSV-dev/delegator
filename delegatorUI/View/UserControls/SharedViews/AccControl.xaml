@@ -187,7 +187,9 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="#666666" BorderThickness="1" CornerRadius="5" Width="200" Height="40" Margin="5,0">
+                            <Border BorderBrush="#666666" Background="Transparent"
+                                BorderThickness="1" CornerRadius="5"
+                                Width="200" Height="40" Margin="5,0">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Style.Triggers>
@@ -214,13 +216,58 @@
                                         </Style.Triggers>
                                     </Style>
                                 </Border.Style>
+                                <Border.Triggers>
+                                    <EventTrigger RoutedEvent="MouseEnter">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="DeleteBtn"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    From="0" To="1" Duration="0:0:.1"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <EventTrigger RoutedEvent="MouseLeave">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="DeleteBtn"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    From="1" To="0" Duration="0:0:.1"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Border.Triggers>
                                 <Border.InputBindings>
                                     <MouseBinding Gesture="LeftClick"
                                         Command="{Binding DataContext.ChangeCompanyCommand, ElementName=CompanyLw}"
                                         CommandParameter="{Binding}"/>
                                 </Border.InputBindings>
-                                <TextBlock Text="{Binding Title}" Style="{StaticResource SmallTextBlockStyle}"
-                                    VerticalAlignment="Center" Margin="10,0,10,0"/>
+                                <Grid>
+                                    <TextBlock Text="{Binding Title}" Style="{StaticResource SmallTextBlockStyle}"
+                                        VerticalAlignment="Center" Margin="10,0,10,0"/>
+                                    <Border x:Name="DeleteBtn" Panel.ZIndex="1"
+                                        Background="Transparent" BorderThickness="0"
+                                        HorizontalAlignment="Right" Opacity="0"
+                                        Height="20" Width="20" Padding="1" Margin="0,0,10,0">
+                                        <Path Data="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
+                                            Fill="#999999" Stretch="Uniform"/>
+                                        <Border.InputBindings>
+                                            <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=CompanyLw,
+                                                Path=DataContext.ToDeleteCommand}"
+                                                CommandParameter="{Binding}"/>
+                                        </Border.InputBindings>
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Cursor" Value="Hand"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                    </Border>
+                                </Grid>
                             </Border>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -530,6 +577,61 @@
                     <Button Content="Готово" Width="100" Height="30" Style="{StaticResource ButtonBase}"
                         Command="{Binding CreateCompanyCommand}"/>
                 </StackPanel>
+            </Grid>
+
+        </Border>
+
+        <Border x:Name="DeleteComp" Panel.ZIndex="{Binding DeleteCompZIndex}"
+            Grid.ColumnSpan="100" Grid.RowSpan="100" Opacity="0"
+            Height="250"  Width="450" CornerRadius="10" Background="#2e2e2e">
+
+            <Border.Effect>
+                <DropShadowEffect
+                        ShadowDepth="1" Direction="275"
+                        Opacity=".6" BlurRadius="20"/>
+            </Border.Effect>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="Panel.ZIndex" Value="1">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid>
+
+                <TextBlock Style="{StaticResource MainTextBlockStyle}"
+                    VerticalAlignment="Top" TextAlignment="Center" TextWrapping="WrapWithOverflow"
+                    Margin="30,50,30,0">
+                    <Run Text="Вы действительно хотите удалить"/>
+                    <Run Text="{Binding CompanyToDeleteName}"/><Run Text="?"/>
+                </TextBlock>
+
+                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10"
+                    Command="{Binding BackFromDeleteCompanyCommand}"/>
+
+                <Button Content="Удалить" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"
+                    Command="{Binding DeleteCompanyCommand}"/>
             </Grid>
 
         </Border>

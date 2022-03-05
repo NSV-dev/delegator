@@ -15,6 +15,7 @@ namespace delegatorUI.ViewModel.CreatingViewModels.SharedViewModels
                 serviceProvider.GetRequiredService<APIHelper>(),
                 serviceProvider.GetRequiredService<CompanyUserStore>(),
                 serviceProvider.GetRequiredService<NavigationService<EmpControlViewModel>>(),
-                serviceProvider.GetRequiredService<NavigationService<AdminControlViewModel>>());
+                serviceProvider.GetRequiredService<NavigationService<AdminControlViewModel>>(),
+                serviceProvider.GetRequiredService<NavigationService<LogInControlViewModel>>());
     }
 }

@@ -18,6 +18,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
         private readonly CompanyUserStore _companyUserStore;
         private readonly NavigationService<EmpControlViewModel> _toEmp;
         private readonly NavigationService<AdminControlViewModel> _toAdmin;
+        private readonly NavigationService<LogInControlViewModel> _exit;
 
         #region Error
         private string _errorText;
@@ -249,16 +250,64 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
         private async void UpdateCompanies(string title) => CompaniesList = await _apiHelper.Companies.GetWhereTitleContains(title);
         #endregion
 
+        #region Delete Company
+        private int _deleteCompZIndex = -1;
+        public int DeleteCompZIndex
+        {
+            get => _deleteCompZIndex;
+            set => OnPropertyChanged(ref _deleteCompZIndex, value);
+        }
+        
+        private Company _companyToDelete;
+
+        private string _companyToDeleteName; 
+        public string CompanyToDeleteName
+        {
+            get => _companyToDeleteName;
+            set => OnPropertyChanged(ref _companyToDeleteName, value);
+        }
+
+        public ICommand ToDeleteCommand { get; }
+        private void OnToDeleteCommandExecute(object p)
+        {
+            _companyToDelete = p as Company;
+            CompanyToDeleteName = _companyToDelete.Title;
+            DeleteCompZIndex = 1;
+        }
+
+        public ICommand BackFromDeleteCompanyCommand { get; }
+        private void OnBackFromDeleteCompanyCommandExecute(object p)
+        {
+            DeleteCompZIndex = -1;
+        }
+
+        public ICommand DeleteCompanyCommand { get; }
+        private async void OnDeleteCompanyCommandExecute(object p)
+        {
+            await _apiHelper.CompaniesUsers.Delete(
+                (await _apiHelper.CompaniesUsers
+                    .GetByCompanyId(_companyToDelete.Id, _companyUserStore.CompanyUser.AppUserId)).Single());
+
+            if (_companyUserStore.CompanyUser.CompanyId == _companyToDelete.Id)
+                _exit.Navigate();
+
+            LoadCompanies();
+
+            DeleteCompZIndex = -1;
+        }
+        #endregion
+
         public AccControlViewModel(APIHelper apiHelper,
             CompanyUserStore companyUserStore,
             NavigationService<EmpControlViewModel> toEmp,
-            NavigationService<AdminControlViewModel> toAdmin)
+            NavigationService<AdminControlViewModel> toAdmin,
+            NavigationService<LogInControlViewModel> exit)
         {
             _apiHelper = apiHelper;
             _companyUserStore = companyUserStore;
             _toEmp = toEmp;
             _toAdmin = toAdmin;
-
+            _exit = exit;
             ChangePasswordCommand = new RelayCommand(OnChangePasswordCommandExecute, _ =>
                 !string.IsNullOrWhiteSpace(OldPassword) &&
                 !string.IsNullOrWhiteSpace(NewPassword) &&
@@ -277,6 +326,10 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
                 !string.IsNullOrWhiteSpace(NewCompanyCode));
 
             ChangeCompanyCommand = new RelayCommand(OnChangeCompanyCommandExecute);
+
+            ToDeleteCommand = new RelayCommand(OnToDeleteCommandExecute);
+            BackFromDeleteCompanyCommand = new RelayCommand(OnBackFromDeleteCompanyCommandExecute);
+            DeleteCompanyCommand = new RelayCommand(OnDeleteCompanyCommandExecute);
 
             LoadCompanies();
         }

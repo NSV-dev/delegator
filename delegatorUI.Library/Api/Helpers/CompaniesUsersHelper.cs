@@ -34,6 +34,17 @@ namespace delegatorUI.Library.Api.Helpers
             }
         }
 
+        public async Task Delete(CompanyUser companyUser)
+        {
+            using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("CompanyUsers/Delete", companyUser))
+            {
+                if (resp.IsSuccessStatusCode)
+                    return;
+                else
+                    throw new Exception(resp.ReasonPhrase);
+            }
+        }
+
         public async Task<List<CompanyUser>> GetByCompanyId(string CompanyId, string AppUserId)
         {
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"CompanyUsers/ByCompanyAndUserId?CompanyId={CompanyId}&AppUserId={AppUserId}"))

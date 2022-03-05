@@ -21,6 +21,9 @@ namespace delegatorApi.Controllers
         [Route("Update")]
         public void Update(CompanyUser companyUser) => _companyUserData.Update(companyUser);
 
+        [Route("Delete")]
+        public void Delete(CompanyUser companyUser) => _companyUserData.Delete(companyUser);
+
         [Route("ByCompanyAndUserId")]
         public List<CompanyUser> GetByCompanyId(string CompanyId, string AppUserId) => _companyUserData.GetByCompanyAndUserId(CompanyId, AppUserId);
     }

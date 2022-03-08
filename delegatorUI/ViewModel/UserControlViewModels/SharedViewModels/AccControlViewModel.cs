@@ -12,13 +12,22 @@ using System.Windows.Input;
 
 namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
 {
-    public class AccControlViewModel : BaseViewModel, IError
+    public class AccControlViewModel : BaseViewModel, ILoading, IError
     {
         private readonly APIHelper _apiHelper;
         private readonly CompanyUserStore _companyUserStore;
         private readonly NavigationService<EmpControlViewModel> _toEmp;
         private readonly NavigationService<AdminControlViewModel> _toAdmin;
         private readonly NavigationService<LogInControlViewModel> _exit;
+
+        #region Loading
+        private int _loadingZIndex;
+        public int LoadingZIndex
+        {
+            get => _loadingZIndex;
+            set => OnPropertyChanged(ref _loadingZIndex, value);
+        }
+        #endregion
 
         #region Error
         private string _errorText;
@@ -68,7 +77,10 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
             }
 
             _companyUserStore.CompanyUser.User.Password = StringCipher.Encrypt(ConfirmPassword, "delegator");
+
+            (this as ILoading).StartLoading();
             await _apiHelper.Users.Update(_companyUserStore.CompanyUser.User);
+            (this as ILoading).EndLoading();
 
             OldPassword = "";
             NewPassword = "";
@@ -87,7 +99,10 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
         public ICommand ChangeCompanyCommand { get; }
         private async void OnChangeCompanyCommandExecute(object p)
         {
+            (this as ILoading).StartLoading();
             await _companyUserStore.LoadCompanyUser((p as Company).Id, _companyUserStore.CompanyUser.AppUserId);
+            (this as ILoading).EndLoading();
+
             if (_companyUserStore.CompanyUser.Role.Title == "User")
                 _toEmp.Navigate();
             if (_companyUserStore.CompanyUser.Role.Title == "Admin")
@@ -198,6 +213,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
                 return;
             }
 
+            (this as ILoading).StartLoading();
             await _apiHelper.CompaniesUsers.Post(new CompanyUser()
             {
                 AppUserId = _companyUserStore.CompanyUser.AppUserId,
@@ -206,6 +222,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
             });
 
             await _companyUserStore.LoadCompanyUser(_selectedCompany.Id, _companyUserStore.CompanyUser.AppUserId);
+            (this as ILoading).EndLoading();
+
             if (_companyUserStore.CompanyUser.Role.Title == "User")
                 _toEmp.Navigate();
             if (_companyUserStore.CompanyUser.Role.Title == "Admin")
@@ -229,6 +247,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
         public ICommand CreateCompanyCommand { get; }
         private async void OnCreateCompanyCommandExecute(object p)
         {
+            (this as ILoading).StartLoading();
             await _apiHelper.Companies.Post(new Company()
             {
                 Title = NewCompanyTitle,
@@ -243,11 +262,17 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
             });
 
             await _companyUserStore.LoadCompanyUser((await _apiHelper.Companies.GetByTitle(NewCompanyTitle)).Id, _companyUserStore.CompanyUser.AppUserId);
+            (this as ILoading).EndLoading();
 
             _toAdmin.Navigate();
         }
 
-        private async void UpdateCompanies(string title) => CompaniesList = await _apiHelper.Companies.GetWhereTitleContains(title);
+        private async void UpdateCompanies(string title)
+        {
+            (this as ILoading).StartLoading();
+            CompaniesList = await _apiHelper.Companies.GetWhereTitleContains(title);
+            (this as ILoading).EndLoading();
+        }
         #endregion
 
         #region Delete Company
@@ -284,6 +309,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
         public ICommand DeleteCompanyCommand { get; }
         private async void OnDeleteCompanyCommandExecute(object p)
         {
+            (this as ILoading).StartLoading();
             await _apiHelper.CompaniesUsers.Delete(
                 (await _apiHelper.CompaniesUsers
                     .GetByCompanyId(_companyToDelete.Id, _companyUserStore.CompanyUser.AppUserId)).Single());
@@ -294,6 +320,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
             LoadCompanies();
 
             DeleteCompZIndex = -1;
+            (this as ILoading).EndLoading();
         }
         #endregion
 
@@ -335,6 +362,10 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
         }
 
         private async void LoadCompanies()
-            => Companies = await _apiHelper.Companies.GetByUserId(_companyUserStore.CompanyUser.AppUserId);
+        {
+            (this as ILoading).StartLoading();
+            Companies = await _apiHelper.Companies.GetByUserId(_companyUserStore.CompanyUser.AppUserId);
+            (this as ILoading).EndLoading();
+        }
     }
 }

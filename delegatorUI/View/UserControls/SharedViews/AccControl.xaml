@@ -18,8 +18,14 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
+        <Border Style="{StaticResource PlateStyle}"
+            Grid.Column="1" Grid.Row="1">
+            
+        </Border>
+        
         <Border Style="{StaticResource PlateStyle}" 
-            Opacity="0" d:Opacity="1" Grid.Row="1">
+            Opacity="0" d:Opacity="1" 
+            Grid.Row="2" Grid.Column="1">
 
             <Grid>
 
@@ -150,7 +156,7 @@
         </Border>
 
         <Border Style="{StaticResource PlateStyle}"
-            Grid.Column="1" Grid.Row="1" 
+            Grid.Column="0" Grid.Row="1" 
             Opacity="0" d:Opacity="1">
 
             <Grid>
@@ -634,9 +640,12 @@
             </Grid>
 
         </Border>
-        
+
         <TextBlock Text="{Binding ErrorText}" Opacity="{Binding ErrorOpacity}" Panel.ZIndex="-10"
             Margin="0,15,0,0" TextAlignment="Center" TextWrapping="WrapWithOverflow"
             Grid.ColumnSpan="100" Style="{StaticResource ErrorTextBlockStyle}"/>
+
+        <resources:LoadingAnimation Opacity="0" Panel.ZIndex="{Binding LoadingZIndex}"
+            Grid.ColumnSpan="100" Grid.RowSpan="100"/>
     </Grid>
 </UserControl>

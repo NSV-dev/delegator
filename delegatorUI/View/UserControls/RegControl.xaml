@@ -608,8 +608,8 @@
         <TextBlock Text="{Binding ErrorText}" Opacity="{Binding ErrorOpacity}" Style="{StaticResource ErrorTextBlockStyle}" 
             Grid.Row="1" Width="250" Height="100" Margin="0,0,0,200" Panel.ZIndex="-2"/>
 
-        <resources:LoadingAnimation Grid.Row="1" d:Opacity="0" d:Panel.ZIndex="-10"
-            Opacity="{Binding LoadingOpacity}" Panel.ZIndex="{Binding LoadingZIndex}"/>
+        <resources:LoadingAnimation Grid.Row="1" Opacity="0" d:Panel.ZIndex="-10"
+            Panel.ZIndex="{Binding LoadingZIndex}"/>
 
     </Grid>
 </UserControl>

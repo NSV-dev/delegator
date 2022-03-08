@@ -765,6 +765,6 @@
             
         </Grid>
 
-        <res:LoadingAnimation Opacity="{Binding LoadingOpacity}" Panel.ZIndex="{Binding LoadingZIndex}"/>
+        <res:LoadingAnimation Panel.ZIndex="{Binding LoadingZIndex}" Opacity="0"/>
     </Grid>
 </UserControl>

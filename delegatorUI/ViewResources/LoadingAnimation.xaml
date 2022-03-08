@@ -6,6 +6,31 @@
              xmlns:local="clr-namespace:delegatorUI.ViewResources"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Style.Triggers>
+                <Trigger Property="Panel.ZIndex" Value="20">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                    Storyboard.TargetProperty="Opacity"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                    Storyboard.TargetProperty="Opacity"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
+    
     <Grid Background="#2e2e2e">
         <Ellipse Width="70" Height="70" StrokeThickness="3" Stroke="White"
                  StrokeDashArray="20 60" RenderTransformOrigin="0.5 0.5">

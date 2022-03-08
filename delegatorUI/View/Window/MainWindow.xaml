@@ -14,7 +14,7 @@
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" ResizeBorderThickness="4" CornerRadius="0" CaptionHeight="25"/>
     </WindowChrome.WindowChrome>
-    <Border BorderThickness="1" BorderBrush="#666">
+    <Border BorderThickness="1" BorderBrush="#666" Panel.ZIndex="100">
         <Border.Style>
             <Style TargetType="{x:Type Border}">
                 <Style.Triggers>
@@ -34,7 +34,7 @@
                 <RowDefinition Height="25"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <DockPanel Background="#1c1c1c">
+            <DockPanel Background="#1c1c1c" Panel.ZIndex="100">
                 <TextBlock Text="{Binding Title}" Foreground="White" Margin="5,0,0,0" VerticalAlignment="Center"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                             WindowChrome.IsHitTestVisibleInChrome="True">

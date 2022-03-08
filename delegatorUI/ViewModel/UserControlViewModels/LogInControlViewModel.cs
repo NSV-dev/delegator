@@ -22,13 +22,6 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         private readonly CompanyUserStore _companyUserStore;
 
         #region Loading
-        private int _loadingOpacity = 0;
-        public int LoadingOpacity
-        {
-            get => _loadingOpacity;
-            set => OnPropertyChanged(ref _loadingOpacity, value);
-        }
-
         private int _loadingZIndex = -2;
         public int LoadingZIndex
         {

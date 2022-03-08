@@ -35,13 +35,6 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         }
 
         #region Loading
-        private int _loadingOpacity;
-        public int LoadingOpacity
-        {
-            get => _loadingOpacity;
-            set => OnPropertyChanged(ref _loadingOpacity, value);
-        }
-
         private int _loadingZIndex;
         public int LoadingZIndex
         {

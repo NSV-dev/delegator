@@ -45,6 +45,87 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
         }
         #endregion
 
+        #region User Data
+        private int _userDataZIndex = -1;
+        public int UserDataZIndex
+        {
+            get => _userDataZIndex;
+            set => OnPropertyChanged(ref _userDataZIndex, value);
+        }
+
+        private string _currentUserName;
+        public string CurrentUserName
+        {
+            get => _currentUserName;
+            set => OnPropertyChanged(ref _currentUserName, value);
+        }
+
+        private string _currentEmail;
+        public string CurrentEmail
+        {
+            get => _currentEmail;
+            set => OnPropertyChanged(ref _currentEmail, value);
+        }
+
+        private string _userNameToChange;
+        public string UserNameToChange
+        {
+            get => _userNameToChange;
+            set => OnPropertyChanged(ref _userNameToChange, value);
+        }
+
+        private string _emailToChange;
+        public string EmailToChange
+        {
+            get => _emailToChange;
+            set => OnPropertyChanged(ref _emailToChange, value);
+        }
+
+        public ICommand ToUserDataCommand { get; }
+        private void OnToUserDataCommandExecute(object p)
+        {
+            UserNameToChange = _companyUserStore.CompanyUser.User.UserName;
+            EmailToChange = _companyUserStore.CompanyUser.User.Email;
+            UserDataZIndex = 1;
+        }
+
+        public ICommand BackFromUserDataCommand { get; }
+        private void OnBackFromUserDataCommandExecute(object p)
+        {
+            UserDataZIndex = -1;
+        }
+
+        public ICommand ChangeUserDataCommand { get; }
+        private async void OnChangeUserDataCommandExecute(object p)
+        {
+            (this as ILoading).StartLoading();
+            if (await _apiHelper.Users.GetByUsername(UserNameToChange) is not null)
+            {
+                (this as IError).Error("Имя пользователя занято");
+                (this as ILoading).EndLoading();
+                return;
+            }
+            (this as ILoading).EndLoading();
+
+            _companyUserStore.CompanyUser.User.UserName = UserNameToChange;
+            _companyUserStore.CompanyUser.User.Email = EmailToChange;
+
+            (this as ILoading).StartLoading();
+            await _apiHelper.Users.Update(_companyUserStore.CompanyUser.User);
+            (this as ILoading).EndLoading();
+
+            LoadUserData();
+
+            UserDataZIndex = -1;
+        }
+
+        private void LoadUserData()
+        {
+            CurrentUserName = _companyUserStore.CompanyUser.User.UserName;
+            CurrentEmail = _companyUserStore.CompanyUser.User.Email;
+        }
+        #endregion
+
         #region Change Password
         private string _oldPassword = "";
         public string OldPassword
@@ -89,6 +170,13 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
         #endregion
 
         #region Company Selection
+        private string _currentCompanyName;
+        public string CurrentCompanyName
+        {
+            get => _currentCompanyName;
+            set => OnPropertyChanged(ref _currentCompanyName, value);
+        }
+
         private List<Company> _companies;
         public List<Company> Companies
         {
@@ -335,6 +423,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
             _toEmp = toEmp;
             _toAdmin = toAdmin;
             _exit = exit;
+
             ChangePasswordCommand = new RelayCommand(OnChangePasswordCommandExecute, _ =>
                 !string.IsNullOrWhiteSpace(OldPassword) &&
                 !string.IsNullOrWhiteSpace(NewPassword) &&
@@ -358,6 +447,15 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
             BackFromDeleteCompanyCommand = new RelayCommand(OnBackFromDeleteCompanyCommandExecute);
             DeleteCompanyCommand = new RelayCommand(OnDeleteCompanyCommandExecute);
 
+            ToUserDataCommand = new RelayCommand(OnToUserDataCommandExecute);
+            BackFromUserDataCommand = new RelayCommand(OnBackFromUserDataCommandExecute);
+            ChangeUserDataCommand = new RelayCommand(OnChangeUserDataCommandExecute, _ =>
+                !string.IsNullOrWhiteSpace(UserNameToChange) &&
+                !string.IsNullOrWhiteSpace(EmailToChange));
+
+            CurrentCompanyName = _companyUserStore.CompanyUser.Company.Title;
+
+            LoadUserData();
             LoadCompanies();
         }
 

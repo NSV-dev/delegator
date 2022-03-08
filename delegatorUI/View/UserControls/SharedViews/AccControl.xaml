@@ -19,7 +19,34 @@
         </Grid.RowDefinitions>
 
         <Border Style="{StaticResource PlateStyle}"
-            Grid.Column="1" Grid.Row="1">
+            Grid.Column="1" Grid.Row="1"
+            Opacity="0" d:Opacity="1">
+
+            <Grid Margin="20">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Style="{StaticResource MainTextBlockStyle}"
+                    VerticalAlignment="Top" Margin="0">
+                    <Run Text="Имя:"/>
+                    <Run Text="{Binding CurrentUserName}"/>
+                </TextBlock>
+                
+                <TextBlock Style="{StaticResource MainTextBlockStyle}"
+                    VerticalAlignment="Top" Margin="0" Grid.Row="1">
+                    <Run Text="Email:"/>
+                    <Run Text="{Binding CurrentEmail}"/>
+                </TextBlock>
+
+                <Button Content="Изменить" Style="{StaticResource ButtonBase}"
+                    Command="{Binding ToUserDataCommand}"
+                    Grid.Row="2" Height="30" Width="100" Margin="0,0,-10,-10"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+            </Grid>
             
         </Border>
         
@@ -161,8 +188,14 @@
 
             <Grid>
 
-                <TextBlock Text="Выберете компанию, чтобы войти в неё" Style="{StaticResource MainTextBlockStyle}"
-                    VerticalAlignment="Top"/>
+                <TextBlock Style="{StaticResource MainTextBlockStyle}"
+                    VerticalAlignment="Top" Margin="15,5,0,0">
+                    <Run Text="Текущая компания:"/>
+                    <Run Text="{Binding CurrentCompanyName}"/>
+                </TextBlock>
+                
+                <TextBlock Text="Выберете компанию, чтобы войти в неё" Style="{StaticResource TextBlockStyleBase}"
+                    VerticalAlignment="Top" Margin="10,32,0,0"/>
 
                 <Border Grid.Column="1" Grid.Row="1" 
                     Background="Transparent" BorderBrush="Transparent"
@@ -283,6 +316,129 @@
             
         </Border>
 
+        <Border x:Name="UserData" Panel.ZIndex="{Binding UserDataZIndex}"
+            Grid.ColumnSpan="100" Grid.RowSpan="100" Opacity="0"
+            Height="250"  Width="450" CornerRadius="10" Background="#2e2e2e">
+
+            <Border.Effect>
+                <DropShadowEffect
+                        ShadowDepth="1" Direction="275"
+                        Opacity=".6" BlurRadius="20"/>
+            </Border.Effect>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="Panel.ZIndex" Value="1">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid Margin="10">
+
+                <Grid.Resources>
+                    <Style TargetType="TextBlock" x:Key="UserNameDescription"
+                        BasedOn="{StaticResource TextBlockStyleBase}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=UserNameTb}" Value="">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation
+                                                Storyboard.TargetProperty="Margin"
+                                                To="14,28,0,0" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation
+                                                Storyboard.TargetProperty="Margin"
+                                                To="14,46,0,0" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="TextBlock" x:Key="EmailDescription"
+                        BasedOn="{StaticResource TextBlockStyleBase}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=EmailTb}" Value="">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation
+                                                Storyboard.TargetProperty="Margin"
+                                                To="14,78,0,0" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation
+                                                Storyboard.TargetProperty="Margin"
+                                                To="14,96,0,0" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Resources>
+
+
+                <TextBox x:Name="UserNameTb" Style="{StaticResource TextBoxBase}"
+                    VerticalAlignment="Top"
+                    Height="30" Margin="10,20,10,0"
+                    Text="{Binding UserNameToChange, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Имя пользователя" Margin="14,28,0,0"
+                    HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Panel.ZIndex="-1"
+                    Style="{StaticResource UserNameDescription}"/>
+
+                
+                <TextBox x:Name="EmailTb" Style="{StaticResource TextBoxBase}"
+                    VerticalAlignment="Top"
+                    Height="30" Margin="10,70,10,0"
+                    Text="{Binding EmailToChange, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Email" Margin="14,78,0,0"
+                    HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Panel.ZIndex="-1"
+                    Style="{StaticResource EmailDescription}"/>
+
+                
+                <Button Content="Назад" Style="{StaticResource ButtonBase}"
+                    Height="30" Width="100"
+                    VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                    Command="{Binding BackFromUserDataCommand}"/>
+                
+                <Button Content="Готово" Style="{StaticResource ButtonBase}"
+                    Height="30" Width="100"
+                    VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                    Command="{Binding ChangeUserDataCommand}"/>
+            </Grid>
+        </Border>
+        
         <Border x:Name="AddComp" Panel.ZIndex="{Binding AddCompanyZIndex}"
             Grid.ColumnSpan="100" Grid.RowSpan="100" Opacity="0"
             Height="250"  Width="450" CornerRadius="10" Background="#2e2e2e">

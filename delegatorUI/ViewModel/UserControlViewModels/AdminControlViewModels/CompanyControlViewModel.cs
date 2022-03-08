@@ -1,4 +1,5 @@
 ﻿using delegatorUI.Infrastructure.Commands.Base;
+using delegatorUI.Infrastructure.Interfaces;
 using delegatorUI.Infrastructure.Services;
 using delegatorUI.Infrastructure.Stores;
 using delegatorUI.Library.Api;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 
 namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
 {
-    public class CompanyControlViewModel : BaseViewModel
+    public class CompanyControlViewModel : BaseViewModel, ILoading
     {
         private readonly APIHelper _apiHelper;
         private readonly CompanyUserStore _companyUserStore;
@@ -28,6 +29,15 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             get => _users;
             set => OnPropertyChanged(ref _users, value);
         }
+
+        #region Loading
+        private int _loadingZIndex;
+        public int LoadingZIndex
+        {
+            get => _loadingZIndex;
+            set => OnPropertyChanged(ref _loadingZIndex, value);
+        }
+        #endregion
 
         #region User Editing
         #region Grid Props
@@ -91,7 +101,11 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         private async void OnEditUserCommandExecute(object p)
         {
             UserToEdit.Role = EditedRole;
+
+            (this as ILoading).StartLoading();
             await _apiHelper.Users.UpdateRole(UserToEdit, _companyUserStore.CompanyUser.Company.Id);
+            (this as ILoading).EndLoading();
+
             LoadUsers();
             OnBackFromEditUserCommandExecute(null);
         }
@@ -147,12 +161,14 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
                 Code = StringCipher.Encrypt(CompCodeToEdit, "delegator")
             };
 
+            (this as ILoading).StartLoading();
             await _apiHelper.Companies.Update(c);
 
             await _companyUserStore.LoadCompanyUser(_companyUserStore.CompanyUser.Company.Id, _companyUserStore.CompanyUser.User.Id);
 
             CompanyName = _companyUserStore.CompanyUser.Company.Title;
             CompanyCode = StringCipher.Decrypt(_companyUserStore.CompanyUser.Company.Code, "delegator");
+            (this as ILoading).EndLoading();
 
             EditCompZIndex = 0;
         }
@@ -193,10 +209,12 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         public ICommand DeleteUserCommand { get; }
         private async void OnDeleteUserCommandExecute(object p)
         {
+            (this as ILoading).StartLoading();
             await _apiHelper.CompaniesUsers.Delete(
                 (await _apiHelper.CompaniesUsers.GetByCompanyId(_companyUserStore.CompanyUser.CompanyId, _userToDelete.Id)).Single());
 
             LoadUsers();
+            (this as ILoading).EndLoading();
 
             DeleteUserZIndex = -1;
         }
@@ -227,8 +245,18 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             LoadRoles();
         }
 
-        private async void LoadUsers() => Users = await _apiHelper.Users.GetByCompany(_companyUserStore.CompanyUser.Company.Id);
+        private async void LoadUsers()
+        {
+            (this as ILoading).StartLoading();
+            Users = await _apiHelper.Users.GetByCompany(_companyUserStore.CompanyUser.Company.Id);
+            (this as ILoading).EndLoading();
+        }
 
-        private async void LoadRoles() => Roles = await _apiHelper.Roles.Get();
+        private async void LoadRoles()
+        {
+            (this as ILoading).StartLoading();
+            Roles = await _apiHelper.Roles.Get();
+            (this as ILoading).EndLoading();
+        }
     }
 }

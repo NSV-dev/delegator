@@ -1,5 +1,6 @@
 ﻿using delegatorApi.Library.Models;
 using delegatorApi.Library.Models.Context;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -46,6 +47,8 @@ namespace delegatorApi.Library.DataAccess
                     .Where(tu => tu.CompanyId == companyID)
                     .Select(tu => tu.Task)
                     .Distinct()
+                    .Include(t => t.Sender)
+                    .Include(t => t.Category)
                     .ToList();
             }
         }

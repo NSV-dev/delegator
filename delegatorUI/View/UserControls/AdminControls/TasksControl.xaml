@@ -190,23 +190,24 @@
                                     <Grid Margin="0,5,0,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto" x:Name="HeaderRow"/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <Border Grid.ColumnSpan="100" Grid.Row="0" 
-                                                Background="#555555" 
-                                                CornerRadius="5" Margin="0,0,10,0"
-                                                BorderBrush="White" BorderThickness="4,0,0,0">
+                                        <Border
+                                            Grid.ColumnSpan="100" Grid.Row="0" 
+                                            Background="#555555" 
+                                            CornerRadius="5" Margin="0,0,10,0"
+                                            BorderBrush="White" BorderThickness="4,0,0,0">
                                             <Border.Effect>
                                                 <DropShadowEffect
                                                     ShadowDepth="1" Direction="275"
                                                     Opacity=".6" BlurRadius="20"/>
                                             </Border.Effect>
-                                            <Rectangle Fill="#555555" Width="2" HorizontalAlignment="Left"/>
+                                            <Rectangle Fill="#555555" Width="3" HorizontalAlignment="Left"/>
                                         </Border>
                                         <ToggleButton x:Name="Expander" VerticalAlignment="Top" Margin="4,5,0,0"
                                             Style="{StaticResource ExpandCollapseToggleStyle}"
@@ -214,14 +215,15 @@
                                                 RelativeSource={RelativeSource TemplatedParent}}"
                                             ClickMode="Press"/>
                                         <Border Name="Bd"
+                                            HorizontalAlignment="Stretch"
                                             Grid.Column="1" Height="30"
                                             Background="{TemplateBinding Background}"
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             BorderThickness="{TemplateBinding BorderThickness}"
                                             Padding="{TemplateBinding Padding}">
-                                            <ContentPresenter x:Name="PART_Header" Margin="0,4,0,0"
+                                            <ContentPresenter x:Name="PART_Header" Margin="0,4,40,0"
                                                 ContentSource="Header" VerticalAlignment="Top"
-                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                                                HorizontalAlignment="Stretch"/>
                                         </Border>
                                         <StackPanel x:Name="EditPanel" Width="0"
                                             Orientation="Horizontal" Grid.Column="2"
@@ -410,9 +412,13 @@
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
+                            
                             <TextBlock Text="{Binding Title}"/>
 
-                            <Rectangle Height="2" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="3,0" Width="50" Fill="White" Grid.Row="1"/>
+                            <TextBlock Text="{Binding Category.Title}" Foreground="{Binding Category.Color}"
+                                HorizontalAlignment="Right" Background="#555555"/>
+                                
+                            <Rectangle Height="2" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="3,0" Width="100" Fill="White" Grid.Row="1"/>
 
                             <Grid Grid.Row="1" Margin="0,10,0,0">
                                 <Grid.Resources>
@@ -433,27 +439,35 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Text=" Описание задачи:"/>
-                                <ScrollViewer Grid.Row="1" Width="300" Height="75" VerticalScrollBarVisibility="Auto">
+                                <TextBlock Text="Описание задачи:"/>
+                                <ScrollViewer Grid.Row="1" Height="75" VerticalScrollBarVisibility="Auto">
                                     <TextBlock Text="{Binding Description}"
-                                                TextWrapping="WrapWithOverflow"/>
+                                        TextWrapping="WrapWithOverflow"/>
                                 </ScrollViewer>
 
-                                <TextBlock Text=" Дэдлайн:" Grid.Row="2" Margin="0,10,0,0"/>
+                                <TextBlock Text="Дэдлайн:" Grid.Row="2" Margin="0,10,0,0"/>
                                 <TextBlock Text="{Binding EndTime, StringFormat=d}" Grid.Row="3" 
-                                           TextWrapping="WrapWithOverflow"/>
+                                        TextWrapping="WrapWithOverflow"/>
 
-                                <TextBlock Text=" Сотрудники:" Grid.Column="1" Margin="50,0,0,0"/>
-                                <ListView ItemsSource="{Binding Users}" Margin="50,0,0,0" Width="200"
-                                          Grid.Column="1" Grid.Row="1" Grid.RowSpan="3">
+                                <TextBlock Text="Сотрудники:" Grid.Column="1" Margin="50,0,0,0"/>
+                                <ListView ItemsSource="{Binding Users}" 
+                                    Width="200" ItemContainerStyle="{StaticResource ListViewNoHover}"
+                                    HorizontalAlignment="Left" Margin="50,0,0,0"
+                                    Grid.Column="1" Grid.Row="1" Grid.RowSpan="3">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding UserName}"/>
+                                            <TextBlock Text="{Binding UserName}" Style="{StaticResource SmallTextBlockStyle}" Margin="0,1"/>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                 </ListView>
+
+                                <TextBlock Grid.Column="2">
+                                    <Run Text="Назначил:"/>
+                                    <Run Text="{Binding Sender.UserName}"/>
+                                </TextBlock>
                             </Grid>
                         </Grid>
                     </HierarchicalDataTemplate>

@@ -461,7 +461,7 @@
             </TreeView>
 
             <Border Opacity="{Binding AddTaskOpacity, UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="{Binding AddTaskZIndex}"
-                    CornerRadius="10" Width="400" Height="300" Grid.RowSpan="100"
+                    CornerRadius="10" Width="400" Height="340" Grid.RowSpan="100"
                     Background="#2e2e2e">
                 <Border.Effect>
                     <DropShadowEffect
@@ -535,6 +535,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"/>
                         <RowDefinition/>
+                        <RowDefinition Height="40"/>
                         <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
 
@@ -689,6 +690,33 @@
                         </ListView>
                     </Grid>
 
+                    <TextBlock Style="{StaticResource SmallTextBlockStyle}"
+                        Grid.Row="2" Grid.ColumnSpan="100"
+                        VerticalAlignment="Center" TextAlignment="Center">
+                        <Run Text="Категория:"/>
+                        <Run Text="{Binding NewTaskCategory.Title}"/>
+                    </TextBlock>
+
+                    <Border Grid.Row="2" Grid.Column="1"
+                        Background="#2e2e2e" BorderBrush="Transparent"
+                        Width="30" Height="30" Margin="0,0,10,5"
+                        HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        <Path Data="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z" 
+                            Stretch="Uniform" Fill="#999999" Width="20" Height="20"/>
+                        <Border.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" Command="{Binding ChangeCategoryCommand}"/>
+                        </Border.InputBindings>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Cursor" Value="Hand"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+
                     <Button Grid.Row="100" Style="{StaticResource ButtonBase}" 
                             Width="100" Height="30" Content="Назад"
                             HorizontalAlignment="Left" Margin="10"
@@ -704,7 +732,7 @@
 
             </Border>
 
-            <Border Opacity="{Binding DelTaskOpacity}" Panel.ZIndex="{Binding DelTaskZIndex}"
+            <Border Opacity="{Binding DelTaskOpacity}" Panel.ZIndex="{Binding DelTaskZIndex}" d:Opacity="0"
                 Grid.RowSpan="100" Height="200" Width="300" CornerRadius="10" Background="#2e2e2e">
 
                 <Border.Effect>

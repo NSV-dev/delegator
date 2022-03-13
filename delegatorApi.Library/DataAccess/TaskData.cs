@@ -9,6 +9,10 @@ namespace delegatorApi.Library.DataAccess
     {
         public void Post(Task task)
         {
+            task.CategoryId = task.Category.Id;
+            task.SenderId = task.Sender.Id;
+            task.Category = null;
+            task.Sender = null;
             using (delegatorContext db = new())
             {
                 db.Tasks.Add(task);

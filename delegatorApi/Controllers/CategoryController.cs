@@ -1,6 +1,7 @@
 ﻿using delegatorApi.Library.DataAccess;
 using delegatorApi.Library.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace delegatorApi.Controllers
 {
@@ -14,6 +15,8 @@ namespace delegatorApi.Controllers
         {
             _categoryData = categoryData;
         }
+
+        public List<Category> GetAll() => _categoryData.GetAll();
 
         [Route("ByTitle")]
         public Category GetByTitle(string title) => _categoryData.GetByTitle(title);

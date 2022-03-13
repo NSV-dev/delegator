@@ -16,6 +16,7 @@ namespace delegatorUI.Library.Api
         public CompaniesUsersHelper CompaniesUsers;
         public RoleHelper Roles;
         public TaskHelper Tasks;
+        public CategoryHelper Categories;
 
         private void InitializeHelpers()
         {
@@ -24,6 +25,7 @@ namespace delegatorUI.Library.Api
             Users = new(_apiClient, CompaniesUsers);
             Roles = new(_apiClient);
             Tasks = new(_apiClient, Users);
+            Categories = new(_apiClient);
         }
         #endregion
 

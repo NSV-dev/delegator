@@ -27,6 +27,13 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             set => OnPropertyChanged(ref _tasks, value);
         }
 
+        private List<Category> _categories;
+        public List<Category> Categories
+        {
+            get => _categories;
+            set => OnPropertyChanged(ref _categories, value);
+        }
+
         private ObservableCollection<AppUser> _companyUsers;
         public ObservableCollection<AppUser> CompanyUsers
         {
@@ -151,6 +158,13 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             get => _newTaskEndDate;
             set => OnPropertyChanged(ref _newTaskEndDate, value);
         }
+
+        private Category _newTaskCategory;
+        public Category NewTaskCategory
+        {
+            get => _newTaskCategory;
+            set => OnPropertyChanged(ref _newTaskCategory, value);
+        }
         #endregion
 
         private string _searchTaskText;
@@ -180,6 +194,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             NewTaskTitle = "";
             NewTaskDesc = "";
             NewTaskEndDate = DateTime.Today;
+            NewTaskCategory = await _apiHelper.Categories.GetByTitle("Не важно и Не срочно");
             NewTaskUsers = new();
             oldUpdateTask = null;
             AddTaskZIndex = -1;
@@ -218,7 +233,9 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
                 Title = NewTaskTitle,
                 Description = NewTaskDesc,
                 EndTime = NewTaskEndDate,
-                Users = new(NewTaskUsers)
+                Users = new(NewTaskUsers),
+                Sender = _user,
+                Category = NewTaskCategory
             };
 
             (this as ILoading).StartLoading();
@@ -233,6 +250,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             NewTaskTitle = "";
             NewTaskDesc = "";
             NewTaskEndDate = DateTime.Today;
+            NewTaskCategory = await _apiHelper.Categories.GetByTitle("Не важно и Не срочно");
             oldUpdateTask = null;
             _mainTask = null;
             foreach (AppUser user in NewTaskUsers)
@@ -240,6 +258,19 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             NewTaskUsers = new();
             LoadTasks();
             (this as ILoading).EndLoading();
+        }
+
+        public ICommand ChangeCategoryCommand{ get; }
+        private void OnChangeCategoryCommandExecute(object p)
+        {
+            int index = Categories.FindIndex(c => c.Id == NewTaskCategory.Id);
+
+            if (index == Categories.Count - 1)
+                index = 0;
+            else
+                index++;
+
+            NewTaskCategory = Categories[index];
         }
         #endregion
 
@@ -263,6 +294,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             NewTaskTitle = (p as AppTask).Title;
             NewTaskDesc = (p as AppTask).Description;
             NewTaskEndDate = (DateTime)(p as AppTask).EndTime;
+            NewTaskCategory = (p as AppTask).Category;
 
             NewTaskUsers = new((p as AppTask).Users);
             foreach (AppUser user in NewTaskUsers)
@@ -307,8 +339,10 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             BackFromDelTaskCommand = new RelayCommand(OnBackFromDelTaskCommandExecute);
             DelTaskCommand = new RelayCommand(OnDelTaskCommandExecute);
             ToUpdateTaskCommand = new RelayCommand(OnToUpdateTaskCommandExecute);
+            ChangeCategoryCommand = new RelayCommand(OnChangeCategoryCommandExecute);
 
             LoadTasks();
+            LoadCategories();
             LoadUsers();
         }
 
@@ -324,6 +358,14 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         {
             (this as ILoading).StartLoading();
             CompanyUsers = new(await _apiHelper.Users.GetByCompany(_company.Id));
+            (this as ILoading).EndLoading();
+        }
+
+        private async void LoadCategories()
+        {
+            (this as ILoading).StartLoading();
+            NewTaskCategory = await _apiHelper.Categories.GetByTitle("Не важно и Не срочно");
+            Categories = await _apiHelper.Categories.GetAll();
             (this as ILoading).EndLoading();
         }
     }

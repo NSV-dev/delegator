@@ -58,6 +58,8 @@ namespace delegatorApi.Library.Models.Context
                     .IsFixedLength(true);
 
                 entity.Property(e => e.Title).IsRequired();
+
+                entity.Property(e => e.Color).IsRequired();
             });
 
             modelBuilder.Entity<Company>(entity =>

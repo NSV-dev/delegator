@@ -523,7 +523,7 @@
                 Text="{Binding NewCompanyCode, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Код компании" Grid.Row="1" Panel.ZIndex="-1" Style="{StaticResource CompanyCodeDescription}"/>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0,20,0,0">
                 <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
                         Margin="20,0,140,0" Command="{Binding BackToCompaniesCommand}"/>
                 <Button Content="Готово" Width="100" Height="30" Style="{StaticResource ButtonBase}"
@@ -596,7 +596,7 @@
                 Text="{Binding SelectedCompanyCode, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Введите код компании" Grid.Row="0" Panel.ZIndex="-1" Style="{StaticResource CompanyCodeDescription}"/>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,20,0,0">
                 <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
                         Margin="20,0,160,0" Command="{Binding BackToCompaniesFromCodeCommand}"/>
                 <Button Content="Войти" Width="100" Height="30" Style="{StaticResource ButtonBase}"

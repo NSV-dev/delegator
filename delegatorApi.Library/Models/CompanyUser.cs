@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-
 namespace delegatorApi.Library.Models
 {
     public partial class CompanyUser

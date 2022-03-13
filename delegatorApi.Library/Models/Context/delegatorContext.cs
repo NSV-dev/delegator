@@ -16,6 +16,7 @@ namespace delegatorApi.Library.Models.Context
         }
 
         public virtual DbSet<AppUser> AppUsers { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<CompanyUser> CompanyUsers { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
@@ -27,7 +28,7 @@ namespace delegatorApi.Library.Models.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-O05LV9C\\SQLEXPRESS;Initial Catalog=delegator;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-O05LV9C\\SQLEXPRESS;Database=delegator;Trusted_Connection=True;");
             }
         }
 
@@ -48,6 +49,17 @@ namespace delegatorApi.Library.Models.Context
                 entity.Property(e => e.UserName).IsRequired();
             });
 
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID")
+                    .HasDefaultValueSql("(newid())")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Title).IsRequired();
+            });
+
             modelBuilder.Entity<Company>(entity =>
             {
                 entity.Property(e => e.Id)
@@ -63,13 +75,13 @@ namespace delegatorApi.Library.Models.Context
 
             modelBuilder.Entity<CompanyUser>(entity =>
             {
+                entity.ToTable("CompanyUser");
+
                 entity.Property(e => e.Id)
                     .HasMaxLength(36)
                     .HasColumnName("ID")
                     .HasDefaultValueSql("(newid())")
                     .IsFixedLength(true);
-
-                entity.ToTable("CompanyUser");
 
                 entity.Property(e => e.AppUserId)
                     .IsRequired()
@@ -86,23 +98,11 @@ namespace delegatorApi.Library.Models.Context
                     .HasMaxLength(36)
                     .IsFixedLength(true);
 
-                entity.HasOne(d => d.AppUser)
-                    .WithMany()
-                    .HasForeignKey(d => d.AppUserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CompanyUser_AppUsers");
+                entity.HasOne(d => d.AppUser);
 
-                entity.HasOne(d => d.Company)
-                    .WithMany()
-                    .HasForeignKey(d => d.CompanyId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CompanyUser_Companies");
+                entity.HasOne(d => d.Company);
 
-                entity.HasOne(d => d.Role)
-                    .WithMany()
-                    .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CompanyUser_Roles");
+                entity.HasOne(d => d.Role);
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -124,9 +124,25 @@ namespace delegatorApi.Library.Models.Context
                     .HasDefaultValueSql("(newid())")
                     .IsFixedLength(true);
 
+                entity.Property(e => e.CategoryId)
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .HasColumnName("CategoryID")
+                    .IsFixedLength(true);
+
                 entity.Property(e => e.EndTime).HasColumnType("date");
 
+                entity.Property(e => e.SenderId)
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .HasColumnName("SenderID")
+                    .IsFixedLength(true);
+
                 entity.Property(e => e.Title).IsRequired();
+
+                entity.HasOne(d => d.Category);
+
+                entity.HasOne(d => d.Sender);
             });
 
             modelBuilder.Entity<TasksTask>(entity =>
@@ -149,17 +165,9 @@ namespace delegatorApi.Library.Models.Context
                     .HasColumnName("TaskID")
                     .IsFixedLength(true);
 
-                entity.HasOne(d => d.MainTask)
-                    .WithMany()
-                    .HasForeignKey(d => d.MainTaskId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_TasksTasks_Tasks");
+                entity.HasOne(d => d.MainTask);
 
-                entity.HasOne(d => d.Task)
-                    .WithMany()
-                    .HasForeignKey(d => d.TaskId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_TasksTasks_Tasks1");
+                entity.HasOne(d => d.Task);
             });
 
             modelBuilder.Entity<TasksUser>(entity =>
@@ -188,23 +196,11 @@ namespace delegatorApi.Library.Models.Context
                     .HasColumnName("UserID")
                     .IsFixedLength(true);
 
-                entity.HasOne(d => d.Company)
-                    .WithMany()
-                    .HasForeignKey(d => d.CompanyId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_TasksUsers_Companies");
+                entity.HasOne(d => d.Company);
 
-                entity.HasOne(d => d.Task)
-                    .WithMany()
-                    .HasForeignKey(d => d.TaskId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_TasksUsers_Tasks");
+                entity.HasOne(d => d.Task);
 
-                entity.HasOne(d => d.User)
-                    .WithMany()
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_TasksUsers_AppUsers");
+                entity.HasOne(d => d.User);
             });
 
             OnModelCreatingPartial(modelBuilder);

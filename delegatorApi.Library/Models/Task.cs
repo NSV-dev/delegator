@@ -10,5 +10,10 @@ namespace delegatorApi.Library.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime? EndTime { get; set; }
+        public string SenderId { get; set; }
+        public string CategoryId { get; set; }
+
+        public virtual Category Category { get; set; }
+        public virtual AppUser Sender { get; set; }
     }
 }

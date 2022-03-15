@@ -199,7 +199,24 @@ namespace delegatorUI.Library.Api.Helpers
             }
         }
 
-        public async Task<List<AppTask>> GetByUserAndCompany(string userID, string companyID)
+        public async Task<List<AppTask>> GetByUserAndCompanyWithoutSubs(string userID, string companyID)
+        {
+            using (HttpResponseMessage resp = await _apiClient.GetAsync($"Task/ByUserIDAndCompanyID?userID={userID}&companyID={companyID}"))
+            {
+                if (resp.IsSuccessStatusCode)
+                {
+                    var tasks = await resp.Content.ReadAsAsync<List<AppTask>>();
+
+                    foreach (AppTask item in tasks)
+                        item.Users = await _appUserHelper.GetByTask(item.Id);
+
+                    return tasks;
+                } else
+                    throw new Exception(resp.ReasonPhrase);
+            }
+        }
+
+        public async Task<List<AppTask>> GetByUserAndCompanyOnlyMain(string userID, string companyID)
         {
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"Task/ByUserIDAndCompanyID?userID={userID}&companyID={companyID}"))
             {

@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="\viewresources\styles\textblocks.xaml"/>
                 <ResourceDictionary Source="\viewresources\styles\borders.xaml"/>
                 <ResourceDictionary Source="\viewresources\styles\passwordboxes.xaml"/>
+                <ResourceDictionary Source="\viewresources\styles\TreeView.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

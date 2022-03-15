@@ -60,6 +60,9 @@ namespace delegatorApi.Library.DataAccess
                 return db.TasksUsers
                     .Where(tu => tu.UserId == userID && tu.CompanyId == companyID)
                     .Select(tu => tu.Task)
+                    .Distinct()
+                    .Include(t => t.Sender)
+                    .Include(t => t.Category)
                     .ToList();
             }
         }
@@ -71,6 +74,9 @@ namespace delegatorApi.Library.DataAccess
                 return db.TasksTasks
                     .Where(tt => tt.MainTaskId == taskID)
                     .Select(tt => tt.Task)
+                    .Distinct()
+                    .Include(t => t.Sender)
+                    .Include(t => t.Category)
                     .ToList();
             }
         }

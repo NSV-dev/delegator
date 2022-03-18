@@ -7,36 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.Resources>
-            <Style x:Key="ErrorTextBlockStyle" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="18"/>
-                <Setter Property="Foreground" Value="#a6444e"/>
-                <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
-                <Setter Property="TextAlignment" Value="Center"/>
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding ErrorOpacity}" Value="0">
-                        <DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation
-                                                Storyboard.TargetProperty="Opacity"
-                                                To="0" Duration="0:0:.3"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation
-                                                Storyboard.TargetProperty="Opacity"
-                                                To="1" Duration="0:0:.3"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.ExitActions>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Resources>
         
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -47,7 +17,7 @@
             <StackPanel.Resources>
                 <Style TargetType="Label">
                     <Setter Property="Width" Value="150"/>
-                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Foreground" Value="{DynamicResource Text}"/>
                     <Setter Property="FontSize" Value="16"/>
                     <Setter Property="Margin" Value="20,0,20,0"/>
                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -100,59 +70,8 @@
             </Grid.Triggers>
 
             <Grid.Resources>
-                <Style TargetType="TextBox">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="FontSize" Value="18"/>
-                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                    <Setter Property="VerticalContentAlignment" Value="Bottom"/>
-                    <Setter Property="Margin" Value="0,0,0,4"/>
-                    <Setter Property="CaretBrush" Value="White"/>
-                </Style>
-                <Style TargetType="PasswordBox">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="FontSize" Value="18"/>
-                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                    <Setter Property="VerticalContentAlignment" Value="Bottom"/>
-                    <Setter Property="Margin" Value="0,0,0,2"/>
-                    <Setter Property="CaretBrush" Value="White"/>
-                </Style>
-                <Style x:Key="TextBlockStyle" TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="Foreground" Value="#999999"/>
-                    <Setter Property="VerticalAlignment" Value="Bottom"/>
-                </Style>
-                <Style x:Key="ErrorTextBlockStyle" TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="18"/>
-                    <Setter Property="Foreground" Value="#a6444e"/>
-                    <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
-                    <Setter Property="TextAlignment" Value="Center"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ErrorOpacity}" Value="0">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation
-                                                Storyboard.TargetProperty="Opacity"
-                                                To="0" Duration="0:0:.3"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation
-                                                Storyboard.TargetProperty="Opacity"
-                                                To="1" Duration="0:0:.3"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.ExitActions>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
                 <Style TargetType="TextBlock" x:Key="LoginDescription"
-                       BasedOn="{StaticResource TextBlockStyle}">
+                       BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Text, ElementName=LogTb}" Value="">
                             <DataTrigger.EnterActions>
@@ -177,7 +96,7 @@
                     </Style.Triggers>
                 </Style>
                 <Style TargetType="TextBlock" x:Key="PasswordDescription"
-                       BasedOn="{StaticResource TextBlockStyle}">
+                       BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Password, ElementName=PasswordBox}" Value="">
                             <DataTrigger.EnterActions>
@@ -202,7 +121,7 @@
                     </Style.Triggers>
                 </Style>
                 <Style TargetType="TextBlock" x:Key="EmailDescription"
-                       BasedOn="{StaticResource TextBlockStyle}">
+                       BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Text, ElementName=EmailTb}" Value="">
                             <DataTrigger.EnterActions>
@@ -227,7 +146,7 @@
                     </Style.Triggers>
                 </Style>
                 <Style TargetType="TextBlock" x:Key="ConfirmDescription"
-                       BasedOn="{StaticResource TextBlockStyle}">
+                       BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Password, ElementName=ConfirmBox}" Value="">
                             <DataTrigger.EnterActions>
@@ -251,67 +170,6 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-                <Style TargetType="Button">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="VerticalAlignment" Value="Bottom"/>
-                    <Setter Property="FontSize" Value="18"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="border" BorderBrush="White" BorderThickness="1" CornerRadius="7">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="border" Property="Background" Value="#363636"/>
-                                    </Trigger>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ThicknessAnimation
-                                                        Storyboard.TargetName="border"
-                                                        Storyboard.TargetProperty="BorderThickness"
-                                                        To="0" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                        To="#474747" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ThicknessAnimation
-                                                        Storyboard.TargetName="border"
-                                                        Storyboard.TargetProperty="BorderThickness"
-                                                        To="1" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                        To="White" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                    <Trigger Property="IsPressed" Value="True">
-                                        <Setter TargetName="border" Property="Width" Value="95"/>
-                                        <Setter TargetName="border" Property="Height" Value="28.5"/>
-                                        <Setter Property="FontSize" Value="17"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
             </Grid.Resources>
 
             <Grid.RowDefinitions>
@@ -325,19 +183,24 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             
-            <TextBox x:Name="LogTb" Width="200" Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox x:Name="LogTb" Width="200" Style="{StaticResource TextBoxBaseWithTheme}"
+                Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Логин" Panel.ZIndex="-1" Margin="2,0,0,4" Style="{StaticResource LoginDescription}"/>
 
-            <TextBox x:Name="EmailTb" Width="200" Grid.Column="2" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox x:Name="EmailTb" Width="200" Grid.Column="2" Style="{StaticResource TextBoxBaseWithTheme}"
+                Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Email" Panel.ZIndex="-1" Grid.Column="2" Margin="2,0,0,4" Style="{StaticResource EmailDescription}"/>
 
-            <resources:BindablePasswordBox x:Name="PasswordBox" Grid.Row="1" Width="200" Password="{Binding Password}"/>
+            <resources:BindablePasswordBox x:Name="PasswordBox" Grid.Row="1" Width="200" 
+                Password="{Binding Password}" Foreground="{DynamicResource Text}" CaretBrush="{DynamicResource Text}"/>
             <TextBlock Text="Пароль" Grid.Row="1" Panel.ZIndex="-1" Style="{StaticResource PasswordDescription}"/>
 
-            <resources:BindablePasswordBox x:Name="ConfirmBox" Grid.Row="1" Grid.Column="2" Width="200" Password="{Binding ConfirmPassword}"/>
+            <resources:BindablePasswordBox x:Name="ConfirmBox" Grid.Row="1" Grid.Column="2" Width="200" 
+                Password="{Binding ConfirmPassword}" Foreground="{DynamicResource Text}" CaretBrush="{DynamicResource Text}"/>
             <TextBlock Text="Подтверждение пароля" Grid.Row="1" Grid.Column="2" Panel.ZIndex="-1" Style="{StaticResource ConfirmDescription}"/>
 
-            <Button Content="Далее" Command="{Binding NextCommand}" Grid.Row="2" Grid.ColumnSpan="3" Width="100" Height="30"/>
+            <Button Content="Далее" Command="{Binding NextCommand}" Style="{StaticResource ButtonBaseWithTheme}"
+                Grid.Row="2" Grid.ColumnSpan="3" Width="100" Height="30"/>
 
         </Grid>
         
@@ -372,7 +235,7 @@
 
             <Grid.Resources>
                 <Style TargetType="TextBlock" x:Key="TitleDescription"
-                       BasedOn="{StaticResource TextBlockStyleBase}">
+                       BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
                     <Setter Property="Margin" Value="0,0,0,4"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Text, ElementName=TitleTb}" Value="">
@@ -405,11 +268,12 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Выберите компанию или " Margin="10,0,0,0" Style="{StaticResource MainTextBlockStyle}" FontSize="16"/>
+            <TextBlock Text="Выберите компанию или " Margin="10,0,0,0" 
+                Style="{StaticResource TextBlockStyleBaseWithTheme}" FontSize="16"/>
             <Button Content="Создать" Margin="0,0,10,0" HorizontalAlignment="Right" Width="100" Height="30"
-                    Command="{Binding NewCompanyCommand}" Style="{StaticResource ButtonBase}"/>
+                    Command="{Binding NewCompanyCommand}" Style="{StaticResource ButtonBaseWithTheme}"/>
 
-            <TextBox x:Name="TitleTb" Grid.Row="1" Style="{StaticResource TextBoxBase}" Text="{Binding CompanyTitleToSearch, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox x:Name="TitleTb" Grid.Row="1" Style="{StaticResource TextBoxBaseWithTheme}" Text="{Binding CompanyTitleToSearch, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Начните вводить название компании..." Grid.Row="1" Panel.ZIndex="-1" Style="{StaticResource TitleDescription}"/>
 
             <ListView x:Name="CompanyListView" Grid.Row="2" Background="Transparent" BorderBrush="Transparent" Foreground="White"
@@ -417,9 +281,9 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Button Content="{Binding Title}" Style="{StaticResource CompanyButton}"
-                                    Command="{Binding DataContext.CompanySelectedCommand, 
-                                                        ElementName=CompanyListView}"
-                                    CommandParameter="{Binding}"/>
+                            Command="{Binding DataContext.CompanySelectedCommand, 
+                                ElementName=CompanyListView}"
+                            CommandParameter="{Binding}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -437,8 +301,8 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation
-                                    Storyboard.TargetProperty="Opacity"
-                                    From="0" To="1" Duration="0:0:.1"/>
+                                            Storyboard.TargetProperty="Opacity"
+                                            From="0" To="1" Duration="0:0:.1"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
@@ -446,8 +310,8 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation
-                                    Storyboard.TargetProperty="Opacity"
-                                    From="1" To="0" Duration="0:0:.1"/>
+                                            Storyboard.TargetProperty="Opacity"
+                                            From="1" To="0" Duration="0:0:.1"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.ExitActions>
@@ -458,15 +322,15 @@
 
             <Grid.Resources>
                 <Style TargetType="TextBlock" x:Key="CompanyTitleDescription"
-                       BasedOn="{StaticResource TextBlockStyleBase}">
+                       BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Text, ElementName=CompanyTitleTb}" Value="">
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <ThicknessAnimation
-                                                Storyboard.TargetProperty="Margin"
-                                                To="2,0,0,4" Duration="0:0:.1"/>
+                                            Storyboard.TargetProperty="Margin"
+                                            To="2,0,0,4" Duration="0:0:.1"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
@@ -483,7 +347,7 @@
                     </Style.Triggers>
                 </Style>
                 <Style TargetType="TextBlock" x:Key="CompanyCodeDescription"
-                       BasedOn="{StaticResource TextBlockStyleBase}">
+                       BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Text, ElementName=CompanyCodeTb}" Value="">
                             <DataTrigger.EnterActions>
@@ -515,18 +379,18 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBox x:Name="CompanyTitleTb" Grid.Row="0" Style="{StaticResource TextBoxBase}"
+            <TextBox x:Name="CompanyTitleTb" Grid.Row="0" Style="{StaticResource TextBoxBaseWithTheme}"
                 Text="{Binding NewCompanyTitle, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Название" Grid.Row="0" Panel.ZIndex="-1" Style="{StaticResource CompanyTitleDescription}"/>
             
-            <TextBox x:Name="CompanyCodeTb" Grid.Row="1" Style="{StaticResource TextBoxBase}"
+            <TextBox x:Name="CompanyCodeTb" Grid.Row="1" Style="{StaticResource TextBoxBaseWithTheme}"
                 Text="{Binding NewCompanyCode, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Код компании" Grid.Row="1" Panel.ZIndex="-1" Style="{StaticResource CompanyCodeDescription}"/>
 
             <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0,20,0,0">
-                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBaseWithTheme}"
                         Margin="20,0,140,0" Command="{Binding BackToCompaniesCommand}"/>
-                <Button Content="Готово" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                <Button Content="Готово" Width="100" Height="30" Style="{StaticResource ButtonBaseWithTheme}"
                         Command="{Binding CreateCompanyCommand}"/>
             </StackPanel>
         </Grid>
@@ -561,7 +425,7 @@
 
             <Grid.Resources>
                 <Style TargetType="TextBlock" x:Key="CompanyCodeDescription"
-                       BasedOn="{StaticResource TextBlockStyleBase}">
+                       BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Text, ElementName=SelectedCompanyCodeTb}" Value="">
                             <DataTrigger.EnterActions>
@@ -592,14 +456,14 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             
-            <TextBox x:Name="SelectedCompanyCodeTb" Grid.Row="0" Style="{StaticResource TextBoxBase}"
+            <TextBox x:Name="SelectedCompanyCodeTb" Grid.Row="0" Style="{StaticResource TextBoxBaseWithTheme}"
                 Text="{Binding SelectedCompanyCode, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Введите код компании" Grid.Row="0" Panel.ZIndex="-1" Style="{StaticResource CompanyCodeDescription}"/>
 
             <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,20,0,0">
-                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBaseWithTheme}"
                         Margin="20,0,160,0" Command="{Binding BackToCompaniesFromCodeCommand}"/>
-                <Button Content="Войти" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                <Button Content="Войти" Width="100" Height="30" Style="{StaticResource ButtonBaseWithTheme}"
                         Command="{Binding CompanyConfirmedCommand}"/>
             </StackPanel>
 

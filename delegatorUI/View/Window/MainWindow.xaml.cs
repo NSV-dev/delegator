@@ -1,16 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace delegatorUI.View.Window
 {
@@ -22,6 +11,18 @@ namespace delegatorUI.View.Window
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void ThemeBtn_Checked(object sender, RoutedEventArgs e)
+        {
+            ThemeBtn.Content = "☾";
+            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("\\viewresources\\themes\\dark.xaml", UriKind.RelativeOrAbsolute);
+        }
+
+        private void ThemeBtn_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ThemeBtn.Content = "☀";
+            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("\\viewresources\\themes\\light.xaml", UriKind.RelativeOrAbsolute);
         }
     }
 }

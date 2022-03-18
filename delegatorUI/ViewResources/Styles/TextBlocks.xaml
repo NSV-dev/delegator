@@ -6,6 +6,12 @@
         <Setter Property="Foreground" Value="#999999"/>
         <Setter Property="VerticalAlignment" Value="Bottom"/>
     </Style>
+    
+    <Style x:Key="TextBlockStyleBaseWithTheme" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="{DynamicResource Path}"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+    </Style>
 
     <Style x:Key="ErrorTextBlockStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="18"/>
@@ -38,6 +44,11 @@
 
     <Style x:Key="SmallTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="15"/>
+    </Style>
+    
+    <Style x:Key="SmallTextBlockStyleWithTheme" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource Text}"/>
         <Setter Property="FontSize" Value="15"/>
     </Style>
     

@@ -23,6 +23,13 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="15"/>
     </Style>
+    
+    <Style x:Key="MainTextBlockStyleWithTheme" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Foreground" Value="{DynamicResource Text}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="15"/>
+    </Style>
 
 
     <Style x:Key="TextBlockStyle" TargetType="TextBlock">
@@ -38,15 +45,15 @@
     <Style x:Key="ButtonStyle" TargetType="RadioButton">
         <Setter Property="Height" Value="50"/>
         <Setter Property="Width" Value="200"/>
-        <Setter Property="Foreground" Value="#474747"/>
+        <Setter Property="Foreground" Value="{DynamicResource Text2}"/>
         <Setter Property="Margin" Value="0,5"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
                     <Grid x:Name="grid" Background="Transparent">
-                        <Rectangle x:Name="LeftRect" Fill="White" Height="0"
+                        <Rectangle x:Name="LeftRect" Fill="{DynamicResource Text}" Height="0"
                             Width="2" HorizontalAlignment="Left"/>
-                        <Rectangle x:Name="DownRect" Fill="White"
+                        <Rectangle x:Name="DownRect" Fill="{DynamicResource Text}"
                             VerticalAlignment="Bottom" Height="2" Margin="10,0,0,0"
                             HorizontalAlignment="Left"/>
                         <ContentPresenter Margin="15,10,10,10"/>

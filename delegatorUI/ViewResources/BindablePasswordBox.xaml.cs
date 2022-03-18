@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace delegatorUI.ViewResources
 {
@@ -28,6 +29,44 @@ namespace delegatorUI.ViewResources
         {
             get { return (string)GetValue(PasswordProperty); }
             set { SetValue(PasswordProperty, value); }
+        }
+
+        public static new readonly DependencyProperty ForegroundProperty =
+            DependencyProperty.Register("Foreground", typeof(SolidColorBrush), typeof(BindablePasswordBox),
+                new FrameworkPropertyMetadata(new SolidColorBrush(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    ForegroundPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
+
+        private static void ForegroundPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is BindablePasswordBox passwordBox)
+            {
+                passwordBox.passwordBox.Foreground = e.NewValue as SolidColorBrush;
+            }
+        }
+
+        public new SolidColorBrush Foreground
+        {
+            get => GetValue(ForegroundProperty) as SolidColorBrush;
+            set => SetValue(ForegroundProperty, value);
+        }
+
+        public static readonly DependencyProperty CaretBrushProperty =
+            DependencyProperty.Register("CaretBrush", typeof(SolidColorBrush), typeof(BindablePasswordBox),
+                new FrameworkPropertyMetadata(new SolidColorBrush(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    CaretBrushPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
+
+        private static void CaretBrushPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is BindablePasswordBox passwordBox)
+            {
+                passwordBox.passwordBox.CaretBrush = e.NewValue as SolidColorBrush;
+            }
+        }
+
+        public SolidColorBrush CaretBrush
+        {
+            get => GetValue(CaretBrushProperty) as SolidColorBrush;
+            set => SetValue(CaretBrushProperty, value);
         }
 
         public BindablePasswordBox()

@@ -16,7 +16,7 @@
             <StackPanel.Resources>
                 <Style TargetType="Label">
                     <Setter Property="Width" Value="150"/>
-                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Foreground" Value="{DynamicResource Text}"/>
                     <Setter Property="FontSize" Value="16"/>
                     <Setter Property="Margin" Value="20,0,20,0"/>
                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -78,7 +78,7 @@
             </Grid.Triggers>
             <Grid.Resources>
                 <Style TargetType="TextBlock" x:Key="LoginDescription"
-                       BasedOn="{StaticResource TextBlockStyleBase}">
+                       BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Text, ElementName=LogTb}" Value="">
                             <DataTrigger.EnterActions>
@@ -103,7 +103,7 @@
                     </Style.Triggers>
                 </Style>
                 <Style TargetType="TextBlock" x:Key="PasswordDescription"
-                       BasedOn="{StaticResource TextBlockStyleBase}">
+                       BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Password, ElementName=PasswordBox}" Value="">
                             <DataTrigger.EnterActions>
@@ -126,50 +126,6 @@
                             </DataTrigger.ExitActions>
                         </DataTrigger>
                     </Style.Triggers>
-                </Style>
-                <Style TargetType="Button" x:Key="CompanyButton">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,0,0,1"
-                                        MinWidth="100" Margin="0, 2">
-                                    <ContentPresenter Margin="1" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetName="border"
-                                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
-                                                        To="White" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetName="border"
-                                                        Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
-                                                        To="Transparent" Duration="0:0:.3"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                    <Trigger Property="IsPressed" Value="True">
-                                        <Setter Property="FontSize" Value="14"/>
-                                        <Setter Property="BorderBrush" Value="#999999"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
                 </Style>
                 <Style TargetType="Grid" x:Key="CompaniesGrid">
                     <Style.Triggers>
@@ -201,13 +157,16 @@
                        Width="200" HorizontalAlignment="Center" Style="{StaticResource ErrorTextBlockStyle}"
                        Margin="0,-75,0,0" Opacity="0"/>
 
-            <TextBox x:Name="LogTb" Style="{StaticResource TextBoxBase}" Width="200" Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox x:Name="LogTb" Style="{StaticResource TextBoxBaseWithTheme}" Width="200" Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Логин" Panel.ZIndex="-1" Margin="2,0,0,4" Style="{StaticResource LoginDescription}"/>
             
-            <resources:BindablePasswordBox x:Name="PasswordBox" Margin="0,20,0,0" Grid.Row="1" Width="200" Password="{Binding Password}"/>
+            <resources:BindablePasswordBox x:Name="PasswordBox" 
+                Margin="0,20,0,0" Grid.Row="1" Width="200" 
+                Password="{Binding Password}" 
+                Foreground="{DynamicResource Text}" CaretBrush="{DynamicResource Text}"/>
             <TextBlock Text="Пароль" Grid.Row="1" Panel.ZIndex="-1" Style="{StaticResource PasswordDescription}"/>
 
-            <Button Content="Войти" Command="{Binding LogInCommand}" Style="{StaticResource ButtonBase}"
+            <Button Content="Войти" Command="{Binding LogInCommand}" Style="{StaticResource ButtonBaseWithTheme}"
                     Grid.Row="2" Width="100" Height="30" IsDefault="True" Margin="0,50,0,0"/>
 
             <Grid Grid.RowSpan="100" Grid.Column="2" Width="{Binding CompanyWidth}"
@@ -223,7 +182,7 @@
                 <ListView x:Name="CompanyListView"
                           ItemsSource="{Binding Companies}"
                           Width="160" Grid.Row="1" ItemContainerStyle="{StaticResource ListViewNoHover}"
-                          Background="Transparent" BorderBrush="Transparent" Foreground="White">
+                          Background="Transparent" BorderBrush="Transparent">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Button Content="{Binding Title}" Style="{StaticResource CompanyButton}"
@@ -237,6 +196,7 @@
             </Grid>
         </Grid>
         
-        <resources:LoadingAnimation Grid.Row="1" Opacity="0" Panel.ZIndex="{Binding LoadingZIndex}"/>
+        <resources:LoadingAnimation Grid.Row="1" Opacity="0" 
+            Panel.ZIndex="{Binding LoadingZIndex}" d:Panel.ZIndex="-100"/>
     </Grid>
 </UserControl>

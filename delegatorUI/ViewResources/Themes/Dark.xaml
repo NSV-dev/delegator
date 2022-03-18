@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="Text" Color="White"/>
+    <Color x:Key="TextClr" R="#f" G="#f" B="#f"/>
+
+    <SolidColorBrush x:Key="Text2" Color="#474747"/>
+    
+    <SolidColorBrush x:Key="WindowPanel" Color="#1c1c1c"/>
+
+    <SolidColorBrush x:Key="MainBg" Color="#2e2e2e"/>
+
+    <SolidColorBrush x:Key="NavPanel" Color="#242424"/>
+    
+    <SolidColorBrush x:Key="Hover" Color="#363636"/>
+
+    <SolidColorBrush x:Key="Path" Color="#999999"/>
+</ResourceDictionary>

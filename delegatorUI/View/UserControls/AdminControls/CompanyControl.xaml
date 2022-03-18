@@ -36,7 +36,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Style="{StaticResource MainTextBlockStyle}">
+            <TextBlock Style="{StaticResource MainTextBlockStyleWithTheme}">
                 <Run Text="Сотрудники "/><Run 
                     Text="{Binding CompanyName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/><Run 
                     Text=":"/>

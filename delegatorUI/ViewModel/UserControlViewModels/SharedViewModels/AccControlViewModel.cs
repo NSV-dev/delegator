@@ -99,7 +99,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
         private async void OnChangeUserDataCommandExecute(object p)
         {
             (this as ILoading).StartLoading();
-            if (await _apiHelper.Users.GetByUsername(UserNameToChange) is not null)
+            if (await _apiHelper.Users.GetByUsername(UserNameToChange) is not null
+                   && EmailToChange == _companyUserStore.CompanyUser.User.Email)
             {
                 (this as IError).Error("Имя пользователя занято");
                 (this as ILoading).EndLoading();

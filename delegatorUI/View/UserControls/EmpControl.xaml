@@ -17,7 +17,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid x:Name="NavigationPanel" HorizontalAlignment="Left"
-              Width="65" Background="#242424">
+              Width="65" Background="{DynamicResource NavPanel}">
 
             <!--<Grid.Triggers>
                 <EventTrigger RoutedEvent="Loaded">

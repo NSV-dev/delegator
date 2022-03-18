@@ -802,6 +802,6 @@
             Grid.ColumnSpan="100" Style="{StaticResource ErrorTextBlockStyle}"/>
 
         <resources:LoadingAnimation Opacity="0" Panel.ZIndex="{Binding LoadingZIndex}"
-            Grid.ColumnSpan="100" Grid.RowSpan="100"/>
+            Grid.ColumnSpan="100" Grid.RowSpan="100" d:Panel.ZIndex="-10"/>
     </Grid>
 </UserControl>

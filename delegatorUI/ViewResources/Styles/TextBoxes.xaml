@@ -10,6 +10,16 @@
         <Setter Property="Margin" Value="0,0,0,4"/>
         <Setter Property="CaretBrush" Value="White"/>
     </Style>
+    
+    <Style x:Key="TextBoxBaseWithTheme" TargetType="TextBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource Text}"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="VerticalContentAlignment" Value="Bottom"/>
+        <Setter Property="Margin" Value="0,0,0,4"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource Text}"/>
+    </Style>
 
     <Style x:Key="MultiLineTextBox" TargetType="TextBox">
         <Setter Property="Background" Value="Transparent"/>

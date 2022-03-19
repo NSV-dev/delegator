@@ -19,6 +19,7 @@ namespace delegatorApi.Library.Models.Context
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<CompanyUser> CompanyUsers { get; set; }
+        public virtual DbSet<Complited> Complited { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Task> Tasks { get; set; }
         public virtual DbSet<TasksTask> TasksTasks { get; set; }
@@ -105,6 +106,35 @@ namespace delegatorApi.Library.Models.Context
                 entity.HasOne(d => d.Company);
 
                 entity.HasOne(d => d.Role);
+            });
+
+            modelBuilder.Entity<Complited>(entity =>
+            {
+                entity.ToTable("Complited");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID")
+                    .HasDefaultValueSql("(newid())")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.TaskId)
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Duration).IsRequired();
+
+                entity.Property(e => e.EndTime).IsRequired();
+
+                entity.HasOne(d => d.User);
+
+                entity.HasOne(d => d.Task);
             });
 
             modelBuilder.Entity<Role>(entity =>

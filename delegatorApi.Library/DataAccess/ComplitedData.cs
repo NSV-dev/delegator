@@ -9,7 +9,24 @@ namespace delegatorApi.Library.DataAccess
 {
     public class ComplitedData
     {
-        public List<Complited> GetByUserAndDate(string userID, DateTime from, DateTime to)
+        public void Post(Complited complited)
+        {
+            using (delegatorContext db = new())
+            {
+                db.Complited.Add(complited);
+                db.SaveChanges();
+            }
+        }
+
+        public List<Complited> GetByTask(string taskID)
+        {
+            using (delegatorContext db = new())
+            {
+                return db.Complited.Where(c => c.TaskId == taskID).ToList();
+            }
+        }
+
+            public List<Complited> GetByUserAndDate(string userID, DateTime from, DateTime to)
         {
             using (delegatorContext db = new())
             {

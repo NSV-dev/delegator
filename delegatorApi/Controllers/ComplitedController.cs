@@ -17,6 +17,12 @@ namespace delegatorApi.Controllers
             _complitedData = complitedData;
         }
 
+        public void Post(Complited complited) => _complitedData.Post(complited);
+
+        [Route("ByTask")]
+        public List<Complited> GetByTask(string taskID)
+            => _complitedData.GetByTask(taskID);
+
         [Route("ByUserAndDate")]
         public List<Complited> GetByUserAndDate(string userID, DateTime from, DateTime to)
             => _complitedData.GetByUserAndDate(userID, from, to);

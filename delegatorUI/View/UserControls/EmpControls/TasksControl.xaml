@@ -73,6 +73,127 @@
             Grid.Column="0" Grid.Row="1" Padding="0,0,10,0" 
             ItemContainerStyle="{StaticResource UserTvStyle}" ItemTemplate="{StaticResource UserDt}"/>
 
+        <Border Background="#555555" CornerRadius="10"
+            Opacity="0" d:Opacity="1" Panel.ZIndex="{Binding ReportsZIndex}"
+            Width="500" Height="300" 
+            Grid.ColumnSpan="100" Grid.RowSpan="100">
+            <Border.Effect>
+                <DropShadowEffect
+                    ShadowDepth="1" Direction="275"
+                    Opacity=".6" BlurRadius="20"/>
+            </Border.Effect>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="Panel.ZIndex" Value="1">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                            Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                            Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid Margin="10">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Style="{StaticResource SmallTextBlockStyle}"
+                    Grid.ColumnSpan="200" FontSize="18">
+                    <Run Text="Отчет о"/>
+                    <Run Text="{Binding ReportTaskName}"/><Run 
+                        Text=", назначена:"/>
+                    <Run Text="{Binding ReportSenderName}"/>
+                </TextBlock>
+
+                <TextBlock Text="Текст отчета:" Grid.Row="1" Style="{StaticResource SmallTextBlockStyle}"/>
+                <TextBox Style="{StaticResource MultiLineTextBox}" 
+                    Text="{Binding ReportText, UpdateSourceTrigger=PropertyChanged}"
+                    Grid.Row="1" Margin="0,20,10,30" FontSize="15"/>
+
+                <TextBlock Text="Время выполнения:" VerticalAlignment="Bottom" Margin="0,0,0,6"
+                    Grid.Row="1" Style="{StaticResource SmallTextBlockStyle}"/>
+                <TextBox Text="{Binding ReportDuration, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{StaticResource TextBoxBase}" Grid.Row="1"
+                    VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                    Width="35" Height="26" Margin="0,0,65,4" MaxLength="3"/>
+
+                <TextBlock Text="Файлы:" Grid.Row="1" Grid.Column="1"
+                    Style="{StaticResource SmallTextBlockStyle}"/>
+                <Border Background="Transparent" BorderThickness="0"
+                        Height="15" Width="15" Margin="0,3,5,0" Grid.Column="1" Grid.Row="1"
+                        HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Path Data="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+                        Fill="#999999" Stretch="Uniform"/>
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding AddFileCommand}"/>
+                    </Border.InputBindings>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+                <ListView x:Name="filesLw"
+                    Style="{StaticResource ListViewBase}" ItemContainerStyle="{StaticResource ListViewNoHover}"
+                    ItemsSource="{Binding ReportFiles}" Grid.Column="1" Grid.Row="1" Margin="0,20,0,10">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding SafeFileName}" 
+                                Style="{StaticResource SmallTextBlockStyle}">
+                                <TextBlock.InputBindings>
+                                    <MouseBinding Gesture="LeftClick" 
+                                        Command="{Binding ElementName=filesLw, Path=DataContext.DeleteFileCommand}"
+                                        CommandParameter="{Binding}"/>
+                                </TextBlock.InputBindings>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Button Content="Готово"
+                    Width="100" Height="30"
+                    HorizontalAlignment="Right"
+                    Command="{Binding ReportCommand}"
+                    Style="{StaticResource ButtonBase}"
+                    Grid.Column="1" Grid.Row="2"/>
+                
+                <Button Content="Назад"
+                    Width="100" Height="30"
+                    HorizontalAlignment="Left"
+                    Command="{Binding BackFromReportCommand}"
+                    Style="{StaticResource ButtonBase}"
+                    Grid.Row="2"/>
+            </Grid>
+            
+        </Border>
+        
         <res:LoadingAnimation Panel.ZIndex="{Binding LoadingZIndex}" Opacity="0"
             Grid.ColumnSpan="100" Grid.RowSpan="100"/>
         

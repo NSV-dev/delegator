@@ -277,6 +277,29 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+
+                <Border Background="Transparent" BorderThickness="0"
+                    Height="25" Width="25" Margin="0,-30,-30,0"
+                    Grid.Column="3" Grid.Row="10"
+                    HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Path Data="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                        Fill="#999999" Stretch="Uniform"/>
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding RelativeSource=
+                            {RelativeSource AncestorType=TreeView, Mode=FindAncestor}, Path=DataContext.ToReportCommand}"
+                            CommandParameter="{Binding}"/>
+                    </Border.InputBindings>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+
             </Grid>
         </Grid>
     </HierarchicalDataTemplate>

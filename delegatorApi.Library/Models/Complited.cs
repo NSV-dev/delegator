@@ -13,6 +13,5 @@ namespace delegatorApi.Library.Models
         public DateTime? EndTime { get; set; }
 
         public virtual AppUser User { get; set; }
-        public virtual Task Task { get; set; }
     }
 }

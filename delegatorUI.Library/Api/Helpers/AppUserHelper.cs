@@ -98,6 +98,28 @@ namespace delegatorUI.Library.Api.Helpers
             }
         }
 
+        public async Task DeleteTask(string taskID, string userID, string companyID)
+        {
+            TaskUsers tu;
+            using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser/Get", new TaskUsers()
+            {
+                TaskId = taskID,
+                UserId = userID,
+                CompanyId = companyID
+            }))
+            {
+                tu = await resp.Content.ReadAsAsync<TaskUsers>();
+            }
+
+            using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser/Delete", tu))
+            {
+                if (resp.IsSuccessStatusCode)
+                    return;
+                else
+                    throw new Exception(resp.ReasonPhrase);
+            }
+        }
+
         public List<AppUser> ConvertToAppUsersWithoutRole(List<User> users)
         {
             List<AppUser> result = new();

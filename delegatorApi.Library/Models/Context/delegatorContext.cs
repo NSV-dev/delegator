@@ -133,8 +133,6 @@ namespace delegatorApi.Library.Models.Context
                 entity.Property(e => e.EndTime).IsRequired();
 
                 entity.HasOne(d => d.User);
-
-                entity.HasOne(d => d.Task);
             });
 
             modelBuilder.Entity<Role>(entity =>

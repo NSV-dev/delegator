@@ -93,11 +93,12 @@ namespace delegatorUI.Library.Api.Helpers
                     else
                         throw new Exception(resp.ReasonPhrase);
                 }
-                using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser/Delete", taskUsersWithID))
-                {
-                    if (!resp.IsSuccessStatusCode)
-                        throw new Exception(resp.ReasonPhrase);
-                }
+                if (taskUsersWithID is not null)
+                    using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser/Delete", taskUsersWithID))
+                    {
+                        if (!resp.IsSuccessStatusCode)
+                            throw new Exception(resp.ReasonPhrase);
+                    }
             }
 
             TaskTasks taskTasks = null;

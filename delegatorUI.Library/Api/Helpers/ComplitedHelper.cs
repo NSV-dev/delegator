@@ -12,7 +12,7 @@ namespace delegatorUI.Library.Api.Helpers
         public ComplitedHelper(HttpClient apiClient)
             : base(apiClient) { }
 
-        public async void Post(Complited complited)
+        public async Task Post(Complited complited)
         {
             using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("Complited", complited))
             {
@@ -23,7 +23,7 @@ namespace delegatorUI.Library.Api.Helpers
             }
         }
 
-        public async Task<List<Complited>> GetByUserAndDate(string taskID)
+        public async Task<List<Complited>> GetByTask(string taskID)
         {
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"Complited/ByTask?taskID={taskID}"))
             {

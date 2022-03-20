@@ -37,10 +37,14 @@ namespace delegatorApi.Library.DataAccess
         {
             using (delegatorContext db = new())
             {
-                return db.TasksUsers.Where(tu =>
+                var list = db.TasksUsers.Where(tu =>
                     tu.CompanyId == tasksUser.CompanyId &&
                     tu.TaskId == tasksUser.TaskId &&
-                    tu.UserId == tasksUser.UserId).Single();
+                    tu.UserId == tasksUser.UserId);
+                if (list.Count() == 0)
+                    return null;
+                else
+                    return list.Single();
             }
         }
     }

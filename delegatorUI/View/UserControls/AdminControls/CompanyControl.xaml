@@ -49,87 +49,147 @@
                 ItemsSource="{Binding Users}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="#666666" CornerRadius="5" 
-                                Height="30" Width="300" Margin="10,8,0,0">
-                            <Border.Triggers>
-                                <EventTrigger RoutedEvent="MouseEnter">
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation
-                                                Storyboard.TargetName="UpdateBtn"
-                                                Storyboard.TargetProperty="Opacity"
-                                                Duration="0:0:.2" From="0" To="1"/>
-                                            <DoubleAnimation
-                                                Storyboard.TargetName="DeleteBtn"
-                                                Storyboard.TargetProperty="Opacity"
-                                                Duration="0:0:.2" From="0" To="1"/>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                                <EventTrigger RoutedEvent="MouseLeave">
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation
-                                                Storyboard.TargetName="UpdateBtn"
-                                                Storyboard.TargetProperty="Opacity"
-                                                Duration="0:0:.2" From="1" To="0"/>
-                                            <DoubleAnimation
-                                                Storyboard.TargetName="DeleteBtn"
-                                                Storyboard.TargetProperty="Opacity"
-                                                Duration="0:0:.2" From="1" To="0"/>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                            </Border.Triggers>
-                            
-                            <Grid VerticalAlignment="Center">
-                                <TextBlock Text="{Binding UserName}" Margin="10,0,0,0" Style="{StaticResource SmallTextBlockStyle}"/>
-                                <TextBlock Margin="100,0,0,0" Style="{StaticResource SmallTextBlockStyle}">
+                        <Border x:Name="Bd"
+                            Background="#666666" CornerRadius="5" 
+                            Height="30" Width="300" Margin="10,8,0,0">
+
+                            <Grid>
+                                <Grid VerticalAlignment="Top" Margin="0,4,0,0">
+                                    <TextBlock Text="{Binding UserName}" Margin="10,0,0,0" Style="{StaticResource SmallTextBlockStyle}"/>
+                                    <TextBlock Margin="100,0,0,0" Style="{StaticResource SmallTextBlockStyle}">
                                     <Run Text="Роль:"/>
                                     <Run Text="{Binding Role.Title}"/>
-                                </TextBlock>
-                                <Border x:Name="UpdateBtn"
-                                    Background="Transparent" BorderThickness="0"
-                                    HorizontalAlignment="Right" Opacity="0"
-                                    Height="20" Width="20" Padding="1" Margin="0,0,40,0">
-                                    <Path Data="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"
+                                    </TextBlock>
+                                    <ToggleButton x:Name="DescBtn"
+                                    Content="● ● ●" Margin="0,1,10,0" FontSize="14"
+                                    VerticalAlignment="Top" HorizontalAlignment="Right">
+                                        <ToggleButton.Triggers>
+                                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                                <EventTrigger.Actions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation
+                                                            Storyboard.TargetName="Bd"
+                                                            Storyboard.TargetProperty="Height"
+                                                            From="30" To="200" Duration="0:0:.2"/>
+                                                            <DoubleAnimation
+                                                            Storyboard.TargetName="EditPanel"
+                                                            Storyboard.TargetProperty="Width"
+                                                            From="0" To="90" Duration="0:0:.2"/>
+                                                            <ThicknessAnimation
+                                                            Storyboard.TargetName="DescBtn"
+                                                            Storyboard.TargetProperty="Margin"
+                                                            From="0,1,10,0" To="0,1,70,0" Duration="0:0:.2"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger.Actions>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                                <EventTrigger.Actions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation
+                                                            Storyboard.TargetName="Bd"
+                                                            Storyboard.TargetProperty="Height"
+                                                            From="200" To="30" Duration="0:0:.2"/>
+                                                            <DoubleAnimation
+                                                            Storyboard.TargetName="EditPanel"
+                                                            Storyboard.TargetProperty="Width"
+                                                            From="90" To="0" Duration="0:0:.2"/>
+                                                            <ThicknessAnimation
+                                                            Storyboard.TargetName="DescBtn"
+                                                            Storyboard.TargetProperty="Margin"
+                                                            From="0,1,70,0" To="0,1,10,0" Duration="0:0:.2"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger.Actions>
+                                            </EventTrigger>
+                                        </ToggleButton.Triggers>
+                                        <ToggleButton.Style>
+                                            <Style TargetType="ToggleButton" BasedOn="{StaticResource DescBtnStyle}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Cursor" Value="Hand"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ToggleButton.Style>
+                                    </ToggleButton>
+                                    <Grid x:Name="EditPanel" Width="0" HorizontalAlignment="Right">
+                                        <Border x:Name="UpdateBtn"
+                                            Background="Transparent" BorderThickness="0"
+                                            HorizontalAlignment="Right"
+                                            Height="20" Width="20" Padding="1" Margin="0,0,40,0">
+                                            <Path Data="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"
+                                            Fill="#999999" Stretch="Uniform"/>
+                                            <Border.InputBindings>
+                                                <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=UsersLw,
+                                                Path=DataContext.ToUpdateUserCommand}"
+                                                CommandParameter="{Binding}"/>
+                                            </Border.InputBindings>
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Cursor" Value="Hand"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                        </Border>
+                                        <Border x:Name="DeleteBtn"
+                                        Background="Transparent" BorderThickness="0"
+                                        HorizontalAlignment="Right"
+                                        Height="20" Width="20" Padding="1" Margin="0,0,10,0">
+                                            <Path Data="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
                                         Fill="#999999" Stretch="Uniform"/>
-                                    <Border.InputBindings>
-                                        <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=UsersLw,
-                                            Path=DataContext.ToUpdateUserCommand}"
-                                            CommandParameter="{Binding}"/>
-                                    </Border.InputBindings>
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Cursor" Value="Hand"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-                                </Border>
-                                <Border x:Name="DeleteBtn"
-                                    Background="Transparent" BorderThickness="0"
-                                    HorizontalAlignment="Right" Opacity="0"
-                                    Height="20" Width="20" Padding="1" Margin="0,0,10,0">
-                                    <Path Data="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
-                                        Fill="#999999" Stretch="Uniform"/>
-                                    <Border.InputBindings>
-                                        <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=UsersLw,
-                                            Path=DataContext.ToDeleteUserCommand}"
-                                            CommandParameter="{Binding}"/>
-                                    </Border.InputBindings>
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Cursor" Value="Hand"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-                                </Border>
+                                            <Border.InputBindings>
+                                                <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=UsersLw,
+                                                Path=DataContext.ToDeleteUserCommand}"
+                                                CommandParameter="{Binding}"/>
+                                            </Border.InputBindings>
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Cursor" Value="Hand"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                        </Border>
+                                    </Grid>
+                                </Grid>
+                                <Grid Margin="5,50,5,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="От:" Style="{StaticResource SmallTextBlockStyle}"
+                                        Margin="4,-1,0,0"/>
+                                    <TextBlock Text="До:" Style="{StaticResource SmallTextBlockStyle}" 
+                                        Grid.Column="1" Margin="4,-1,0,0"/>
+                                    <DatePicker Style="{StaticResource DatePickerBase}"
+                                        Margin="2,20,2,0" SelectedDate="{Binding ElementName=UsersLw, Path=DataContext.From}"/>
+                                    <DatePicker Style="{StaticResource DatePickerBase}"
+                                        Grid.Column="1" Margin="2,20,2,0" SelectedDate="{Binding ElementName=UsersLw, Path=DataContext.To}"/>
+
+                                    <TextBlock Text="Выполненые задачи:" Style="{StaticResource SmallTextBlockStyle}"
+                                        Margin="10,50,0,0" Grid.ColumnSpan="100"/>
+                                    <TextBlock Margin="0,70,0,0" Style="{StaticResource SmallTextBlockStyle}">
+                                        <Run Text="Количество:"/><LineBreak/>
+                                        <Run Text="{Binding ComplitedCount, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </TextBlock>
+                                    <TextBlock Margin="0,70,0,0" Style="{StaticResource SmallTextBlockStyle}" Grid.Column="1">
+                                        <Run Text="Затраченное время:"/><LineBreak/>
+                                        <Run Text="{Binding ComplitedDuration, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </TextBlock>
+
+                                    <Button Content="Рассчитать" Style="{StaticResource ButtonBase}"
+                                        Grid.Column="1" Height="30" Width="100" VerticalAlignment="Bottom" Margin="0,0,-35,10"
+                                        Command="{Binding ElementName=UsersLw, Path=DataContext.CalcStats}"
+                                        CommandParameter="{Binding}"/>
+                                </Grid>
                             </Grid>
                             <Border.Effect>
                                 <DropShadowEffect

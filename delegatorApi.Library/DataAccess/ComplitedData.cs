@@ -15,7 +15,6 @@ namespace delegatorApi.Library.DataAccess
             {
                 return db.Complited.Where(c => c.UserId == userID &&
                     c.EndTime >= from && c.EndTime <= to)
-                    .Include(c => c.User)
                     .Include(c => c.Task)
                     .ToList();
             }

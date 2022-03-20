@@ -5,7 +5,9 @@ using delegatorUI.Infrastructure.Stores;
 using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
@@ -23,8 +25,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             set => OnPropertyChanged(ref _companyName, value);
         }
 
-        private List<AppUser> _users;
-        public List<AppUser> Users
+        private ObservableCollection<AppUserWithStats> _users;
+        public ObservableCollection<AppUserWithStats> Users
         {
             get => _users;
             set => OnPropertyChanged(ref _users, value);
@@ -73,7 +75,15 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         public ICommand ToUpdateUserCommand { get; }
         private void OnToUpdateUserCommandExecute(object p)
         {
-            UserToEdit = p as AppUser;
+            var u = p as AppUserWithStats;
+            UserToEdit = new()
+            {
+                Id = u.Id,
+                UserName = u.UserName,
+                Email = u.Email,
+                Password = u.Password,
+                Role = u.Role
+            };
             EditedRole = _userToEdit.Role;
             UserEditZIndex = 1;
         }
@@ -150,7 +160,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         }
 
         public ICommand BackFromEditCompanyCommand { get; }
-        
+
         public ICommand EditCompCommand { get; }
         private async void OnEditCompCommandExecute(object p)
         {
@@ -194,7 +204,15 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         public ICommand ToDeleteUserCommand { get; }
         private void OnToDeleteUserCommandExecute(object p)
         {
-            _userToDelete = p as AppUser;
+            var u = p as AppUserWithStats;
+            _userToDelete = new()
+            {
+                Id = u.Id,
+                UserName = u.UserName,
+                Email = u.Email,
+                Password = u.Password,
+                Role = u.Role
+            };
             UserToDeleteName = _userToDelete.UserName;
             if (_userToDelete.Id != _companyUserStore.CompanyUser.AppUserId)
                 DeleteUserZIndex = 1;
@@ -220,6 +238,32 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         }
         #endregion
 
+        #region User Stats
+
+        private DateTime _from = DateTime.Now.Subtract(new TimeSpan(7, 0, 0, 0));
+        public DateTime From
+        {
+            get => _from;
+            set => OnPropertyChanged(ref _from, value);
+        }
+
+        private DateTime _to = DateTime.Now;
+        public DateTime To
+        {
+            get => _to;
+            set => OnPropertyChanged(ref _to, value);
+        }
+
+        public ICommand CalcStats { get; set; }
+        private async void OnCalcStatsExecute(object p)
+        {
+            var stats = await _apiHelper.Complited.GetByUserAndDate((p as AppUserWithStats).Id, From, To);
+            Users.Where(u => u.Id == (p as AppUserWithStats).Id).Single().ComplitedCount = stats.Count();
+            Users.Where(u => u.Id == (p as AppUserWithStats).Id).Single().ComplitedDuration = 0;
+            stats.ForEach(a => Users.Where(u => u.Id == (p as AppUserWithStats).Id).Single().ComplitedDuration += a.Duration);
+        }
+        #endregion
+
         public CompanyControlViewModel(APIHelper apiHelper, CompanyUserStore companyUserStore)
         {
             _apiHelper = apiHelper;
@@ -241,6 +285,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             CompanyName = _companyUserStore.CompanyUser.Company.Title;
             CompanyCode = StringCipher.Decrypt(_companyUserStore.CompanyUser.Company.Code, "delegator");
 
+            CalcStats = new RelayCommand(OnCalcStatsExecute);
+
             LoadUsers();
             LoadRoles();
         }
@@ -248,7 +294,9 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         private async void LoadUsers()
         {
             (this as ILoading).StartLoading();
-            Users = await _apiHelper.Users.GetByCompany(_companyUserStore.CompanyUser.Company.Id);
+            Users = new();
+            var users = await _apiHelper.Users.GetByCompany(_companyUserStore.CompanyUser.Company.Id);
+            users.ForEach(u => Users.Add(new(u)));
             (this as ILoading).EndLoading();
         }
 

@@ -209,6 +209,11 @@ namespace delegatorUI.ViewModel.UserControlViewModels
         private async void OnNextCommandExecute(object p)
         {
             (this as ILoading).StartLoading();
+            if (!ValidationService.IsValidEmail(Email))
+            {
+                Error("Введите корректный email");
+                return;
+            }
             if (Password != ConfirmPassword)
             {
                 Error("Пароли не совпадают");

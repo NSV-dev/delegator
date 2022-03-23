@@ -98,6 +98,11 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
         public ICommand ChangeUserDataCommand { get; }
         private async void OnChangeUserDataCommandExecute(object p)
         {
+            if (!ValidationService.IsValidEmail(EmailToChange))
+            {
+                (this as IError).Error("Введите корректный email");
+                return;
+            }
             (this as ILoading).StartLoading();
             if (await _apiHelper.Users.GetByUsername(UserNameToChange) is not null
                    && EmailToChange == _companyUserStore.CompanyUser.User.Email)

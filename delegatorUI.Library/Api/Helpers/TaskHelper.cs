@@ -57,26 +57,28 @@ namespace delegatorUI.Library.Api.Helpers
 
         public async Task Delete(AppTask task, string companyID)
         {
-            foreach (AppTask subtask in task.Tasks)
-                Delete(subtask, companyID);
-
-            foreach (AppTask subtask in task.Tasks)
+            if (task.Tasks is not null)
             {
-                TaskTasks taskTasksWithID;
-                using (HttpResponseMessage resp = await _apiClient.GetAsync($"TaskTask/ByTaskID?taskID={subtask.Id}"))
+                foreach (AppTask subtask in task.Tasks)
+                    Delete(subtask, companyID);
+
+                foreach (AppTask subtask in task.Tasks)
                 {
-                    if (resp.IsSuccessStatusCode)
-                        taskTasksWithID = await resp.Content.ReadAsAsync<TaskTasks>();
-                    else
-                        throw new Exception(resp.ReasonPhrase);
-                }
-                using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskTask/Delete", taskTasksWithID))
-                {
-                    if (!resp.IsSuccessStatusCode)
-                        throw new Exception(resp.ReasonPhrase);
+                    TaskTasks taskTasksWithID;
+                    using (HttpResponseMessage resp = await _apiClient.GetAsync($"TaskTask/ByTaskID?taskID={subtask.Id}"))
+                    {
+                        if (resp.IsSuccessStatusCode)
+                            taskTasksWithID = await resp.Content.ReadAsAsync<TaskTasks>();
+                        else
+                            throw new Exception(resp.ReasonPhrase);
+                    }
+                    using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskTask/Delete", taskTasksWithID))
+                    {
+                        if (!resp.IsSuccessStatusCode)
+                            throw new Exception(resp.ReasonPhrase);
+                    }
                 }
             }
-
             foreach (AppUser user in task.Users)
             {
                 TaskUsers taskUsers = new()

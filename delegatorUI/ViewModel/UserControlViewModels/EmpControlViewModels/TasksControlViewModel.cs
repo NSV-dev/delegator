@@ -1,5 +1,6 @@
 ﻿using delegatorUI.Infrastructure.Commands.Base;
 using delegatorUI.Infrastructure.Interfaces;
+using delegatorUI.Infrastructure.Services;
 using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
@@ -143,7 +144,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
             if (_taskToReport.Users.Count == 1)
                 await _apiHelper.Tasks.Delete(_taskToReport, _company.Id);
 
-            ////
+            EmailService.SendEmail(_taskToReport.Sender.Email, _taskToReport.Sender.UserName,
+                _user.UserName, _taskToReport.Title, ReportText, ReportDuration, new List<OpenFileDialog>(ReportFiles));
 
             await LoadTasks();
             await LoadTasksForToday();

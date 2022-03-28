@@ -160,7 +160,7 @@
                         </Style>
                     </Border.Style>
                 </Border>
-                <ListView x:Name="filesLw"
+                <ListView x:Name="filesLw" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                     Style="{StaticResource ListViewBase}" ItemContainerStyle="{StaticResource ListViewNoHover}"
                     ItemsSource="{Binding ReportFiles}" Grid.Column="1" Grid.Row="1" Margin="0,20,0,10">
                     <ListView.ItemTemplate>

@@ -28,14 +28,14 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="80"/>
+                <RowDefinition Height="100"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Grid Background="Transparent">
 
                 <TextBlock Style="{StaticResource TextBlockStyle}" 
-                           HorizontalAlignment="Left"
+                           HorizontalAlignment="Left" Margin="30,0,0,20"
                            Foreground="{DynamicResource Text}">
                     <Run 
                     Text="Задачи "/><Run 
@@ -87,6 +87,40 @@
                         </Style>
                     </Border.Style>
                 </Border>
+
+                <TextBox x:Name="SearchTb" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxBaseWithTheme}"
+                    Margin="20,0,20,10" Height="30"
+                    VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
+                <TextBlock Text="Введите название задачи"
+                    Margin="22,0,0,10" Panel.ZIndex="-100">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock" x:Name="SearchDescription"
+                            BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=SearchTb, Path=Text}" Value="">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1" Duration="0:0:.1"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0" Duration="0:0:.1"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
 
             </Grid>
 

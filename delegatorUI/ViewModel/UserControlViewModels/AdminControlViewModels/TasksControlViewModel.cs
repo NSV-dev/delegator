@@ -338,6 +338,19 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         #endregion
         #endregion
 
+        #region Search
+        private string _searchText = "";
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                OnPropertyChanged(ref _searchText, value);
+                LoadTasks();
+            }
+        }
+        #endregion
+
         public ICommand ReloadTasksCommand { get; }
 
         public TasksControlViewModel(APIHelper apiHelper, CompanyUser companyUser)
@@ -373,6 +386,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         {
             (this as ILoading).StartLoading();
             Tasks = await _apiHelper.Tasks.GetByCompany(_company.Id);
+            Tasks = Tasks.Where(t => t.Title.ToLower().Contains(SearchText.ToLower())).ToList();
             await Task.Delay(200);
             (this as ILoading).EndLoading();
         }

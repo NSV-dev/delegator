@@ -262,7 +262,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
                 };
 
                 foreach (AppUser user in task.Users)
-                    if (!_mainTask.Users.Contains(user))
+                    if (!_mainTask.Users.Any(u => u.Id == user.Id))
                         _mainTask.Users.Add(user);
 
                 await _apiHelper.Tasks.Update(oldMainTask, _mainTask, _company.Id);

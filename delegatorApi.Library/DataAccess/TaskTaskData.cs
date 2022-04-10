@@ -1,5 +1,6 @@
 ﻿using delegatorApi.Library.Models;
 using delegatorApi.Library.Models.Context;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace delegatorApi.Library.DataAccess
@@ -37,7 +38,7 @@ namespace delegatorApi.Library.DataAccess
         {
             using (delegatorContext db = new())
             {
-                var list = db.TasksTasks.Where(tt => tt.TaskId == taskId);
+                List<TasksTask> list = db.TasksTasks.Where(tt => tt.TaskId == taskId).ToList();
                 if (list.Count() == 0)
                     return null;
                 else

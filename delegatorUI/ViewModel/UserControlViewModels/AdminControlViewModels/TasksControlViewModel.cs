@@ -240,10 +240,33 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
 
             (this as ILoading).StartLoading();
 
-            if (oldUpdateTask == null)
+            if (oldUpdateTask is null)
                 await _apiHelper.Tasks.Post(task, _company.Id, _mainTask?.Id);
             else
                 await _apiHelper.Tasks.Update(oldUpdateTask, task, _company.Id);
+
+            if (_mainTask is not null)
+            {
+                AppTask oldMainTask = new()
+                {
+                    Id = _mainTask.Id,
+                    CategoryId = _mainTask.CategoryId,
+                    Category = _mainTask.Category,
+                    Description = _mainTask.Description,
+                    EndTime = _mainTask.EndTime,
+                    SenderId = _mainTask.SenderId,
+                    Sender = _mainTask.Sender,
+                    Title = _mainTask.Title,
+                    Tasks = _mainTask.Tasks,
+                    Users = new(_mainTask.Users)
+                };
+
+                foreach (AppUser user in task.Users)
+                    if (!_mainTask.Users.Contains(user))
+                        _mainTask.Users.Add(user);
+
+                await _apiHelper.Tasks.Update(oldMainTask, _mainTask, _company.Id);
+            }
 
             AddTaskZIndex = -1;
             AddTaskUserZIndex = -1;

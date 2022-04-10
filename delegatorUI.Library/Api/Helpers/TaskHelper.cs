@@ -2,6 +2,7 @@
 using delegatorUI.Library.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -232,7 +233,7 @@ namespace delegatorUI.Library.Api.Helpers
                     foreach (var task in tasks)
                     {
                         task.Users = await _appUserHelper.GetByTask(task.Id);
-                        task.Tasks = await GetByTaskID(task.Id);
+                        task.Tasks = (await GetByTaskID(task.Id)).Where(t => t.Users.Any(u => u.Id == userID)).ToList();
                     }
 
                     return tasks;

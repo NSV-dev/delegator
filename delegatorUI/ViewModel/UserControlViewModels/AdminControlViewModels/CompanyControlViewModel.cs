@@ -76,6 +76,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         private void OnToUpdateUserCommandExecute(object p)
         {
             var u = p as AppUserWithStats;
+            if (u.Id == _companyUserStore.CompanyUser.User.Id)
+                return;
             UserToEdit = new()
             {
                 Id = u.Id,

@@ -46,6 +46,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
         public ICommand ReloadTasksCommand { get; }
         private async void OnReloadTasksCommandExecute(object p)
         {
+            SearchText = "";
             await LoadTasks();
             await LoadTasksForToday();
         }
@@ -154,6 +155,20 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
         }
         #endregion
 
+        #region Search
+        private string _searchText = "";
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                OnPropertyChanged(ref _searchText, value);
+                LoadTasks();
+                LoadTasksForToday();
+            }
+        }
+        #endregion
+
         public TasksControlViewModel(APIHelper apiHelper, CompanyUser companyUser)
         {
             _apiHelper = apiHelper;
@@ -176,15 +191,20 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
         {
             (this as ILoading).StartLoading();
             Tasks = await _apiHelper.Tasks.GetByUserAndCompanyOnlyMain(_user.Id, _company.Id);
+            Tasks = Tasks.Where(t => t.Title.ToLower().Contains(SearchText.ToLower())).ToList();
+            Tasks = Tasks.OrderBy(t => t.EndTime).ToList();
             (this as ILoading).EndLoading();
         }
 
         private async Task LoadTasksForToday()
         {
             (this as ILoading).StartLoading();
+            Category SortCategory = await _apiHelper.Categories.GetByTitle("Важно и Срочно");
             TasksForToday = (await _apiHelper.Tasks.GetByUserAndCompanyWithoutSubs(_user.Id, _company.Id))
-                .Where(t => DateTime.Today == t.EndTime.Date || DateTime.Today > t.EndTime.Date)
+                .Where(t => DateTime.Today == t.EndTime.Date || DateTime.Today > t.EndTime.Date || t.CategoryId == SortCategory.Id)
                 .ToList();
+            TasksForToday = TasksForToday.Where(t => t.Title.ToLower().Contains(SearchText.ToLower())).ToList();
+            TasksForToday = TasksForToday.OrderBy(t => t.EndTime).ToList();
             (this as ILoading).EndLoading();
         }
     }

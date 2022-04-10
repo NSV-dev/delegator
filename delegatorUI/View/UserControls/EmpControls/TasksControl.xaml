@@ -28,14 +28,14 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="100"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Ваши задачи:" Style="{StaticResource MainTextBlockStyleWithTheme}" Margin="30,-20,0,0"/>
+        <TextBlock Text="Ваши задачи:" Style="{StaticResource MainTextBlockStyleWithTheme}" Margin="30,-40,0,0"/>
 
         <TextBlock Text="На сегодня:" Style="{StaticResource SmallTextBlockStyleWithTheme}" 
-            VerticalAlignment="Bottom" Margin="20,0,0,10" FontSize="16"/>
+            VerticalAlignment="Bottom" Margin="20,0,0,5" FontSize="16"/>
 
         <Border Background="Transparent" BorderThickness="0"
             Height="25" Width="25" Margin="0,27.5,25,0" Grid.Column="1"
@@ -63,7 +63,41 @@
         </Border>
 
         <TextBlock Text="Все:" Style="{StaticResource SmallTextBlockStyleWithTheme}" 
-            VerticalAlignment="Bottom" Margin="20,0,0,10" FontSize="16" Grid.Column="1"/>
+            VerticalAlignment="Bottom" Margin="20,0,0,5" FontSize="16" Grid.Column="1"/>
+
+        <TextBox x:Name="SearchTb" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxBaseWithTheme}"
+            Margin="20,0,20,30" Height="30"
+            VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
+        <TextBlock Text="Введите название задачи"
+            Margin="22,0,0,30" Panel.ZIndex="-100">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock" x:Name="SearchDescription"
+                    BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=SearchTb, Path=Text}" Value="">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1" Duration="0:0:.1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0" Duration="0:0:.1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
 
         <TreeView ItemsSource="{Binding Tasks}" Background="Transparent" BorderBrush="Transparent" 
             Grid.Column="1" Grid.Row="1" Padding="0,0,10,0" 
@@ -74,8 +108,8 @@
             ItemContainerStyle="{StaticResource UserTvStyle}" ItemTemplate="{StaticResource UserDt}"/>
 
         <Border Background="#555555" CornerRadius="10"
-            Opacity="0" d:Opacity="1" Panel.ZIndex="{Binding ReportsZIndex}"
-            Width="500" Height="300" 
+            Opacity="0" d:Opacity="0" Panel.ZIndex="{Binding ReportsZIndex}"
+            Width="500" Height="300" d:Panel.ZIndex="-1"
             Grid.ColumnSpan="100" Grid.RowSpan="100">
             <Border.Effect>
                 <DropShadowEffect
@@ -194,7 +228,8 @@
             
         </Border>
         
-        <res:LoadingAnimation Panel.ZIndex="{Binding LoadingZIndex}" Opacity="0"
+        <res:LoadingAnimation Panel.ZIndex="{Binding LoadingZIndex}" 
+            Opacity="0" d:Panel.ZIndex="-1"
             Grid.ColumnSpan="100" Grid.RowSpan="100"/>
         
     </Grid>

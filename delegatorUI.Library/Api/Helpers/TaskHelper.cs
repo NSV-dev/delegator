@@ -233,7 +233,7 @@ namespace delegatorUI.Library.Api.Helpers
                     foreach (var task in tasks)
                     {
                         task.Users = await _appUserHelper.GetByTask(task.Id);
-                        task.Tasks = (await GetByTaskID(task.Id)).Where(t => t.Users.Any(u => u.Id == userID)).ToList();
+                        task.Tasks = (await GetByTaskID(task.Id, userID)).Where(t => t.Users.Any(u => u.Id == userID)).ToList();
                     }
 
                     return tasks;
@@ -242,7 +242,7 @@ namespace delegatorUI.Library.Api.Helpers
             }
         }
 
-        public async Task<List<AppTask>> GetByTaskID(string taskID)
+        public async Task<List<AppTask>> GetByTaskID(string taskID, string userID = null)
         {
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"Task/ByTaskID?taskID={taskID}"))
             {
@@ -252,7 +252,10 @@ namespace delegatorUI.Library.Api.Helpers
                     foreach (var task in tasks)
                     {
                         task.Users = await _appUserHelper.GetByTask(task.Id);
-                        task.Tasks = await GetByTaskID(task.Id);
+                        if (userID is null)
+                            task.Tasks = await GetByTaskID(task.Id);
+                        else
+                            task.Tasks = (await GetByTaskID(task.Id, userID)).Where(t => t.Users.Any(u => u.Id == userID)).ToList();
                     }
                     return tasks;
                 } else

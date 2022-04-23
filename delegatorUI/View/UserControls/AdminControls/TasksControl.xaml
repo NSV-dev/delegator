@@ -424,9 +424,40 @@
                 </TreeView.ItemTemplate>
             </TreeView>
 
+            <TextBlock Text="Задач нет" Opacity="0" Margin="40,20,0,0"
+                Grid.Row="1" VerticalAlignment="Top" Panel.ZIndex="-100">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
+                        <Setter Property="FontSize" Value="22"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Tasks.Count}" Value="0">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="1" Duration="0"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="0" Duration="0"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
             <Border Opacity="{Binding AddTaskOpacity, UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="{Binding AddTaskZIndex}"
                     CornerRadius="10" Width="400" Height="340" Grid.RowSpan="100"
-                    Background="#2e2e2e">
+                    Background="#2e2e2e" d:Opacity="0">
                 <Border.Effect>
                     <DropShadowEffect
                         ShadowDepth="1" Direction="275"
@@ -505,7 +536,7 @@
 
                     <TextBox x:Name="TitleTb" Text="{Binding NewTaskTitle, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource TextBoxBase}" Width="180" Height="30"
-                             HorizontalAlignment="Left" Margin="10,10,0,0"/>
+                             HorizontalAlignment="Left" Margin="10,10,0,0" FontSize="20"/>
                     <TextBlock Text="Название" Panel.ZIndex="-1" Style="{StaticResource TitleDescription}"/>
 
                     <DatePicker Grid.Column="1" Style="{StaticResource DatePickerBase}" 
@@ -522,7 +553,7 @@
                     <TextBlock Text="Список сотрудников:" Style="{StaticResource TextBlockStyle}"
                                Grid.Column="1" Grid.Row="1" Margin="10,20,0,0" VerticalAlignment="Top"/>
                     <ListView x:Name="TaskUsersLw" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding NewTaskUsers}"
-                              Margin="10,40,10,10" Style="{StaticResource ListViewBase}">
+                              Margin="10,40,10,10" Style="{StaticResource ListViewBase}" ItemContainerStyle="{StaticResource ListViewNoHover}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding UserName}" Style="{StaticResource TextBlockStyle}"
@@ -637,8 +668,9 @@
                             </Border.Style>
                         </Border>
 
-                        <ListView x:Name="AddUsersLw" Grid.Row="1" Style="{StaticResource ListViewBase}" 
-                                  Margin="10,5,10,10" ItemsSource="{Binding CompanyUsers}">
+                        <ListView x:Name="AddUsersLw" Grid.Row="1" 
+                            Style="{StaticResource ListViewBase}" ItemContainerStyle="{StaticResource ListViewNoHover}"
+                            Margin="10,5,10,10" ItemsSource="{Binding CompanyUsers}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding UserName}" Style="{StaticResource TextBlockStyle}"

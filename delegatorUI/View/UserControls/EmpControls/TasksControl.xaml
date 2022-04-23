@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        
+
         <Grid.Triggers>
             <EventTrigger RoutedEvent="Loaded">
                 <BeginStoryboard>
@@ -99,16 +99,78 @@
             </TextBlock.Style>
         </TextBlock>
 
+        <TextBlock Text="Срочных задач нет" Opacity="0" Margin="20,20,0,0"
+                Grid.Row="1" VerticalAlignment="Top" Panel.ZIndex="-100">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
+                    <Setter Property="FontSize" Value="20"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding TasksForToday.Count}" Value="0">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1" Duration="0"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0" Duration="0"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
         <TreeView ItemsSource="{Binding Tasks}" Background="Transparent" BorderBrush="Transparent" 
             Grid.Column="1" Grid.Row="1" Padding="0,0,10,0" 
             ItemContainerStyle="{StaticResource UserTvStyle}" ItemTemplate="{StaticResource UserDt}"/>
-        
+
+        <TextBlock Text="Задач нет" Opacity="0" Margin="20,20,0,0"
+                Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Panel.ZIndex="-100">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
+                    <Setter Property="FontSize" Value="20"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Tasks.Count}" Value="0">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1" Duration="0"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0" Duration="0"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
         <TreeView ItemsSource="{Binding TasksForToday}" Background="Transparent" BorderBrush="Transparent" 
             Grid.Column="0" Grid.Row="1" Padding="0,0,10,0" 
             ItemContainerStyle="{StaticResource UserTvStyle}" ItemTemplate="{StaticResource UserDt}"/>
 
         <Border Background="#555555" CornerRadius="10"
-            Opacity="0" d:Opacity="0" Panel.ZIndex="{Binding ReportsZIndex}"
+            Opacity="0" d:Opacity="1" Panel.ZIndex="{Binding ReportsZIndex}"
             Width="500" Height="300" d:Panel.ZIndex="-1"
             Grid.ColumnSpan="100" Grid.RowSpan="100">
             <Border.Effect>
@@ -217,7 +279,7 @@
                     Command="{Binding ReportCommand}"
                     Style="{StaticResource ButtonBase}"
                     Grid.Column="1" Grid.Row="2"/>
-                
+
                 <Button Content="Назад"
                     Width="100" Height="30"
                     HorizontalAlignment="Left"
@@ -225,9 +287,12 @@
                     Style="{StaticResource ButtonBase}"
                     Grid.Row="2"/>
             </Grid>
-            
+
         </Border>
-        
+
+        <TextBlock Text="{Binding ErrorText}" Style="{StaticResource ErrorTextBlockStyle}"
+            Grid.ColumnSpan="2" Width="250" Opacity="{Binding ErrorOpacity}" Panel.ZIndex="-100"/>
+
         <res:LoadingAnimation Panel.ZIndex="{Binding LoadingZIndex}" 
             Opacity="0" d:Panel.ZIndex="-1"
             Grid.ColumnSpan="100" Grid.RowSpan="100"/>

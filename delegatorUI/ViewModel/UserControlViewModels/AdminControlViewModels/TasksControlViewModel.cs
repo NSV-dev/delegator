@@ -181,15 +181,18 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         private async void UpadateCompanyUsers(string name)
         {
             if (name == "")
-                CompanyUsers = new(await _apiHelper.Users.GetByCompany(_company.Id));
+                LoadUsers();
             else
-                CompanyUsers = new(await _apiHelper.Users.GetWhereNameContains(name));
+            {
+                await LoadUsers();
+                CompanyUsers = new(CompanyUsers.Where(u => u.UserName.ToLower().Contains(name.ToLower())));
+            }
         }
 
         public ICommand BackFromAddTaskCommand { get; }
         private async void OnBackFromAddTaskCommandExecute(object p)
         {
-            CompanyUsers = new(await _apiHelper.Users.GetByCompany(_company.Id));
+            await LoadUsers();
             _mainTask = null;
             NewTaskTitle = "";
             NewTaskDesc = "";
@@ -276,8 +279,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             NewTaskCategory = await _apiHelper.Categories.GetByTitle("Не важно и Не срочно");
             oldUpdateTask = null;
             _mainTask = null;
-            foreach (AppUser user in NewTaskUsers)
-                CompanyUsers.Add(user);
+            LoadUsers();
             NewTaskUsers = new();
             LoadTasks();
             (this as ILoading).EndLoading();
@@ -391,10 +393,10 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             (this as ILoading).EndLoading();
         }
 
-        private async void LoadUsers()
+        private async Task LoadUsers()
         {
             (this as ILoading).StartLoading();
-            CompanyUsers = new(await _apiHelper.Users.GetByCompany(_company.Id));
+            CompanyUsers = new((await _apiHelper.Users.GetByCompany(_company.Id)).Where(cu => cu.Role.Title == "User"));
             (this as ILoading).EndLoading();
         }
 

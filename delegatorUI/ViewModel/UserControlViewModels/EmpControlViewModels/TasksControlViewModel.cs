@@ -8,13 +8,14 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
 {
-    public class TasksControlViewModel : BaseViewModel, ILoading
+    public class TasksControlViewModel : BaseViewModel, ILoading, IError
     {
         private readonly APIHelper _apiHelper;
         private readonly AppUser _user;
@@ -40,6 +41,22 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
         {
             get => _loadingZIndex;
             set => OnPropertyChanged(ref _loadingZIndex, value);
+        }
+        #endregion
+
+        #region Errors
+        private string _errorText;
+        public string ErrorText
+        {
+            get => _errorText;
+            set => OnPropertyChanged(ref _errorText, value);
+        }
+
+        private int _errorOpacity;
+        public int ErrorOpacity
+        {
+            get => _errorOpacity;
+            set => OnPropertyChanged(ref _errorOpacity, value);
         }
         #endregion
 
@@ -132,6 +149,19 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
         private async void OnReportCommandExecute(object p)
         {
             (this as ILoading).StartLoading();
+            double size = 0;
+            foreach (var file in ReportFiles)
+                size += new FileInfo(file.FileName).Length;
+            if (size >= 26214400)
+            {
+                (this as IError).Error("Объем файлов не должен привышать 25МБ");
+                (this as ILoading).EndLoading();
+                return;
+            }
+
+            EmailService.SendEmail(_taskToReport.Sender.Email, _taskToReport.Sender.UserName,
+                _user.UserName, _taskToReport.Title, ReportText, ReportDuration, new List<OpenFileDialog>(ReportFiles));
+
             await _apiHelper.Complited.Post(new Complited()
             {
                 TaskId = _taskToReport.Id,
@@ -144,9 +174,6 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
 
             if (_taskToReport.Users.Count == 1)
                 await _apiHelper.Tasks.Delete(_taskToReport, _company.Id);
-
-            EmailService.SendEmail(_taskToReport.Sender.Email, _taskToReport.Sender.UserName,
-                _user.UserName, _taskToReport.Title, ReportText, ReportDuration, new List<OpenFileDialog>(ReportFiles));
 
             await LoadTasks();
             await LoadTasksForToday();

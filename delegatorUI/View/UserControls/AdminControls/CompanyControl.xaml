@@ -285,7 +285,7 @@
 
         </Border>
 
-        <Border Grid.Column="1" Margin="30" Opacity="0"
+        <Border Grid.Column="1" Margin="30" Opacity="1"
               Style="{StaticResource PlateStyle}">
             <Grid Margin="10">
 
@@ -302,7 +302,7 @@
                     TextWrapping="WrapWithOverflow"
                     VerticalAlignment="Top">
                     <Run Text="Код компании:"/>
-                    <Run Text="{Binding CompanyCode, Mode=OneTime, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Run Text="{Binding CompanyCode, UpdateSourceTrigger=PropertyChanged}"/>
                 </TextBlock>
 
                 <Border x:Name="UpdateBtn"

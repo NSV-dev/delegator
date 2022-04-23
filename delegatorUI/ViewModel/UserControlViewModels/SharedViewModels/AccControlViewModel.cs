@@ -387,9 +387,20 @@ namespace delegatorUI.ViewModel.UserControlViewModels.SharedViewModels
         }
 
         public ICommand ToDeleteCommand { get; }
-        private void OnToDeleteCommandExecute(object p)
+        private async void OnToDeleteCommandExecute(object p)
         {
             _companyToDelete = p as Company;
+            if ((await _apiHelper.Companies.GetByUserId(_companyUserStore.CompanyUser.AppUserId)).Count == 1)
+                return;
+            
+            var roles = (await _apiHelper.Users.GetByCompany(_companyToDelete.Id)).Select(u => u.Role).ToList();
+            int admins = 0;
+            foreach (var item in roles)
+                if (item.Title == "Admin")
+                    admins++;
+            if (admins == 1 && (await _apiHelper.CompaniesUsers.GetByCompanyId(_companyToDelete.Id, _companyUserStore.CompanyUser.AppUserId)).Single().Role.Title == "Admin")
+                return;
+            
             CompanyToDeleteName = _companyToDelete.Title;
             DeleteCompZIndex = 1;
         }

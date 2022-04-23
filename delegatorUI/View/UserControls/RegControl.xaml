@@ -200,7 +200,7 @@
             <TextBlock Text="Подтверждение пароля" Grid.Row="1" Grid.Column="2" Panel.ZIndex="-1" Style="{StaticResource ConfirmDescription}"/>
 
             <Button Content="Далее" Command="{Binding NextCommand}" Style="{StaticResource ButtonBaseWithTheme}"
-                Grid.Row="2" Grid.ColumnSpan="3" Width="100" Height="30"/>
+                Grid.Row="2" Grid.ColumnSpan="3" Width="100" Height="30" VerticalAlignment="Bottom"/>
 
         </Grid>
         

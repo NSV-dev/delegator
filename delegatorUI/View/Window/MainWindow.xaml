@@ -12,7 +12,7 @@
         MinHeight="675" MinWidth="1200"
         Height="675" Width="1200">
     <WindowChrome.WindowChrome>
-        <WindowChrome GlassFrameThickness="0" ResizeBorderThickness="4" CornerRadius="0" CaptionHeight="25"/>
+        <WindowChrome GlassFrameThickness="0" ResizeBorderThickness="4" CornerRadius="0" CaptionHeight="40"/>
     </WindowChrome.WindowChrome>
     <Border BorderThickness="1" BorderBrush="#666" Panel.ZIndex="100">
         <Border.Style>
@@ -31,13 +31,13 @@
         </Border.Style>
         <Grid x:Name="grid" Background="{DynamicResource MainBg}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="25"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <DockPanel Background="{DynamicResource WindowPanel}" Panel.ZIndex="100">
-                <TextBlock Text="{Binding Title}" Foreground="{DynamicResource Text}" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Title}" Foreground="{DynamicResource Text}" Margin="15,0,0,0" VerticalAlignment="Center" FontSize="14"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
-                            WindowChrome.IsHitTestVisibleInChrome="True">
+                    WindowChrome.IsHitTestVisibleInChrome="True">
                     <StackPanel.Resources>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="Transparent"/>

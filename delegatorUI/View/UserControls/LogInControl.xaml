@@ -129,13 +129,13 @@
                 </Style>
                 <Style TargetType="Grid" x:Key="CompaniesGrid">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding CompanyWidth}" Value="200">
+                        <DataTrigger Binding="{Binding CompanyWidth}" Value="400">
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetProperty="Width"
-                                                Duration="0:0:.3" 
-                                                From="0" To="200"/>
+                                            Duration="0:0:.3" 
+                                            From="0" To="400"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
@@ -177,11 +177,11 @@
                 </Grid.RowDefinitions>
                 
                 <TextBlock Text="Выберите компанию: " Style="{StaticResource TextBlockStyleBase}"
-                           HorizontalAlignment="Center"/>
+                    HorizontalAlignment="Center"/>
 
-                <ListView x:Name="CompanyListView"
+                <ListView x:Name="CompanyListView" Margin="30,0,0,0"
                           ItemsSource="{Binding Companies}"
-                          Width="160" Grid.Row="1" ItemContainerStyle="{StaticResource ListViewNoHover}"
+                          Grid.Row="1" ItemContainerStyle="{StaticResource ListViewNoHover}"
                           Background="Transparent" BorderBrush="Transparent">
                     <ListView.ItemTemplate>
                         <DataTemplate>

@@ -136,7 +136,18 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
         {
             OpenFileDialog file = new();
             if (file.ShowDialog() == true)
+            {
+                try
+                {
+                    File.OpenRead(file.FileName);
+                }
+                catch
+                {
+                    (this as IError).Error("Нет доступа к файлу");
+                    return;
+                }
                 ReportFiles.Add(file);
+            }
         }
 
         public ICommand DeleteFileCommand { get; }
@@ -154,7 +165,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
                 size += new FileInfo(file.FileName).Length;
             if (size >= 26214400)
             {
-                (this as IError).Error("Объем файлов не должен привышать 25МБ");
+                (this as IError).Error("Объем файлов не должен превышать 25МБ");
                 (this as ILoading).EndLoading();
                 return;
             }

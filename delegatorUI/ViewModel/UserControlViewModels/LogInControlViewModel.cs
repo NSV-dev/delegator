@@ -113,7 +113,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels
                 await UserRoleRecognition(userCompanies.First());
             (this as ILoading).EndLoading();
 
-            CompanyWidth = 200;
+            CompanyWidth = 400;
             Companies = userCompanies;
         }
 

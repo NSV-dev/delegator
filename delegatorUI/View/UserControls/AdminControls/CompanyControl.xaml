@@ -33,6 +33,7 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -42,10 +43,44 @@
                     Text=":"/>
             </TextBlock>
 
+            <TextBox x:Name="SearchTb" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxBaseWithTheme}"
+                    Margin="5,0,20,10" Height="30" Grid.Row="1"
+                    VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
+            <TextBlock Text="Введите имя сотрудника" Grid.Row="1"
+                    Margin="7,0,0,10" Panel.ZIndex="-100">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" x:Name="SearchDescription"
+                            BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=SearchTb, Path=Text}" Value="">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0" Duration="0:0:.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
             <ListView x:Name="UsersLw" 
                 Style="{StaticResource ListViewBase}"
                 ItemContainerStyle="{StaticResource ListViewNoHover}"
-                BorderThickness="0" Grid.Row="1"
+                BorderThickness="0" Grid.Row="2"
                 ItemsSource="{Binding Users}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -55,14 +90,29 @@
 
                             <Grid>
                                 <Grid VerticalAlignment="Top" Margin="0,4,0,0">
-                                    <TextBlock Text="{Binding UserName}" Margin="10,0,0,0" Style="{StaticResource SmallTextBlockStyle}"/>
+                                    <TextBlock Text="{Binding UserName}" Margin="10,0,0,0">
+                                        <TextBlock.InputBindings>
+                                            <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=UsersLw,
+                                                Path=DataContext.ToComplitedCommand}"
+                                                CommandParameter="{Binding}"/>
+                                        </TextBlock.InputBindings>
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource SmallTextBlockStyle}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Cursor" Value="Hand"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                     <TextBlock Margin="100,0,0,0" Style="{StaticResource SmallTextBlockStyle}">
                                     <Run Text="Роль:"/>
                                     <Run Text="{Binding Role.Title}"/>
                                     </TextBlock>
                                     <ToggleButton x:Name="DescBtn"
-                                    Content="● ● ●" Margin="0,1,10,0" FontSize="14"
-                                    VerticalAlignment="Top" HorizontalAlignment="Right">
+                                        Content="● ● ●" Margin="0,1,10,0" FontSize="14"
+                                        VerticalAlignment="Top" HorizontalAlignment="Right">
                                         <ToggleButton.Triggers>
                                             <EventTrigger RoutedEvent="ToggleButton.Checked">
                                                 <EventTrigger.Actions>
@@ -124,8 +174,8 @@
                                             Fill="#999999" Stretch="Uniform"/>
                                             <Border.InputBindings>
                                                 <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=UsersLw,
-                                                Path=DataContext.ToUpdateUserCommand}"
-                                                CommandParameter="{Binding}"/>
+                                                    Path=DataContext.ToUpdateUserCommand}"
+                                                    CommandParameter="{Binding}"/>
                                             </Border.InputBindings>
                                             <Border.Style>
                                                 <Style TargetType="Border">
@@ -516,7 +566,417 @@
 
         </Border>
 
+        <Border x:Name="Complited"
+            Opacity="0" 
+            d:Panel.ZIndex="1" d:Opacity="1"
+            Panel.ZIndex="{Binding ComplitedZIndex}" 
+            Grid.RowSpan="100"
+            Margin="20,20,0,20"
+            HorizontalAlignment="Stretch"
+            Background="#2e2e2e" CornerRadius="10">
+
+            <Border.Effect>
+                <DropShadowEffect
+                        ShadowDepth="1" Direction="275"
+                        Opacity=".6" BlurRadius="20"/>
+            </Border.Effect>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="Panel.ZIndex" Value="1">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Style="{StaticResource MainTextBlockStyle}"
+                    VerticalAlignment="Top">
+                    <Run Text="Выполненые задачи "/><Run
+                        Text="{Binding ComplitedUserName}"/><Run Text=":"/>
+                </TextBlock>
+
+                <TextBox x:Name="SearchComplitedTb" Text="{Binding SearchComplitedText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxBase}"
+                    Margin="10,0,20,0" Height="30"
+                    VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
+                <TextBlock Text="Введите название задачи"
+                    Margin="12,0,0,0" Panel.ZIndex="-100">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock" x:Name="SearchComplitedDescription"
+                            BasedOn="{StaticResource TextBlockStyleBase}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=SearchComplitedTb, Path=Text}" Value="">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1" Duration="0:0:.1"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0" Duration="0:0:.1"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <TextBlock Text="Задач нет" Opacity="0" FontSize="19"
+                    Grid.Row="1" VerticalAlignment="Top">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource MainTextBlockStyle}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Compliteds.Count}" Value="0">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1" Duration="0"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0" Duration="0"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <ListView x:Name="CompltedLw" Style="{StaticResource ListViewBase}"
+                    Grid.Row="1" Margin="0,15,0,0" BorderThickness="0"
+                    ItemsSource="{Binding Compliteds}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border>
+                                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderThickness="2">
+                                <Button Style="{StaticResource ButtonBaseNoPress}" Height="30"
+                                    Margin="10,0,10,10" HorizontalAlignment="Stretch"
+                                    Command="{Binding DataContext.ToCompletedDescCommand, ElementName=CompltedLw}"
+                                    CommandParameter="{Binding}">
+                                    <Button.Content>
+                                        <Grid Margin="20,0,10,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding TaskTitle}"/>
+                                            <TextBlock Grid.Column="1" FontSize="15" VerticalAlignment="Bottom">
+                                                <Run Text="Закончил: "/>
+                                                <Run Text="{Binding EndTime, StringFormat=dd.MM.yyyy}"/>
+                                            </TextBlock>
+                                        </Grid>
+                                    </Button.Content>
+                                </Button>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                
+                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10"
+                    Command="{Binding BackFromComplitedCommand}" Grid.Row="2"/>
+
+            </Grid>
+
+        </Border>
+
+        <Border x:Name="ComplitedDesc"
+            Opacity="0" 
+            d:Panel.ZIndex="1" d:Opacity="1"
+            Panel.ZIndex="{Binding ComplitedDescZIndex}" 
+            Grid.RowSpan="100" Grid.Column="1"
+            Margin="20,20,20,20"
+            HorizontalAlignment="Stretch"
+            Background="#2e2e2e" CornerRadius="10">
+
+            <Border.Effect>
+                <DropShadowEffect
+                        ShadowDepth="1" Direction="275"
+                        Opacity=".6" BlurRadius="20"/>
+            </Border.Effect>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="Panel.ZIndex" Value="1">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="1.5*"/>
+                </Grid.RowDefinitions>
+                
+                <Border Margin="15" BorderThickness="1"
+                    CornerRadius="10" BorderBrush="#99FFFFFF">
+                    <Grid Margin="10">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="{Binding TaskName}" Style="{StaticResource MainTextBlockStyle}" 
+                            FontSize="20" Margin="0" VerticalAlignment="Top"/>
+
+                        <TextBlock Text="{Binding TaskDescription}"
+                            Grid.Row="1" TextWrapping="WrapWithOverflow" Style="{StaticResource SmallTextBlockStyle}" FontSize="18"/>
+
+                    </Grid>
+                </Border>
+
+                <Grid Margin="25" Grid.Row="1">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Style="{StaticResource SmallTextBlockStyle}"
+                        VerticalAlignment="Center" FontSize="18">
+                        <Run Text="Выполнил: "/><Run
+                            Text="{Binding ComplitedDescUserName}"/>
+                    </TextBlock>
+                    
+                    <TextBlock Style="{StaticResource SmallTextBlockStyle}"
+                        Grid.Row="1" VerticalAlignment="Center" FontSize="18">
+                        <Run Text="Потратил "/><Run
+                            Text="{Binding ComplitedDuration}"/><Run
+                            Text=" ч"/>
+                    </TextBlock>
+
+                    <Button Content="Файлы" Style="{StaticResource ButtonBase}" Grid.Row="1" 
+                        HorizontalAlignment="Right" Width="100" Height="30"
+                        Command="{Binding GetFailsCommand}"/>
+
+                    <TextBlock Style="{StaticResource SmallTextBlockStyle}"
+                        Grid.Row="2" VerticalAlignment="Center" FontSize="18">
+                        <Run Text="Закончил: "/><Run
+                            Text="{Binding ComplitedEndTime, StringFormat=dd.MM.yyyy}"/>
+                    </TextBlock>
+
+                    <TextBlock Text="Коментарий:" Style="{StaticResource SmallTextBlockStyle}"
+                            Grid.Row="3" Margin="0,5,0,0" FontSize="18"/>
+
+                    <ScrollViewer Grid.Row="3" Margin="0,30,0,0" VerticalScrollBarVisibility="Auto">
+                        <TextBlock Text="{Binding ComplitedComment}" FontSize="18"
+                        TextWrapping="WrapWithOverflow" Style="{StaticResource SmallTextBlockStyle}" 
+                        />
+                    </ScrollViewer>
+
+                </Grid>
+
+                <Border Width="1" Background="White" Opacity=".6" Grid.RowSpan="100"
+                    HorizontalAlignment="Right" Margin="0,10,0,10"/>
+
+                <Grid Grid.RowSpan="100" Grid.Column="1">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Style="{StaticResource MainTextBlockStyle}" Margin="15,15,15,0"
+                        VerticalAlignment="Top" TextWrapping="WrapWithOverflow">
+                        <Run Text="Другие отчеты по "/><Run
+                            Text="{Binding TaskName}"/><Run Text=":"/>
+                    </TextBlock>
+
+                    <TextBox x:Name="SearchOtherComplitedTb" Text="{Binding SearchOtherComplitedText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxBase}"
+                        Margin="10,0,20,0" Height="30" Grid.Row="1"
+                        VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
+                    <TextBlock Text="Введите имя" Grid.Row="1"
+                        Margin="12,0,0,0" Panel.ZIndex="-100">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock"
+                                BasedOn="{StaticResource TextBlockStyleBase}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=SearchOtherComplitedTb, Path=Text}" Value="">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    To="1" Duration="0:0:.1"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetProperty="Opacity"
+                                                        To="0" Duration="0:0:.1"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <TextBlock Text="Отчетов нет" Opacity="0" FontSize="19"
+                        Grid.Row="1" VerticalAlignment="Top">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource MainTextBlockStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding OtherCompliteds.Count}" Value="0">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetProperty="Opacity"
+                                                        To="1" Duration="0"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetProperty="Opacity"
+                                                        To="0" Duration="0"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <ListView x:Name="OtherCompltedLw" Style="{StaticResource ListViewBase}"
+                        Grid.Row="2" Margin="0,15,0,0" BorderThickness="0"
+                        ItemsSource="{Binding OtherCompliteds}">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListViewItem">
+                                            <Border>
+                                                <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="2">
+                                    <Button Style="{StaticResource ButtonBaseNoPress}" Height="30"
+                                        Margin="10,0,10,10" HorizontalAlignment="Stretch"
+                                        Command="{Binding DataContext.OtherOpenCommand, ElementName=OtherCompltedLw}"
+                                        CommandParameter="{Binding}">
+                                        <Button.Content>
+                                            <Grid Margin="20,0,10,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding CompanyUser.User.UserName}"/>
+                                                <TextBlock Grid.Column="1" FontSize="15" VerticalAlignment="Bottom">
+                                                    <Run Text="Закончил: "/>
+                                                    <Run Text="{Binding EndTime, StringFormat=dd.MM.yyyy}"/>
+                                                </TextBlock>
+                                            </Grid>
+                                        </Button.Content>
+                                    </Button>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                </Grid>
+
+            </Grid>
+
+        </Border>
+
         <resources:LoadingAnimation Opacity="0" Panel.ZIndex="{Binding LoadingZIndex}"
-            Grid.ColumnSpan="100" Grid.RowSpan="100"/>
+            Grid.ColumnSpan="100" Grid.RowSpan="100" d:Panel.ZIndex="-100"/>
     </Grid>
 </UserControl>

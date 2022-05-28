@@ -5,9 +5,12 @@ using delegatorUI.Infrastructure.Stores;
 using delegatorUI.Library.Api;
 using delegatorUI.Library.Models;
 using delegatorUI.ViewModel.Base;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Windows.Input;
 
@@ -259,17 +262,218 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         public ICommand CalcStats { get; set; }
         private async void OnCalcStatsExecute(object p)
         {
-            var stats = await _apiHelper.Complited.GetByUserAndDate((p as AppUserWithStats).Id, From, To);
+            var stats = await _apiHelper.Complited.GetByCompanyAndUserAndDate(_companyUserStore.CompanyUser.CompanyId, (p as AppUserWithStats).Id, From, To);
             Users.Where(u => u.Id == (p as AppUserWithStats).Id).Single().ComplitedCount = stats.Count();
             Users.Where(u => u.Id == (p as AppUserWithStats).Id).Single().ComplitedDuration = 0;
             stats.ForEach(a => Users.Where(u => u.Id == (p as AppUserWithStats).Id).Single().ComplitedDuration += a.Duration);
         }
         #endregion
 
+        #region User Search
+        private string _searchText = "";
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                OnPropertyChanged(ref _searchText, value);
+                LoadUsers();
+            }
+        }
+        #endregion
+
+        #region Complited
+        private int _complitedZIndex = -1;
+        public int ComplitedZIndex
+        {
+            get => _complitedZIndex;
+            set => OnPropertyChanged(ref _complitedZIndex, value);
+        }
+
+        private int _complitedDescZIndex = -1;
+        public int ComplitedDescZIndex
+        {
+            get => _complitedDescZIndex;
+            set => OnPropertyChanged(ref _complitedDescZIndex, value);
+        }
+
+        private string _complitedUserName;
+        public string ComplitedUserName
+        {
+            get => _complitedUserName;
+            set => OnPropertyChanged(ref _complitedUserName, value);
+        }
+
+        private string _searchComplitedText;
+        public string SearchComplitedText
+        {
+            get => _searchComplitedText;
+            set
+            {
+                OnPropertyChanged(ref _searchComplitedText, value);
+                LoadComplited();
+            }
+        }
+
+        private string _complitedUserID;
+
+        public ObservableCollection<Complited> Compliteds { get; set; }
+
+        private Complited _selectedComplited;
+
+        private string _taskCode;
+
+        private string _taskName;
+        public string TaskName
+        {
+            get => _taskName;
+            set => OnPropertyChanged(ref _taskName, value);
+        }
+
+        private string _taskDescription;
+        public string TaskDescription
+        {
+            get => _taskDescription;
+            set => OnPropertyChanged(ref _taskDescription, value);
+        }
+
+        private string _complitedDescUserName;
+        public string ComplitedDescUserName
+        {
+            get => _complitedDescUserName;
+            set => OnPropertyChanged(ref _complitedDescUserName, value);
+        }
+
+        private int _complitedDuration;
+        public int ComplitedDuration
+        {
+            get => _complitedDuration;
+            set => OnPropertyChanged(ref _complitedDuration, value);
+        }
+
+        private DateTime _complitedEndTime;
+        public DateTime ComplitedEndTime
+        {
+            get => _complitedEndTime;
+            set => OnPropertyChanged(ref _complitedEndTime, value);
+        }
+
+        private string _complitedComment;
+        public string ComplitedComment
+        {
+            get => _complitedComment;
+            set => OnPropertyChanged(ref _complitedComment, value);
+        }
+
+        public ObservableCollection<Complited> OtherCompliteds { get; set; }
+
+        private string _searchOtherComplitedText = "";
+        public string SearchOtherComplitedText
+        {
+            get => _searchOtherComplitedText;
+            set
+            {
+                OnPropertyChanged(ref _searchOtherComplitedText, value);
+                LoadOtherComplited();
+            }
+        }
+
+        public ICommand ToComplitedCommand { get; }
+        private void OnToComplitedCommandExecute(object p)
+        {
+            if ((p as AppUserWithStats).Role.Title == "Admin")
+                return;
+
+            _complitedUserID = (p as AppUserWithStats).Id;
+            ComplitedUserName = (p as AppUserWithStats).UserName;
+            SearchComplitedText = "";
+
+            ComplitedZIndex = 1;
+        }
+
+        public ICommand BackFromComplitedCommand { get; }
+        private void OnBackFromComplitedCommandExecute(object p)
+        {
+            ComplitedZIndex = -1;
+            ComplitedDescZIndex = -1;
+        }
+
+        public ICommand ToCompletedDescCommand { get; }
+        private void OnToCompletedDescCommandExecute(object p)
+        {
+            _selectedComplited = p as Complited;
+            _taskCode = _selectedComplited.TaskCode;
+            TaskName = _selectedComplited.TaskTitle;
+            TaskDescription = _selectedComplited.TaskDescription;
+            ComplitedDescUserName = _selectedComplited.CompanyUser.User.UserName;
+            ComplitedDuration = _selectedComplited.Duration;
+            ComplitedEndTime = (DateTime)_selectedComplited.EndTime;
+            ComplitedComment = _selectedComplited.Comment;
+            LoadOtherComplited();
+            ComplitedDescZIndex = 1;
+        }
+
+        public ICommand GetFailsCommand { get; }
+        private async void OnGetFailsCommandExecute(object p)
+        {
+            List<AppFile> complitedFiles = (await _apiHelper.ComplitedFile.GetByComplited(_selectedComplited.Id))
+                .Select(cf => cf.File).ToList();
+
+            foreach (var file in complitedFiles)
+            {
+                var dlg = new SaveFileDialog()
+                {
+                    FileName = file.Name
+                };
+                if (dlg.ShowDialog() is true)
+                    File.WriteAllBytes(dlg.FileName, file.Content);
+            }
+        }
+
+        public ICommand OtherOpenCommand { get; }
+        private void OnOtherOpenCommandExecute(object p)
+        {
+            _selectedComplited = p as Complited;
+            ComplitedDescUserName = _selectedComplited.CompanyUser.User.UserName;
+            ComplitedDuration = _selectedComplited.Duration;
+            ComplitedEndTime = (DateTime)_selectedComplited.EndTime;
+            ComplitedComment = _selectedComplited.Comment;
+        }
+
+        private async void LoadComplited()
+        {
+            (this as ILoading).StartLoading();
+            Compliteds.Clear();
+            var comps = (await _apiHelper.Complited.GetByCompanyAndUser(_companyUserStore.CompanyUser.CompanyId, _complitedUserID))
+                .Where(c => c.TaskTitle.ToLower().Contains(SearchComplitedText.ToLower()))
+                .OrderByDescending(c => c.EndTime)
+                .ToList();
+            foreach (Complited comp in comps)
+                Compliteds.Add(comp);
+            (this as ILoading).EndLoading();
+        }
+
+        private async void LoadOtherComplited()
+        {
+            (this as ILoading).StartLoading();
+            OtherCompliteds.Clear();
+            var comps = (await _apiHelper.Complited.GetByTaskCode(_taskCode))
+                .Where(c => c.CompanyUser.User.UserName.ToLower().Contains(SearchOtherComplitedText.ToLower()))
+                .OrderByDescending(c => c.EndTime)
+                .ToList();
+            foreach (Complited comp in comps)
+                OtherCompliteds.Add(comp);
+            (this as ILoading).EndLoading();
+        }
+        
+        #endregion
+
         public CompanyControlViewModel(APIHelper apiHelper, CompanyUserStore companyUserStore)
         {
             _apiHelper = apiHelper;
             _companyUserStore = companyUserStore;
+            Compliteds = new();
+            OtherCompliteds = new();
 
             ToUpdateUserCommand = new RelayCommand(OnToUpdateUserCommandExecute);
             BackFromEditUserCommand = new RelayCommand(OnBackFromEditUserCommandExecute);
@@ -289,6 +493,12 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
 
             CalcStats = new RelayCommand(OnCalcStatsExecute);
 
+            ToComplitedCommand = new RelayCommand(OnToComplitedCommandExecute);
+            BackFromComplitedCommand = new RelayCommand(OnBackFromComplitedCommandExecute);
+            ToCompletedDescCommand = new RelayCommand(OnToCompletedDescCommandExecute);
+            GetFailsCommand = new RelayCommand(OnGetFailsCommandExecute);
+            OtherOpenCommand = new RelayCommand(OnOtherOpenCommandExecute);
+
             LoadUsers();
             LoadRoles();
         }
@@ -297,7 +507,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         {
             (this as ILoading).StartLoading();
             Users = new();
-            var users = await _apiHelper.Users.GetByCompany(_companyUserStore.CompanyUser.Company.Id);
+            var users = (await _apiHelper.Users.GetByCompany(_companyUserStore.CompanyUser.Company.Id))
+                .Where(u => u.UserName.ToLower().Contains(SearchText.ToLower())).ToList();
             users.ForEach(u => Users.Add(new(u)));
             (this as ILoading).EndLoading();
         }

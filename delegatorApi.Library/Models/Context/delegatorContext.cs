@@ -20,6 +20,8 @@ namespace delegatorApi.Library.Models.Context
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<CompanyUser> CompanyUsers { get; set; }
         public virtual DbSet<Complited> Complited { get; set; }
+        public virtual DbSet<ComplitedFile> ComplitedFile { get; set; }
+        public virtual DbSet<File> File { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Task> Tasks { get; set; }
         public virtual DbSet<TasksTask> TasksTasks { get; set; }
@@ -118,12 +120,7 @@ namespace delegatorApi.Library.Models.Context
                     .HasDefaultValueSql("(newid())")
                     .IsFixedLength(true);
 
-                entity.Property(e => e.UserId)
-                    .IsRequired()
-                    .HasMaxLength(36)
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.TaskId)
+                entity.Property(e => e.CompanyUserId)
                     .IsRequired()
                     .HasMaxLength(36)
                     .IsFixedLength(true);
@@ -132,7 +129,47 @@ namespace delegatorApi.Library.Models.Context
 
                 entity.Property(e => e.EndTime).IsRequired();
 
-                entity.HasOne(d => d.User);
+                entity.HasOne(d => d.CompanyUser);
+            });
+
+            modelBuilder.Entity<ComplitedFile>(entity =>
+            {
+                entity.ToTable("ComplitedFiles");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID")
+                    .HasDefaultValueSql("(newid())")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.ComplitedId)
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.FileId)
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .IsFixedLength(true);
+
+                entity.HasOne(d => d.Complited);
+
+                entity.HasOne(d => d.File);
+            });
+
+            modelBuilder.Entity<File>(entity =>
+            {
+                entity.ToTable("Files");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID")
+                    .HasDefaultValueSql("(newid())")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Name).IsRequired();
+
+                entity.Property(e => e.Content).IsRequired();
             });
 
             modelBuilder.Entity<Role>(entity =>

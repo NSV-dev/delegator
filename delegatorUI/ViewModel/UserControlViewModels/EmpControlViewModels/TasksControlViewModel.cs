@@ -20,6 +20,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
         private readonly APIHelper _apiHelper;
         private readonly AppUser _user;
         private readonly Company _company;
+        private readonly CompanyUser _companyUser;
 
         private List<AppTask> _tasks;
         public List<AppTask> Tasks
@@ -170,16 +171,37 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
                 return;
             }
 
-            EmailService.SendEmail(_taskToReport.Sender.Email, _taskToReport.Sender.UserName,
-                _user.UserName, _taskToReport.Title, ReportText, ReportDuration, new List<OpenFileDialog>(ReportFiles));
+            List<string> fileIDs = new();
+            foreach (var file in ReportFiles)
+                fileIDs.Add
+                    (
+                        (await _apiHelper.AppFile.Post(new AppFile()
+                        {
+                            Name = file.SafeFileName,
+                            Content = File.ReadAllBytes(file.FileName)
+                        })).Trim('"', '\\')
+                    );
 
-            await _apiHelper.Complited.Post(new Complited()
+            string complitedID = (await _apiHelper.Complited.Post(new Complited()
             {
-                TaskId = _taskToReport.Id,
-                UserId = _user.Id,
+                CompanyUserId = _companyUser.Id,
                 Duration = int.Parse(ReportDuration),
-                EndTime = DateTime.Now
-            });
+                EndTime = DateTime.Now,
+                Comment = ReportText,
+                TaskCode = _taskToReport.Id,
+                TaskTitle = _taskToReport.Title,
+                TaskDescription = _taskToReport.Description
+            })).Trim('"', '\\');
+
+            foreach (var id in fileIDs)
+                await _apiHelper.ComplitedFile.Post(new ComplitedFile()
+                {
+                    ComplitedId = complitedID,
+                    FileId = id
+                });
+
+            //EmailService.SendEmail(_taskToReport.Sender.Email, _taskToReport.Sender.UserName,
+            //    _user.UserName, _taskToReport.Title, ReportText, ReportDuration, new List<OpenFileDialog>(ReportFiles));
 
             await _apiHelper.Users.DeleteTask(_taskToReport.Id, _user.Id, _company.Id);
 
@@ -212,6 +234,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
             _apiHelper = apiHelper;
             _user = companyUser.User;
             _company = companyUser.Company;
+            _companyUser = companyUser;
 
             ReloadTasksCommand = new RelayCommand(OnReloadTasksCommandExecute);
 

@@ -17,14 +17,18 @@ namespace delegatorApi.Controllers
             _complitedData = complitedData;
         }
 
-        public void Post(Complited complited) => _complitedData.Post(complited);
+        public string Post(Complited complited) => _complitedData.Post(complited);
 
-        [Route("ByTask")]
-        public List<Complited> GetByTask(string taskID)
-            => _complitedData.GetByTask(taskID);
+        [Route("ByTaskCode")]
+        public List<Complited> GetByTaskCode(string taskCode)
+            => _complitedData.GetByTaskCode(taskCode);
 
-        [Route("ByUserAndDate")]
-        public List<Complited> GetByUserAndDate(string userID, DateTime from, DateTime to)
-            => _complitedData.GetByUserAndDate(userID, from, to);
+        [Route("ByCompanyAndUser")]
+        public List<Complited> GetByCompanyUser(string companyID, string userID)
+            => _complitedData.GetByCompanyAndUser(companyID, userID);
+
+        [Route("ByCompanyAndUserAndDate")]
+        public List<Complited> GetByCompanyUserAndDate(string companyID, string userID, DateTime from, DateTime to)
+            => _complitedData.GetByCompanyAndUserAndDate(companyID, userID, from, to);
     }
 }

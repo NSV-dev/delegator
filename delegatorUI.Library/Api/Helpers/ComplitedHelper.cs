@@ -12,20 +12,31 @@ namespace delegatorUI.Library.Api.Helpers
         public ComplitedHelper(HttpClient apiClient)
             : base(apiClient) { }
 
-        public async Task Post(Complited complited)
+        public async Task<string> Post(Complited complited)
         {
             using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("Complited", complited))
             {
                 if (resp.IsSuccessStatusCode)
-                    return;
+                    return await resp.Content.ReadAsStringAsync();
                 else
                     throw new Exception(resp.ReasonPhrase);
             }
         }
 
-        public async Task<List<Complited>> GetByTask(string taskID)
+        public async Task<List<Complited>> GetByTaskCode(string taskCode)
         {
-            using (HttpResponseMessage resp = await _apiClient.GetAsync($"Complited/ByTask?taskID={taskID}"))
+            using (HttpResponseMessage resp = await _apiClient.GetAsync($"Complited/ByTaskCode?taskCode={taskCode}"))
+            {
+                if (resp.IsSuccessStatusCode)
+                    return await resp.Content.ReadAsAsync<List<Complited>>();
+                else
+                    throw new Exception(resp.ReasonPhrase);
+            }
+        }
+
+        public async Task<List<Complited>> GetByCompanyAndUser(string companyID, string userID)
+        {
+            using (HttpResponseMessage resp = await _apiClient.GetAsync($"Complited/ByCompanyAndUser?companyID={companyID}&userID={userID}"))
             {
                 if (resp.IsSuccessStatusCode)
                 {
@@ -36,9 +47,10 @@ namespace delegatorUI.Library.Api.Helpers
             }
         }
 
-        public async Task<List<Complited>> GetByUserAndDate(string userID, DateTime from, DateTime to)
+        public async Task<List<Complited>> GetByCompanyAndUserAndDate(string companyId, string userID, DateTime from, DateTime to)
         {
-            using (HttpResponseMessage resp = await _apiClient.GetAsync($"Complited/ByUserAndDate?userID={userID}&from={from.ToString("yyyy.MM.dd")}&to={to.ToString("yyyy.MM.dd")}"))
+            using (HttpResponseMessage resp = await _apiClient.GetAsync
+                ($"Complited/ByCompanyAndUserAndDate?companyID={companyId}&userID={userID}&from={from.ToString("yyyy.MM.dd")}&to={to.ToString("yyyy.MM.dd")}"))
             {
                 if (resp.IsSuccessStatusCode)
                 {

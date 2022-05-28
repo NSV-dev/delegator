@@ -29,7 +29,9 @@ namespace delegatorApi
                 .AddSingleton<TaskTaskData>()
                 .AddSingleton<TaskUserData>()
                 .AddSingleton<CategoryData>()
-                .AddSingleton<ComplitedData>();
+                .AddSingleton<ComplitedData>()
+                .AddSingleton<ComplitedFileData>()
+                .AddSingleton<FileData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

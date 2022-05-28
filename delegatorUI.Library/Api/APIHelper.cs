@@ -18,6 +18,8 @@ namespace delegatorUI.Library.Api
         public TaskHelper Tasks;
         public CategoryHelper Categories;
         public ComplitedHelper Complited;
+        public ComplitedFileHelper ComplitedFile;
+        public AppFileHelper AppFile;
 
         private void InitializeHelpers()
         {
@@ -28,6 +30,8 @@ namespace delegatorUI.Library.Api
             Tasks = new(_apiClient, Users);
             Categories = new(_apiClient);
             Complited = new(_apiClient);
+            ComplitedFile = new(_apiClient);
+            AppFile = new(_apiClient);
         }
         #endregion
 

@@ -35,7 +35,8 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <DockPanel Background="{DynamicResource WindowPanel}" Panel.ZIndex="100">
-                <TextBlock Text="{Binding Title}" Foreground="{DynamicResource Text}" Margin="15,0,0,0" VerticalAlignment="Center" FontSize="14"/>
+                <TextBlock Text="{Binding Title}" Foreground="{DynamicResource Text}" Margin="15,0,0,0" 
+                    VerticalAlignment="Center" FontSize="14" FontWeight="Medium"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                     WindowChrome.IsHitTestVisibleInChrome="True">
                     <StackPanel.Resources>
@@ -59,9 +60,8 @@
                             </Style.Triggers>
                         </Style>
                     </StackPanel.Resources>
-                    <ToggleButton x:Name="ThemeBtn" Content="☾" Style="{StaticResource BaseToggleWithTheme}"
-                        FontSize="16" Width="50" IsChecked="True"
-                        Checked="ThemeBtn_Checked" Unchecked="ThemeBtn_Unchecked"/>
+                    <Button x:Name="ThemeBtn" Content="    ☾" Style="{StaticResource CompanyButton}"
+                        FontSize="16" Width="50" Click="ThemeBtn_Click"/>
                     <Button Content="—" Command="{Binding MinimazeCommand}"/>
                     <Button Content="❐" Command="{Binding MaximazeCommand}" FontSize="16"/>
                     <Button Content="✕" Command="{Binding CloseCommand}" FontSize="16"/>

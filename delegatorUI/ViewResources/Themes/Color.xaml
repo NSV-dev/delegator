@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="Text" Color="#252D2C"/>
+    <Color x:Key="TextClr" R="#f" G="#f" B="#f"/>
+
+    <SolidColorBrush x:Key="Text2" Color="#404F4D"/>
+
+    <SolidColorBrush x:Key="WindowPanel" Color="#9BC53D"/>
+
+    <SolidColorBrush x:Key="MainBg" Color="#FDE74C"/>
+
+    <SolidColorBrush x:Key="NavPanel" Color="#C3423F"/>
+
+    <SolidColorBrush x:Key="Hover" Color="#ADD062"/>
+
+    <SolidColorBrush x:Key="Path" Color="#1BA1DA"/>
+
+    <SolidColorBrush x:Key="TaskBg" Color="#5BC0EB"/>
+
+    <SolidColorBrush x:Key="PanelButtonChecked" Color="#FDE321"/>
+    <SolidColorBrush x:Key="PanelButtonUnChecked" Color="#8B2D2D"/>
+
+    <SolidColorBrush x:Key="CompanyOutline" Color="#1BA1DA"/>
+</ResourceDictionary>

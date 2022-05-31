@@ -131,8 +131,8 @@
                         TargetType="{x:Type TreeViewItem}">
                         <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="Padding" Value="1,0,0,0"/>
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="FontSize" Value="16"/>
+                        <Setter Property="Foreground" Value="{DynamicResource Text}"/>
+                        <Setter Property="FontSize" Value="18"/>
                         <Setter Property="Margin" Value="20,0,0,0"/>
                         <Setter Property="Template">
                             <Setter.Value>
@@ -149,7 +149,7 @@
                                         </Grid.RowDefinitions>
                                         <Border
                                             Grid.ColumnSpan="100" Grid.Row="0" 
-                                            Background="#555555" 
+                                            Background="{DynamicResource TaskBg}" 
                                             CornerRadius="5" Margin="0,0,10,0"
                                             BorderBrush="White" BorderThickness="4,0,0,0">
                                             <Border.Effect>
@@ -157,16 +157,15 @@
                                                     ShadowDepth="1" Direction="275"
                                                     Opacity=".6" BlurRadius="20"/>
                                             </Border.Effect>
-                                            <Rectangle Fill="#555555" Width="3" HorizontalAlignment="Left"/>
                                         </Border>
-                                        <ToggleButton x:Name="Expander" VerticalAlignment="Top" Margin="4,5,0,0"
+                                        <ToggleButton x:Name="Expander" VerticalAlignment="Top" Margin="4,10,0,0"
                                             Style="{StaticResource ExpandCollapseToggleStyle}"
                                             IsChecked="{Binding Path=IsExpanded,
                                                 RelativeSource={RelativeSource TemplatedParent}}"
                                             ClickMode="Press"/>
                                         <Border Name="Bd"
                                             HorizontalAlignment="Stretch"
-                                            Grid.Column="1" Height="30"
+                                            Grid.Column="1" Height="40"
                                             Background="{TemplateBinding Background}"
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             BorderThickness="{TemplateBinding BorderThickness}"
@@ -178,12 +177,12 @@
                                         <StackPanel x:Name="EditPanel" Width="0"
                                             Orientation="Horizontal" Grid.Column="2"
                                             HorizontalAlignment="Right" VerticalAlignment="Top"
-                                            Margin="0,0,20,0" Height="30"
+                                            Margin="0,4,20,0" Height="30"
                                             Background="Transparent">
                                             <Border Background="Transparent" BorderThickness="0"
                                                 Height="20" Width="20" Padding="1" Margin="10,0,0,0">
                                                 <Path Data="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
-                                                  Fill="#999999" Stretch="Uniform"/>
+                                                  Fill="{DynamicResource Path}" Stretch="Uniform"/>
                                                 <Border.InputBindings>
                                                     <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=tv,
                                                     Path=DataContext.ToAddTaskCommand}"
@@ -203,7 +202,7 @@
                                                     VerticalAlignment="Top"
                                                 Height="20" Width="20" Padding="1" Margin="10,4,10,0">
                                                 <Path Data="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"
-                                                  Fill="#999999" Stretch="Uniform"/>
+                                                  Fill="{DynamicResource Path}" Stretch="Uniform"/>
                                                 <Border.InputBindings>
                                                     <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=tv,
                                                     Path=DataContext.ToUpdateTaskCommand}"
@@ -222,7 +221,7 @@
                                             <Border Background="Transparent" BorderThickness="0"
                                             Height="20" Width="20" Padding="1" Margin="0,1,0,0">
                                                 <Path Data="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
-                                                Fill="#999999" Stretch="Uniform"/>
+                                                Fill="{DynamicResource Path}" Stretch="Uniform"/>
                                                 <Border.InputBindings>
                                                     <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=tv,
                                                     Path=DataContext.ToDelTaskCommand}"
@@ -240,7 +239,7 @@
                                             </Border>
                                         </StackPanel>
                                         <ToggleButton x:Name="DescBtn" Grid.Column="2"
-                                            Content="● ● ●" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,3,20,0">
+                                            Content="● ● ●" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,6,20,0">
                                             <ToggleButton.Triggers>
                                                 <EventTrigger RoutedEvent="ToggleButton.Checked">
                                                     <EventTrigger.Actions>
@@ -249,7 +248,7 @@
                                                                 <DoubleAnimation
                                                                     Storyboard.TargetName="Bd"
                                                                     Storyboard.TargetProperty="Height"
-                                                                    From="30" To="200" Duration="0:0:.2"/>
+                                                                    From="40" To="220" Duration="0:0:.2"/>
                                                                 <DoubleAnimation
                                                                     Storyboard.TargetName="EditPanel"
                                                                     Storyboard.TargetProperty="Width"
@@ -257,7 +256,7 @@
                                                                 <ThicknessAnimation
                                                                     Storyboard.TargetName="DescBtn"
                                                                     Storyboard.TargetProperty="Margin"
-                                                                    From="0,3,20,0" To="0,3,110,0" Duration="0:0:.2"/>
+                                                                    From="0,6,20,0" To="0,6,110,0" Duration="0:0:.2"/>
                                                             </Storyboard>
                                                         </BeginStoryboard>
                                                     </EventTrigger.Actions>
@@ -269,7 +268,7 @@
                                                                 <DoubleAnimation
                                                                     Storyboard.TargetName="Bd"
                                                                     Storyboard.TargetProperty="Height"
-                                                                    From="200" To="30" Duration="0:0:.2"/>
+                                                                    From="220" To="40" Duration="0:0:.2"/>
                                                                 <DoubleAnimation
                                                                     Storyboard.TargetName="EditPanel"
                                                                     Storyboard.TargetProperty="Width"
@@ -277,7 +276,7 @@
                                                                 <ThicknessAnimation
                                                                     Storyboard.TargetName="DescBtn"
                                                                     Storyboard.TargetProperty="Margin"
-                                                                    From="0,3,110,0" To="0,3,20,0" Duration="0:0:.2"/>
+                                                                    From="0,6,110,0" To="0,6,20,0" Duration="0:0:.2"/>
                                                             </Storyboard>
                                                         </BeginStoryboard>
                                                     </EventTrigger.Actions>
@@ -317,8 +316,8 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <DoubleAnimation From="1" To="0" Duration="0:0:.2"
-                                                                Storyboard.TargetProperty="Opacity"
-                                                                Storyboard.TargetName="ItemsHost"/>
+                                                            Storyboard.TargetProperty="Opacity"
+                                                            Storyboard.TargetName="ItemsHost"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </Trigger.EnterActions>
@@ -326,8 +325,8 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <DoubleAnimation From="0" To="1" Duration="0:0:.2"
-                                                                Storyboard.TargetProperty="Opacity"
-                                                                Storyboard.TargetName="ItemsHost"/>
+                                                            Storyboard.TargetProperty="Opacity"
+                                                            Storyboard.TargetName="ItemsHost"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </Trigger.ExitActions>
@@ -359,16 +358,17 @@
                     <HierarchicalDataTemplate DataType="{x:Type models:AppTask}" ItemsSource="{Binding Tasks}">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="40"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             
-                            <TextBlock Text="{Binding Title}"/>
+                            <TextBlock Text="{Binding Title}" Style="{StaticResource SmallTextBlockStyle}" Margin="0,4,0,0"/>
 
                             <TextBlock Text="{Binding Category.Title}" Foreground="{Binding Category.Color}"
-                                HorizontalAlignment="Right" Background="#555555"/>
+                                HorizontalAlignment="Right" Background="{DynamicResource TaskBg}" Style="{DynamicResource SmallTextBlockStyle}"
+                                FontSize="16" Margin="0,5,0,0"/>
                                 
-                            <Rectangle Height="2" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="3,0" Width="100" Fill="White" Grid.Row="1"/>
+                            <Rectangle Height="2" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Fill="White" Grid.Row="1"/>
 
                             <Grid Grid.Row="1" Margin="0,10,0,0">
                                 <Grid.Resources>
@@ -392,17 +392,17 @@
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="Описание задачи:"/>
+                                <TextBlock Text="Описание задачи:" Style="{DynamicResource SmallTextBlockStyle}"/>
                                 <ScrollViewer Grid.Row="1" Height="75" VerticalScrollBarVisibility="Auto">
                                     <TextBlock Text="{Binding Description}"
-                                        TextWrapping="WrapWithOverflow"/>
+                                        TextWrapping="WrapWithOverflow" Style="{DynamicResource SmallTextBlockStyle}"/>
                                 </ScrollViewer>
 
-                                <TextBlock Text="Дэдлайн:" Grid.Row="2" Margin="0,10,0,0"/>
+                                <TextBlock Text="Дэдлайн:" Grid.Row="2" Margin="0,10,0,0" Style="{DynamicResource SmallTextBlockStyle}"/>
                                 <TextBlock Text="{Binding EndTime, StringFormat=d}" Grid.Row="3" 
-                                        TextWrapping="WrapWithOverflow"/>
+                                        TextWrapping="WrapWithOverflow" Style="{DynamicResource SmallTextBlockStyle}"/>
 
-                                <TextBlock Text="Сотрудники:" Grid.Column="1" Margin="50,0,0,0"/>
+                                <TextBlock Text="Сотрудники:" Grid.Column="1" Margin="50,0,0,0" Style="{DynamicResource SmallTextBlockStyle}"/>
                                 <ListView ItemsSource="{Binding Users}" 
                                     Width="200" ItemContainerStyle="{StaticResource ListViewNoHover}"
                                     HorizontalAlignment="Left" Margin="50,0,0,0"
@@ -414,7 +414,7 @@
                                     </ListView.ItemTemplate>
                                 </ListView>
 
-                                <TextBlock Grid.Column="2">
+                                <TextBlock Grid.Column="2" Style="{DynamicResource SmallTextBlockStyle}">
                                     <Run Text="Назначил:"/>
                                     <Run Text="{Binding Sender.UserName}"/>
                                 </TextBlock>
@@ -456,8 +456,8 @@
             </TextBlock>
 
             <Border Opacity="{Binding AddTaskOpacity, UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="{Binding AddTaskZIndex}"
-                    CornerRadius="10" Width="400" Height="340" Grid.RowSpan="100"
-                    Background="#2e2e2e" d:Opacity="0">
+                    CornerRadius="10" Width="500" Height="440" Grid.RowSpan="100"
+                    Background="{DynamicResource WindowPanel}" d:Opacity="0">
                 <Border.Effect>
                     <DropShadowEffect
                         ShadowDepth="1" Direction="275"
@@ -492,8 +492,8 @@
                 <Grid>
                     <Grid.Resources>
                         <Style x:Key="TextBlockStyle" TargetType="TextBlock">
-                            <Setter Property="FontSize" Value="16"/>
-                            <Setter Property="Foreground" Value="#999999"/>
+                            <Setter Property="FontSize" Value="18"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Text2}"/>
                             <Setter Property="VerticalAlignment" Value="Bottom"/>
                         </Style>
                         <Style TargetType="TextBlock" x:Key="TitleDescription"
@@ -514,7 +514,7 @@
                                             <Storyboard>
                                                 <ThicknessAnimation
                                                     Storyboard.TargetProperty="Margin"
-                                                    To="12,0,0,-17" Duration="0:0:.1"/>
+                                                    To="12,0,0,-21" Duration="0:0:.1"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </DataTrigger.ExitActions>
@@ -535,29 +535,29 @@
                     </Grid.RowDefinitions>
 
                     <TextBox x:Name="TitleTb" Text="{Binding NewTaskTitle, UpdateSourceTrigger=PropertyChanged}"
-                             Style="{StaticResource TextBoxBase}" Width="180" Height="30"
+                             Style="{StaticResource TextBoxBaseWithTheme}" Width="180" Height="30"
                              HorizontalAlignment="Left" Margin="10,10,0,0" FontSize="20"/>
                     <TextBlock Text="Название" Panel.ZIndex="-1" Style="{StaticResource TitleDescription}"/>
 
                     <DatePicker Grid.Column="1" Style="{StaticResource DatePickerBase}" 
-                                VerticalAlignment="Bottom" Margin="10,0,0,0" SelectedDate="{Binding NewTaskEndDate, UpdateSourceTrigger=PropertyChanged}"/>
+                                VerticalAlignment="Bottom" Margin="10,0,0,-5" SelectedDate="{Binding NewTaskEndDate, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <TextBox Grid.Row="1" Text="{Binding NewTaskDesc, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource MultiLineTextBox}"
                              Margin="10,40,10,10" VerticalScrollBarVisibility="Auto"/>
                     <TextBlock Text="Описание:" Grid.Row="1" Panel.ZIndex="-1" 
-                            Style="{StaticResource TextBlockStyle}"
-                            Width="200" Margin="12,20,0,10"
+                            Style="{StaticResource SmallTextBlockStyleWithTheme}"
+                            Width="200" Margin="12,18,0,10"
                             HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-                    <TextBlock Text="Список сотрудников:" Style="{StaticResource TextBlockStyle}"
-                               Grid.Column="1" Grid.Row="1" Margin="10,20,0,0" VerticalAlignment="Top"/>
+                    <TextBlock Text="Список сотрудников:" Style="{StaticResource SmallTextBlockStyleWithTheme}"
+                               Grid.Column="1" Grid.Row="1" Margin="10,18,0,0" VerticalAlignment="Top"/>
                     <ListView x:Name="TaskUsersLw" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding NewTaskUsers}"
                               Margin="10,40,10,10" Style="{StaticResource ListViewBase}" ItemContainerStyle="{StaticResource ListViewNoHover}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding UserName}" Style="{StaticResource TextBlockStyle}"
-                                    Foreground="White" FontSize="18">
+                                <TextBlock Text="{Binding UserName}" Style="{StaticResource SmallTextBlockStyleWithTheme}"
+                                    FontSize="18">
                                     <TextBlock.InputBindings>
                                         <MouseBinding Gesture="LeftClick"
                                             Command="{Binding ElementName=TaskUsersLw, Path=DataContext.DeleteUserCommand}"
@@ -569,10 +569,10 @@
                     </ListView>
                     <Border Grid.Column="1" Grid.Row="1" 
                             Background="Transparent" BorderBrush="Transparent"
-                            Width="25" Height="15" Margin="0,25,10,0"
+                            Width="25" Height="25" Margin="0,19,10,0"
                             HorizontalAlignment="Right" VerticalAlignment="Top">
                         <Path Data="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" 
-                            Stretch="Uniform" Fill="#999999" Width="12" Height="12"/>
+                            Stretch="Uniform" Fill="{DynamicResource Path}" Width="15" Height="15"/>
                         <Border.InputBindings>
                             <MouseBinding MouseAction="LeftClick" Command="{Binding ToAddTaskUserCommand}"/>
                         </Border.InputBindings>
@@ -587,7 +587,7 @@
                         </Border.Style>
                     </Border>
 
-                    <Grid Grid.Column="1" Grid.Row="1" Background="#2e2e2e"
+                    <Grid Grid.Column="1" Grid.Row="1" Background="{DynamicResource WindowPanel}"
                         Opacity="{Binding AddTaskUserOpacity}" Panel.ZIndex="{Binding AddTaskUserZIndex}">
                         <Grid.Style>
                             <Style TargetType="Grid">
@@ -620,7 +620,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBox x:Name="SearchTaskTb" Style="{StaticResource TextBoxBase}" Margin="10,2" 
+                        <TextBox x:Name="SearchTaskTb" Style="{StaticResource TextBoxBaseWithTheme}" Margin="10,2" 
                                  Text="{Binding SearchTaskText, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Text="Поиск" Margin="12,0,0,0" Panel.ZIndex="-1">
                             <TextBlock.Style>
@@ -649,11 +649,11 @@
                             </TextBlock.Style>
                         </TextBlock>
                         <Border Grid.Column="1" 
-                            Background="#2e2e2e" BorderBrush="Transparent"
+                            Background="{DynamicResource WindowPanel}" BorderBrush="Transparent"
                             Width="25" Height="15" Margin="0,25,10,0"
                             HorizontalAlignment="Right" VerticalAlignment="Top">
                             <Path Data="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z" 
-                            Stretch="Uniform" Fill="#999999" Width="12" Height="12"/>
+                            Stretch="Uniform" Fill="{DynamicResource Path}" Width="15" Height="15"/>
                             <Border.InputBindings>
                                 <MouseBinding MouseAction="LeftClick" Command="{Binding BackFromAddTaskUserCommand}"/>
                             </Border.InputBindings>
@@ -673,8 +673,8 @@
                             Margin="10,5,10,10" ItemsSource="{Binding CompanyUsers}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding UserName}" Style="{StaticResource TextBlockStyle}"
-                                        Foreground="White" FontSize="18">
+                                    <TextBlock Text="{Binding UserName}" Style="{StaticResource SmallTextBlockStyleWithTheme}"
+                                        FontSize="18">
                                         <TextBlock.InputBindings>
                                             <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=AddUsersLw,
                                                 Path=DataContext.BackFromAddTaskUserCommand}"
@@ -686,7 +686,7 @@
                         </ListView>
                     </Grid>
 
-                    <TextBlock Style="{StaticResource SmallTextBlockStyle}"
+                    <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
                         Grid.Row="2" Grid.ColumnSpan="100"
                         VerticalAlignment="Center" TextAlignment="Center">
                         <Run Text="Категория:"/>
@@ -694,11 +694,11 @@
                     </TextBlock>
 
                     <Border Grid.Row="2" Grid.Column="1"
-                        Background="#2e2e2e" BorderBrush="Transparent"
+                        BorderBrush="Transparent"
                         Width="30" Height="30" Margin="0,0,10,5"
                         HorizontalAlignment="Right" VerticalAlignment="Bottom">
                         <Path Data="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z" 
-                            Stretch="Uniform" Fill="#999999" Width="20" Height="20"/>
+                            Stretch="Uniform" Fill="{DynamicResource Path}" Width="20" Height="20"/>
                         <Border.InputBindings>
                             <MouseBinding MouseAction="LeftClick" Command="{Binding ChangeCategoryCommand}"/>
                         </Border.InputBindings>
@@ -713,12 +713,12 @@
                         </Border.Style>
                     </Border>
 
-                    <Button Grid.Row="100" Style="{StaticResource ButtonBase}" 
+                    <Button Grid.Row="100" Style="{StaticResource ButtonBaseWithTheme}" 
                             Width="100" Height="30" Content="Назад"
                             HorizontalAlignment="Left" Margin="10"
                             Command="{Binding BackFromAddTaskCommand}" IsCancel="True"/>
 
-                    <Button Grid.Row="100" Grid.Column="1" Style="{StaticResource ButtonBase}" 
+                    <Button Grid.Row="100" Grid.Column="1" Style="{StaticResource ButtonBaseWithTheme}" 
                             Width="100" Height="30" Content="Сохранить"
                             HorizontalAlignment="Right" Margin="10"
                             Command="{Binding AddTaskCommand}"
@@ -729,7 +729,7 @@
             </Border>
 
             <Border Opacity="{Binding DelTaskOpacity}" Panel.ZIndex="{Binding DelTaskZIndex}" d:Opacity="0"
-                Grid.RowSpan="100" Height="200" Width="300" CornerRadius="10" Background="#2e2e2e">
+                Grid.RowSpan="100" Height="200" Width="300" CornerRadius="10" Background="{DynamicResource WindowPanel}">
 
                 <Border.Effect>
                     <DropShadowEffect
@@ -764,20 +764,20 @@
 
                 <Grid Margin="10">
 
-                    <TextBlock Margin="20,-20,20,0" Height="120" Style="{StaticResource TextBlockStyle}"
-                        TextWrapping="WrapWithOverflow" TextAlignment="Center" Foreground="White">
+                    <TextBlock Margin="20,-20,20,0" Height="120" Style="{StaticResource SmallTextBlockStyleWithTheme}"
+                        TextWrapping="WrapWithOverflow" TextAlignment="Center" FontSize="20">
                         <Run 
                             Text="Вы уверен что хотите удалить "/><Run
                             Text="{Binding TaskToDel.Title}"/><Run
                             Text="?"/>
                     </TextBlock>
 
-                    <Button Grid.Row="100" Style="{StaticResource ButtonBase}" 
+                    <Button Grid.Row="100" Style="{StaticResource ButtonBaseWithTheme}" 
                         Width="100" Height="30" Content="Назад"
                         HorizontalAlignment="Left" VerticalAlignment="Bottom"
                         Command="{Binding BackFromDelTaskCommand}" IsCancel="True"/>
 
-                    <Button Grid.Row="100" Grid.Column="1" Style="{StaticResource ButtonBase}" 
+                    <Button Grid.Row="100" Grid.Column="1" Style="{StaticResource ButtonBaseWithTheme}" 
                         Width="100" Height="30" Content="Удалить"
                         HorizontalAlignment="Right" VerticalAlignment="Bottom"
                         Command="{Binding DelTaskCommand}"
@@ -789,6 +789,6 @@
             
         </Grid>
 
-        <res:LoadingAnimation Panel.ZIndex="{Binding LoadingZIndex}" Opacity="0"/>
+        <res:LoadingAnimation Panel.ZIndex="{Binding LoadingZIndex}" Opacity="0" d:Panel.ZIndex="-100"/>
     </Grid>
 </UserControl>

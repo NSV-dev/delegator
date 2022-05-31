@@ -3,6 +3,7 @@
 
     <Style x:Key="ListViewBase" TargetType="ListView">
         <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource CompanyOutline}"/>
     </Style>
 
     <Style x:Key="ListViewNoHover" TargetType="ListViewItem">
@@ -10,7 +11,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
                     <Border>
-                        <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

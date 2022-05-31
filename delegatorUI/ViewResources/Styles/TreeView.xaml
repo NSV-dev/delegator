@@ -7,15 +7,15 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
                     <Grid RenderTransformOrigin="0.5 0.5"
-                                    Width="20"
-                                    Height="20"
-                                    Background="Transparent">
+                        Width="20"
+                        Height="20"
+                        Background="Transparent">
                         <Path x:Name="ExpandPath"
-                                        HorizontalAlignment="Left" 
-                                        VerticalAlignment="Center" 
-                                        Margin="1,1,1,1"
-                                        Fill="White"
-                                        Data="M 6 0 L 12 6 L 6 12 Z"/>
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Center" 
+                            Margin="1,1,1,1"
+                            Fill="White"
+                            Data="M 6 0 L 12 6 L 6 12 Z"/>
                         <Grid.RenderTransform>
                             <RotateTransform x:Name="ExpandRotation" Angle="0"/>
                         </Grid.RenderTransform>
@@ -26,9 +26,9 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation
-                                                        Storyboard.TargetName="ExpandRotation"
-                                                        Storyboard.TargetProperty="Angle"
-                                                        Duration="0:0:.2" From="0" To="90"/>
+                                            Storyboard.TargetName="ExpandRotation"
+                                            Storyboard.TargetProperty="Angle"
+                                            Duration="0:0:.2" From="0" To="90"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
@@ -36,9 +36,9 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation
-                                                        Storyboard.TargetName="ExpandRotation"
-                                                        Storyboard.TargetProperty="Angle"
-                                                        Duration="0:0:.2" From="90" To="0"/>
+                                            Storyboard.TargetName="ExpandRotation"
+                                            Storyboard.TargetProperty="Angle"
+                                            Duration="0:0:.2" From="90" To="0"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
@@ -61,24 +61,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Duration="0:0:.2"
-                                                            Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                            To="White"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Duration="0:0:.2"
-                                                            Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                            To="#999999"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.ExitActions>
+                            <Setter Property="Foreground" Value="{DynamicResource PanelButtonChecked}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource Path}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -91,7 +77,7 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Padding" Value="1,0,0,0"/>
         <Setter Property="Foreground" Value="White"/>
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontSize" Value="18"/>
         <Setter Property="Margin" Value="20,0,0,0"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -107,23 +93,22 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Border Grid.ColumnSpan="100" Grid.Row="0" 
-                            Background="#555555" 
-                            CornerRadius="5" Margin="0,0,10,0"
+                            Background="{DynamicResource TaskBg}" 
+                            CornerRadius="7" Margin="0,0,10,0"
                             BorderBrush="White" BorderThickness="4,0,0,0">
                             <Border.Effect>
                                 <DropShadowEffect
                                     ShadowDepth="1" Direction="275"
                                     Opacity=".6" BlurRadius="20"/>
                             </Border.Effect>
-                            <Rectangle Fill="#555555" Width="2" HorizontalAlignment="Left"/>
                         </Border>
-                        <ToggleButton x:Name="Expander" VerticalAlignment="Top" Margin="4,5,0,0"
+                        <ToggleButton x:Name="Expander" VerticalAlignment="Top" Margin="4,10,0,0"
                             Style="{StaticResource ExpandCollapseToggleStyle}"
                             IsChecked="{Binding Path=IsExpanded,
                                 RelativeSource={RelativeSource TemplatedParent}}"
                             ClickMode="Press"/>
                         <Border Name="Bd"
-                            Grid.Column="1" Height="30"
+                            Grid.Column="1" Height="40"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
@@ -132,8 +117,8 @@
                                 ContentSource="Header" VerticalAlignment="Top"
                                 HorizontalAlignment="Stretch"/>
                         </Border>
-                        <ToggleButton x:Name="DescBtn" Grid.Column="2" Style="{StaticResource DescBtnStyle}"
-                            Content="● ● ●" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,3,20,0">
+                        <ToggleButton x:Name="DescBtn" Grid.Column="2" Style="{StaticResource DescBtnStyle}" FontSize="17"
+                            Content="● ● ●" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,6,20,0">
                             <ToggleButton.Triggers>
                                 <EventTrigger RoutedEvent="ToggleButton.Checked">
                                     <EventTrigger.Actions>
@@ -142,7 +127,7 @@
                                                 <DoubleAnimation
                                                     Storyboard.TargetName="Bd"
                                                     Storyboard.TargetProperty="Height"
-                                                    From="30" To="200" Duration="0:0:.2"/>
+                                                    From="40" To="220" Duration="0:0:.2"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -154,7 +139,7 @@
                                                 <DoubleAnimation
                                                     Storyboard.TargetName="Bd"
                                                     Storyboard.TargetProperty="Height"
-                                                    From="200" To="30" Duration="0:0:.2"/>
+                                                    From="220" To="40" Duration="0:0:.2"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -227,16 +212,16 @@
         DataType="{x:Type models:AppTask}" ItemsSource="{Binding Tasks}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{Binding Title}"/>
+            <TextBlock Text="{Binding Title}" Style="{StaticResource SmallTextBlockStyle}" Margin="0,3,0,0"/>
 
-            <TextBlock Text="{Binding Category.Title}" Foreground="{Binding Category.Color}"
-                HorizontalAlignment="Right" Margin="0,0,10,0"/>
+            <TextBlock Text="{Binding Category.Title}" Foreground="{Binding Category.Color}" FontSize="16"
+                HorizontalAlignment="Right" Margin="0,3,10,0" Style="{StaticResource SmallTextBlockStyle}"/>
 
-            <Rectangle Height="2" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="3,0" Width="50" Fill="White" Grid.Row="1"/>
+            <Rectangle Height="2" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70" Fill="White" Grid.Row="1"/>
 
             <Grid Grid.Row="1" Margin="0,10,0,0">
                 <Grid.RowDefinitions>
@@ -251,9 +236,9 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Описание задачи:"/>
+                <TextBlock Text="Описание задачи:" Style="{StaticResource SmallTextBlockStyle}"/>
                 <ScrollViewer Grid.Row="1" Height="75" VerticalScrollBarVisibility="Auto">
-                    <TextBlock Text="{Binding Description}"
+                    <TextBlock Text="{Binding Description}" Style="{StaticResource SmallTextBlockStyle}"
                         TextWrapping="WrapWithOverflow"/>
                 </ScrollViewer>
 
@@ -267,7 +252,7 @@
                     <Run Text="{Binding EndTime, StringFormat=dd MM yyyy}"/>
                 </TextBlock>
 
-                <TextBlock Text="Сотрудники:" Grid.Column="2"/>
+                <TextBlock Text="Сотрудники:" Grid.Column="2" Style="{StaticResource SmallTextBlockStyle}"/>
                 <ListView ItemsSource="{Binding Users}" Style="{StaticResource ListViewBase}" BorderThickness="0"
                     HorizontalAlignment="Stretch" ItemContainerStyle="{StaticResource ListViewNoHover}"
                     Grid.Column="2" Grid.Row="1" Grid.RowSpan="1">
@@ -283,7 +268,7 @@
                     Grid.Column="3" Grid.Row="10"
                     HorizontalAlignment="Right" VerticalAlignment="Top">
                     <Path Data="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
-                        Fill="#999999" Stretch="Uniform"/>
+                        Fill="{DynamicResource Path}" Stretch="Uniform"/>
                     <Border.InputBindings>
                         <MouseBinding Gesture="LeftClick" Command="{Binding RelativeSource=
                             {RelativeSource AncestorType=TreeView, Mode=FindAncestor}, Path=DataContext.ToReportCommand}"

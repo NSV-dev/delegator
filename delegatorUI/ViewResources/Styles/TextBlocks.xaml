@@ -3,14 +3,16 @@
 
     <Style x:Key="TextBlockStyleBase" TargetType="TextBlock">
         <Setter Property="FontSize" Value="16"/>
-        <Setter Property="Foreground" Value="#999999"/>
+        <Setter Property="Foreground" Value="{DynamicResource Text2}"/>
         <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="FontWeight" Value="Medium"/>
     </Style>
     
     <Style x:Key="TextBlockStyleBaseWithTheme" TargetType="TextBlock">
         <Setter Property="FontSize" Value="16"/>
-        <Setter Property="Foreground" Value="{DynamicResource Path}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Text2}"/>
         <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="FontWeight" Value="Medium"/>
     </Style>
 
     <Style x:Key="ErrorTextBlockStyle" TargetType="TextBlock">
@@ -18,6 +20,7 @@
         <Setter Property="Foreground" Value="#a6444e"/>
         <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
         <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="Medium"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding ErrorOpacity}" Value="0">
                 <DataTrigger.EnterActions>
@@ -44,12 +47,14 @@
 
     <Style x:Key="SmallTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="White"/>
-        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="Medium"/>
     </Style>
     
     <Style x:Key="SmallTextBlockStyleWithTheme" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{DynamicResource Text}"/>
-        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="Medium"/>
     </Style>
     
 </ResourceDictionary>

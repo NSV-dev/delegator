@@ -11,18 +11,31 @@ namespace delegatorUI.View.Window
         public MainWindow()
         {
             InitializeComponent();
+            clr = 1;
         }
 
-        private void ThemeBtn_Checked(object sender, RoutedEventArgs e)
-        {
-            ThemeBtn.Content = "☾";
-            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("\\viewresources\\themes\\dark.xaml", UriKind.RelativeOrAbsolute);
-        }
+        private int clr;
 
-        private void ThemeBtn_Unchecked(object sender, RoutedEventArgs e)
+        private void ThemeBtn_Click(object sender, RoutedEventArgs e)
         {
-            ThemeBtn.Content = "☀";
-            Application.Current.Resources.MergedDictionaries[0].Source = new Uri("\\viewresources\\themes\\light.xaml", UriKind.RelativeOrAbsolute);
+            clr++;
+            if (clr == 4)
+                clr = 1;
+            switch (clr)
+            {
+                case 1:
+                    ThemeBtn.Content = "    ☾";
+                    Application.Current.Resources.MergedDictionaries[0].Source = new Uri("\\viewresources\\themes\\dark.xaml", UriKind.RelativeOrAbsolute);
+                    break;
+                case 2:
+                    ThemeBtn.Content = "    🌣";
+                    Application.Current.Resources.MergedDictionaries[0].Source = new Uri("\\viewresources\\themes\\light.xaml", UriKind.RelativeOrAbsolute);
+                    break;
+                case 3:
+                    ThemeBtn.Content = "   🌈";
+                    Application.Current.Resources.MergedDictionaries[0].Source = new Uri("\\viewresources\\themes\\color.xaml", UriKind.RelativeOrAbsolute);
+                    break;
+            }
         }
     }
 }

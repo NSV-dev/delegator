@@ -30,14 +30,14 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Style="{StaticResource MainTextBlockStyle}"
-                    VerticalAlignment="Top" Margin="0">
+                <TextBlock Style="{StaticResource SmallTextBlockStyle}"
+                    VerticalAlignment="Top" Margin="0" FontSize="20">
                     <Run Text="Имя:"/>
                     <Run Text="{Binding CurrentUserName}"/>
                 </TextBlock>
-                
-                <TextBlock Style="{StaticResource MainTextBlockStyle}"
-                    VerticalAlignment="Top" Margin="0" Grid.Row="1">
+
+                <TextBlock Style="{StaticResource SmallTextBlockStyle}"
+                    VerticalAlignment="Top" Margin="0" Grid.Row="1" FontSize="20">
                     <Run Text="Email:"/>
                     <Run Text="{Binding CurrentEmail}"/>
                 </TextBlock>
@@ -142,8 +142,8 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 
-                <TextBlock Text="Изменить пароль" Style="{StaticResource MainTextBlockStyle}"
-                    VerticalAlignment="Top"/>
+                <TextBlock Text="Изменить пароль" Style="{StaticResource SmallTextBlockStyle}"
+                    VerticalAlignment="Top" FontSize="20" Margin="15"/>
 
                 <resources:BindablePasswordBox x:Name="OldPasswordBox" 
                     HorizontalAlignment="Left"
@@ -188,21 +188,21 @@
 
             <Grid>
 
-                <TextBlock Style="{StaticResource MainTextBlockStyle}"
-                    VerticalAlignment="Top" Margin="15,5,0,0">
+                <TextBlock Style="{StaticResource SmallTextBlockStyle}"
+                    VerticalAlignment="Top" Margin="15,15,0,0" FontSize="20">
                     <Run Text="Текущая компания:"/>
                     <Run Text="{Binding CurrentCompanyName}"/>
                 </TextBlock>
                 
                 <TextBlock Text="Выберете компанию, чтобы войти в неё" Style="{StaticResource TextBlockStyleBase}"
-                    VerticalAlignment="Top" Margin="10,32,0,0"/>
+                    VerticalAlignment="Top" Margin="15,42,0,0"/>
 
                 <Border Grid.Column="1" Grid.Row="1" 
                     Background="Transparent" BorderBrush="Transparent"
                     Width="20" Height="20" Margin="0,21,15,0"
                     HorizontalAlignment="Right" VerticalAlignment="Top">
                     <Path Data="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" 
-                        Stretch="Uniform" Fill="#999999"/>
+                        Stretch="Uniform" Fill="{DynamicResource Path}"/>
                     <Border.InputBindings>
                         <MouseBinding MouseAction="LeftClick" Command="{Binding ToAddCompanyCommand}"/>
                     </Border.InputBindings>
@@ -218,7 +218,8 @@
                 </Border>
 
                 <ListView x:Name="CompanyLw" Margin="10,60,10,10" ItemsSource="{Binding Companies}" BorderThickness="0"
-                    Style="{StaticResource ListViewBase}" ItemContainerStyle="{StaticResource ListViewNoHover}">
+                    Style="{StaticResource ListViewBase}" ItemContainerStyle="{StaticResource ListViewNoHover}"
+                    HorizontalAlignment="Left">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Rows="4"/>
@@ -226,35 +227,9 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="#666666" Background="Transparent"
+                            <Border BorderBrush="{DynamicResource CompanyOutline}" Background="Transparent"
                                 BorderThickness="1" CornerRadius="5"
                                 Width="200" Height="40" Margin="5,0">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Trigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ColorAnimation
-                                                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
-                                                                To="#4e4e4e" Duration="0:0:.1"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </Trigger.EnterActions>
-                                                <Trigger.ExitActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ColorAnimation
-                                                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
-                                                                To="#666666" Duration="0:0:.1"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </Trigger.ExitActions>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
                                 <Border.Triggers>
                                     <EventTrigger RoutedEvent="MouseEnter">
                                         <BeginStoryboard>
@@ -290,7 +265,7 @@
                                         HorizontalAlignment="Right" Opacity="0"
                                         Height="20" Width="20" Padding="1" Margin="0,0,10,0">
                                         <Path Data="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
-                                            Fill="#999999" Stretch="Uniform"/>
+                                            Fill="{DynamicResource Path}" Stretch="Uniform"/>
                                         <Border.InputBindings>
                                             <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=CompanyLw,
                                                 Path=DataContext.ToDeleteCommand}"
@@ -318,7 +293,7 @@
 
         <Border x:Name="UserData" Panel.ZIndex="{Binding UserDataZIndex}"
             Grid.ColumnSpan="100" Grid.RowSpan="100" Opacity="0"
-            Height="250"  Width="450" CornerRadius="10" Background="#2e2e2e">
+            Height="250"  Width="450" CornerRadius="10" Background="{DynamicResource WindowPanel}">
 
             <Border.Effect>
                 <DropShadowEffect
@@ -407,7 +382,7 @@
                 </Grid.Resources>
 
 
-                <TextBox x:Name="UserNameTb" Style="{StaticResource TextBoxBase}"
+                <TextBox x:Name="UserNameTb" Style="{StaticResource TextBoxBaseWithTheme}"
                     VerticalAlignment="Top"
                     Height="30" Margin="10,20,10,0"
                     Text="{Binding UserNameToChange, UpdateSourceTrigger=PropertyChanged}"/>
@@ -416,8 +391,8 @@
                     Panel.ZIndex="-1"
                     Style="{StaticResource UserNameDescription}"/>
 
-                
-                <TextBox x:Name="EmailTb" Style="{StaticResource TextBoxBase}"
+
+                <TextBox x:Name="EmailTb" Style="{StaticResource TextBoxBaseWithTheme}"
                     VerticalAlignment="Top"
                     Height="30" Margin="10,70,10,0"
                     Text="{Binding EmailToChange, UpdateSourceTrigger=PropertyChanged}"/>
@@ -427,12 +402,12 @@
                     Style="{StaticResource EmailDescription}"/>
 
                 
-                <Button Content="Назад" Style="{StaticResource ButtonBase}"
+                <Button Content="Назад" Style="{StaticResource ButtonBaseWithTheme}"
                     Height="30" Width="100"
                     VerticalAlignment="Bottom" HorizontalAlignment="Left"
                     Command="{Binding BackFromUserDataCommand}"/>
                 
-                <Button Content="Готово" Style="{StaticResource ButtonBase}"
+                <Button Content="Готово" Style="{StaticResource ButtonBaseWithTheme}"
                     Height="30" Width="100"
                     VerticalAlignment="Bottom" HorizontalAlignment="Right"
                     Command="{Binding ChangeUserDataCommand}"/>
@@ -441,7 +416,7 @@
         
         <Border x:Name="AddComp" Panel.ZIndex="{Binding AddCompanyZIndex}"
             Grid.ColumnSpan="100" Grid.RowSpan="100" Opacity="0"
-            Height="250"  Width="450" CornerRadius="10" Background="#2e2e2e">
+            Height="250"  Width="450" CornerRadius="10" Background="{DynamicResource WindowPanel}">
 
             <Border.Effect>
                 <DropShadowEffect
@@ -511,17 +486,17 @@
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
                 
-                <TextBlock Text="Выберите компанию или " Margin="10,0,0,0" 
-                    Style="{StaticResource MainTextBlockStyle}" FontSize="16"/>
+                <TextBlock Text="Выберите компанию или " Margin="10,2,0,0" 
+                    Style="{StaticResource SmallTextBlockStyleWithTheme}" FontSize="18"/>
                 <Button Content="Создать" Margin="0,0,10,0" HorizontalAlignment="Right" Width="100" Height="30"
-                    Command="{Binding ToCompanyDataCommand}" Style="{StaticResource ButtonBase}"/>
+                    Command="{Binding ToCompanyDataCommand}" Style="{StaticResource ButtonBaseWithTheme}"/>
 
-                <TextBox x:Name="TitleTb" Grid.Row="1" Style="{StaticResource TextBoxBase}" Margin="10,0"
+                <TextBox x:Name="TitleTb" Grid.Row="1" Style="{StaticResource TextBoxBaseWithTheme}" Margin="10,0"
                     Text="{Binding CompanyTitleToSearch, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Text="Начните вводить название компании..." Margin="14,0"
                     Grid.Row="1" Panel.ZIndex="-1" Style="{StaticResource TitleDescription}"/>
 
-                <ListView x:Name="CompanyListView" Grid.Row="2" 
+                <ListView x:Name="CompanyListView" Grid.Row="2" Margin="10,0,0,0"
                     Background="Transparent" BorderBrush="Transparent" Foreground="White"
                     ItemsSource="{Binding CompaniesList}" ItemContainerStyle="{StaticResource ListViewNoHover}">
                     <ListView.ItemTemplate>
@@ -537,7 +512,7 @@
                 <Button Content="Назад" Grid.Row="100"
                     Width="100" Height="30" Margin="0"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                    Style="{StaticResource ButtonBase}"
+                    Style="{StaticResource ButtonBaseWithTheme}"
                     Command="{Binding BackFromAddCompanyCommand}"/>
 
             </Grid>
@@ -545,7 +520,7 @@
 
         <Border x:Name="ConfirmComp" Panel.ZIndex="{Binding ConfirmCompanyZIndex}"
             Grid.ColumnSpan="100" Grid.RowSpan="100" Opacity="0"
-            Height="250"  Width="450" CornerRadius="10" Background="#2e2e2e">
+            Height="250"  Width="450" CornerRadius="10" Background="{DynamicResource WindowPanel}">
 
             <Border.Effect>
                 <DropShadowEffect
@@ -613,14 +588,14 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBox x:Name="SelectedCompanyCodeTb" Grid.Row="0" Style="{StaticResource TextBoxBase}"
+                <TextBox x:Name="SelectedCompanyCodeTb" Grid.Row="0" Style="{StaticResource TextBoxBaseWithTheme}"
                     Text="{Binding SelectedCompanyCode, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Text="Введите код компании" Grid.Row="0" Panel.ZIndex="-1" Style="{StaticResource CompanyCodeDescription}"/>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="1">
-                    <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
-                        Margin="20,0,160,0" Command="{Binding BackFromConfirmCommand}"/>
-                    <Button Content="Готово" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Bottom">
+                    <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBaseWithTheme}"
+                        Margin="0,0,230,0" Command="{Binding BackFromConfirmCommand}"/>
+                    <Button Content="Готово" Width="100" Height="30" Style="{StaticResource ButtonBaseWithTheme}"
                         Command="{Binding CompanyConfirmedCommand}"/>
                 </StackPanel>
 
@@ -628,7 +603,7 @@
         </Border>
 
         <Border x:Name="CompanyData"
-            Background="#2e2e2e" CornerRadius="10"
+            Background="{DynamicResource WindowPanel}" CornerRadius="10"
             Height="250" Width="450" Opacity="0"
             Grid.ColumnSpan="100" Grid.RowSpan="100"
             Panel.ZIndex="{Binding CompanyDataZIndex}">
@@ -725,18 +700,18 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBox x:Name="CompanyTitleTb" Grid.Row="0" Style="{StaticResource TextBoxBase}"
+                <TextBox x:Name="CompanyTitleTb" Grid.Row="0" Style="{StaticResource TextBoxBaseWithTheme}"
                 Text="{Binding NewCompanyTitle, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Text="Название" Grid.Row="0" Panel.ZIndex="-1" Style="{StaticResource CompanyTitleDescription}"/>
 
-                <TextBox x:Name="CompanyCodeTb" Grid.Row="1" Style="{StaticResource TextBoxBase}"
+                <TextBox x:Name="CompanyCodeTb" Grid.Row="1" Style="{StaticResource TextBoxBaseWithTheme}"
                 Text="{Binding NewCompanyCode, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Text="Код компании" Grid.Row="1" Panel.ZIndex="-1" Style="{StaticResource CompanyCodeDescription}"/>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="2">
-                    <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
-                        Margin="20,0,140,0" Command="{Binding BackFromCompanyDataCommand}"/>
-                    <Button Content="Готово" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                <StackPanel Orientation="Horizontal" Grid.Row="2" VerticalAlignment="Bottom">
+                    <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBaseWithTheme}"
+                        Margin="0,0,230,0" Command="{Binding BackFromCompanyDataCommand}"/>
+                    <Button Content="Готово" Width="100" Height="30" Style="{StaticResource ButtonBaseWithTheme}"
                         Command="{Binding CreateCompanyCommand}"/>
                 </StackPanel>
             </Grid>
@@ -745,7 +720,7 @@
 
         <Border x:Name="DeleteComp" Panel.ZIndex="{Binding DeleteCompZIndex}"
             Grid.ColumnSpan="100" Grid.RowSpan="100" Opacity="0"
-            Height="250"  Width="450" CornerRadius="10" Background="#2e2e2e">
+            Height="250"  Width="450" CornerRadius="10" Background="{DynamicResource WindowPanel}">
 
             <Border.Effect>
                 <DropShadowEffect
@@ -779,18 +754,18 @@
             </Border.Style>
 
             <Grid>
-                <TextBlock Style="{StaticResource MainTextBlockStyle}"
+                <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}" FontSize="22"
                     VerticalAlignment="Top" TextAlignment="Center" TextWrapping="WrapWithOverflow"
                     Margin="30,50,30,0">
                     <Run Text="Вы действительно хотите удалить"/>
                     <Run Text="{Binding CompanyToDeleteName}"/><Run Text="?"/>
                 </TextBlock>
 
-                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBaseWithTheme}"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10"
                     Command="{Binding BackFromDeleteCompanyCommand}"/>
 
-                <Button Content="Удалить" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                <Button Content="Удалить" Width="100" Height="30" Style="{StaticResource ButtonBaseWithTheme}"
                     HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"
                     Command="{Binding DeleteCompanyCommand}"/>
             </Grid>

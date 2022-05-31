@@ -35,7 +35,7 @@
         <TextBlock Text="Ваши задачи:" Style="{StaticResource MainTextBlockStyleWithTheme}" Margin="30,-40,0,0"/>
 
         <TextBlock Text="На сегодня:" Style="{StaticResource SmallTextBlockStyleWithTheme}" 
-            VerticalAlignment="Bottom" Margin="20,0,0,5" FontSize="16"/>
+            VerticalAlignment="Bottom" Margin="20,0,0,5"/>
 
         <Border Background="Transparent" BorderThickness="0"
             Height="25" Width="25" Margin="0,27.5,25,0" Grid.Column="1"
@@ -63,7 +63,7 @@
         </Border>
 
         <TextBlock Text="Все:" Style="{StaticResource SmallTextBlockStyleWithTheme}" 
-            VerticalAlignment="Bottom" Margin="20,0,0,5" FontSize="16" Grid.Column="1"/>
+            VerticalAlignment="Bottom" Margin="20,0,0,5" Grid.Column="1"/>
 
         <TextBox x:Name="SearchTb" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxBaseWithTheme}"
             Margin="20,0,20,30" Height="30"
@@ -169,9 +169,9 @@
             Grid.Column="0" Grid.Row="1" Padding="0,0,10,0" 
             ItemContainerStyle="{StaticResource UserTvStyle}" ItemTemplate="{StaticResource UserDt}"/>
 
-        <Border Background="#555555" CornerRadius="10"
+        <Border Background="{DynamicResource WindowPanel}" CornerRadius="10"
             Opacity="0" d:Opacity="1" Panel.ZIndex="{Binding ReportsZIndex}"
-            Width="500" Height="300" d:Panel.ZIndex="-1"
+            Width="600" Height="400" d:Panel.ZIndex="-1"
             Grid.ColumnSpan="100" Grid.RowSpan="100">
             <Border.Effect>
                 <DropShadowEffect
@@ -211,38 +211,38 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="35"/>
                     <RowDefinition/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Style="{StaticResource SmallTextBlockStyle}"
-                    Grid.ColumnSpan="200" FontSize="18">
+                <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
+                    Grid.ColumnSpan="200" FontSize="20">
                     <Run Text="Отчет о"/>
                     <Run Text="{Binding ReportTaskName}"/><Run 
                         Text=", назначена:"/>
                     <Run Text="{Binding ReportSenderName}"/>
                 </TextBlock>
 
-                <TextBlock Text="Текст отчета:" Grid.Row="1" Style="{StaticResource SmallTextBlockStyle}"/>
+                <TextBlock Text="Текст отчета:" Grid.Row="1" Style="{StaticResource SmallTextBlockStyleWithTheme}"/>
                 <TextBox Style="{StaticResource MultiLineTextBox}" 
                     Text="{Binding ReportText, UpdateSourceTrigger=PropertyChanged}"
-                    Grid.Row="1" Margin="0,20,10,30" FontSize="15"/>
+                    Grid.Row="1" Margin="0,22,10,30" FontSize="16"/>
 
                 <TextBlock Text="Время выполнения:" VerticalAlignment="Bottom" Margin="0,0,0,6"
-                    Grid.Row="1" Style="{StaticResource SmallTextBlockStyle}"/>
+                    Grid.Row="1" Style="{StaticResource SmallTextBlockStyleWithTheme}"/>
                 <TextBox Text="{Binding ReportDuration, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource TextBoxBase}" Grid.Row="1"
+                    Style="{StaticResource TextBoxBaseWithTheme}" Grid.Row="1"
                     VerticalAlignment="Bottom" HorizontalAlignment="Right"
                     Width="35" Height="26" Margin="0,0,65,4" MaxLength="3"/>
 
-                <TextBlock Text="Файлы:" Grid.Row="1" Grid.Column="1"
-                    Style="{StaticResource SmallTextBlockStyle}"/>
+                <TextBlock Text="Файлы:" Grid.Row="1" Grid.Column="1" Margin="0,-2,0,0"
+                    Style="{StaticResource SmallTextBlockStyleWithTheme}"/>
                 <Border Background="Transparent" BorderThickness="0"
                         Height="15" Width="15" Margin="0,3,5,0" Grid.Column="1" Grid.Row="1"
                         HorizontalAlignment="Right" VerticalAlignment="Top">
                     <Path Data="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
-                        Fill="#999999" Stretch="Uniform"/>
+                        Fill="{DynamicResource Path}" Stretch="Uniform"/>
                     <Border.InputBindings>
                         <MouseBinding Gesture="LeftClick" Command="{Binding AddFileCommand}"/>
                     </Border.InputBindings>
@@ -262,7 +262,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding SafeFileName}" 
-                                Style="{StaticResource SmallTextBlockStyle}">
+                                Style="{StaticResource SmallTextBlockStyleWithTheme}">
                                 <TextBlock.InputBindings>
                                     <MouseBinding Gesture="LeftClick" 
                                         Command="{Binding ElementName=filesLw, Path=DataContext.DeleteFileCommand}"
@@ -277,14 +277,14 @@
                     Width="100" Height="30"
                     HorizontalAlignment="Right"
                     Command="{Binding ReportCommand}"
-                    Style="{StaticResource ButtonBase}"
+                    Style="{StaticResource ButtonBaseWithTheme}"
                     Grid.Column="1" Grid.Row="2"/>
 
                 <Button Content="Назад"
                     Width="100" Height="30"
                     HorizontalAlignment="Left"
                     Command="{Binding BackFromReportCommand}"
-                    Style="{StaticResource ButtonBase}"
+                    Style="{StaticResource ButtonBaseWithTheme}"
                     Grid.Row="2"/>
             </Grid>
 

@@ -12,6 +12,12 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Cursor" Value="Hand"/>
                         </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource PanelButtonChecked}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource PanelButtonUnChecked}"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -19,16 +25,17 @@
     </Style>
     <Style x:Key="MainTextBlockStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="20"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{DynamicResource PanelButtonChecked}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="15"/>
     </Style>
     
     <Style x:Key="MainTextBlockStyleWithTheme" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontSize" Value="22"/>
         <Setter Property="Foreground" Value="{DynamicResource Text}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="15"/>
+        <Setter Property="FontWeight" Value="Medium"/>
     </Style>
 
 
@@ -36,6 +43,7 @@
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="32.5,0,0,0"/>
+        <Setter Property="FontWeight" Value="Medium"/>
     </Style>
     <Style x:Key="IconStyle" TargetType="Path">
         <Setter Property="Height" Value="30"/>
@@ -115,24 +123,10 @@
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
                         <Trigger Property="IsChecked" Value="True">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation 
-                                            Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                            To="White" Duration="0:0:.2"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation 
-                                            Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                            To="#474747" Duration="0:0:.2"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.ExitActions>
+                            <Setter Property="Foreground" Value="{DynamicResource PanelButtonChecked}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource PanelButtonUnChecked}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

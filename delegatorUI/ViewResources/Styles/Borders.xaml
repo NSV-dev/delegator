@@ -2,13 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style x:Key="PlateStyle" TargetType="Border">
         <Setter Property="CornerRadius" Value="10"/>
-        <Setter Property="Background" Value="#3e3e3e"/>
+        <Setter Property="Background" Value="{DynamicResource TaskBg}"/>
         <Setter Property="Margin" Value="10"/>
         <Setter Property="Effect">
             <Setter.Value>
                 <DropShadowEffect
-                        ShadowDepth="1" Direction="275"
-                        Opacity=".6" BlurRadius="20"/>
+                    ShadowDepth="1" Direction="275"
+                    Opacity=".6" BlurRadius="20"/>
             </Setter.Value>
         </Setter>
         <Style.Triggers>

@@ -43,7 +43,7 @@
                     Width="35" Height="35" Margin="15"
                               Style="{StaticResource MainTogBtnStyle}">
 
-                    <Path x:Name="TbIcon" Fill="#474747" Stretch="Uniform"
+                    <Path x:Name="TbIcon" Fill="{Binding Foreground, ElementName=Tb}" Stretch="Uniform"
                         Data="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
 
                     <ToggleButton.Triggers>
@@ -51,17 +51,9 @@
                             <BeginStoryboard>
                                 <Storyboard x:Name="Open">
                                     <DoubleAnimation Storyboard.TargetName="NavigationPanel"
-                                                     Storyboard.TargetProperty="Width"
-                                                     To="200"
-                                                     Duration="0:0:.2"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation
-                                        Storyboard.TargetName="TbIcon"
-                                        Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)"
-                                        To="White" Duration="0:0:.2"/>
+                                        Storyboard.TargetProperty="Width"
+                                        To="200"
+                                        Duration="0:0:.2"/>
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>
@@ -69,17 +61,9 @@
                             <BeginStoryboard>
                                 <Storyboard x:Name="Close">
                                     <DoubleAnimation Storyboard.TargetName="NavigationPanel"
-                                                     Storyboard.TargetProperty="Width"
-                                                     To="65"
-                                                     Duration="0:0:.2"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation
-                                        Storyboard.TargetName="TbIcon"
-                                        Storyboard.TargetProperty="(Fill).(SolidColorBrush.Color)"
-                                        To="#474747" Duration="0:0:.2"/>
+                                        Storyboard.TargetProperty="Width"
+                                        To="65"
+                                        Duration="0:0:.2"/>
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>

@@ -4,7 +4,7 @@
     <SolidColorBrush x:Key="Text" Color="White"/>
     <Color x:Key="TextClr" R="#f" G="#f" B="#f"/>
 
-    <SolidColorBrush x:Key="Text2" Color="#474747"/>
+    <SolidColorBrush x:Key="Text2" Color="#FF8D8D8D"/>
     
     <SolidColorBrush x:Key="WindowPanel" Color="#1c1c1c"/>
 
@@ -15,4 +15,11 @@
     <SolidColorBrush x:Key="Hover" Color="#363636"/>
 
     <SolidColorBrush x:Key="Path" Color="#999999"/>
+
+    <SolidColorBrush x:Key="TaskBg" Color="#555555"/>
+
+    <SolidColorBrush x:Key="PanelButtonChecked" Color="White"/>
+    <SolidColorBrush x:Key="PanelButtonUnChecked" Color="#474747"/>
+
+    <SolidColorBrush x:Key="CompanyOutline" Color="#666666"/>
 </ResourceDictionary>

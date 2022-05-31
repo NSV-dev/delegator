@@ -21,7 +21,7 @@
         </Grid.Triggers>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width=".5*"/>
+            <ColumnDefinition Width=".52*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -85,12 +85,12 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border x:Name="Bd"
-                            Background="#666666" CornerRadius="5" 
-                            Height="30" Width="300" Margin="10,8,0,0">
+                            Background="{DynamicResource TaskBg}" CornerRadius="5" 
+                            Height="40" Margin="10,8,10,0">
 
                             <Grid>
                                 <Grid VerticalAlignment="Top" Margin="0,4,0,0">
-                                    <TextBlock Text="{Binding UserName}" Margin="10,0,0,0">
+                                    <TextBlock Text="{Binding UserName}" Margin="10,3,0,0">
                                         <TextBlock.InputBindings>
                                             <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=UsersLw,
                                                 Path=DataContext.ToComplitedCommand}"
@@ -106,12 +106,12 @@
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
-                                    <TextBlock Margin="100,0,0,0" Style="{StaticResource SmallTextBlockStyle}">
-                                    <Run Text="Роль:"/>
-                                    <Run Text="{Binding Role.Title}"/>
+                                    <TextBlock Margin="100,3,0,0" Style="{StaticResource SmallTextBlockStyle}" >
+                                        <Run Text="Роль:"/>
+                                        <Run Text="{Binding Role.Title}"/>
                                     </TextBlock>
                                     <ToggleButton x:Name="DescBtn"
-                                        Content="● ● ●" Margin="0,1,10,0" FontSize="14"
+                                        Content="● ● ●" Margin="0,4,10,0" FontSize="16"
                                         VerticalAlignment="Top" HorizontalAlignment="Right">
                                         <ToggleButton.Triggers>
                                             <EventTrigger RoutedEvent="ToggleButton.Checked">
@@ -121,7 +121,7 @@
                                                             <DoubleAnimation
                                                             Storyboard.TargetName="Bd"
                                                             Storyboard.TargetProperty="Height"
-                                                            From="30" To="200" Duration="0:0:.2"/>
+                                                            From="40" To="220" Duration="0:0:.2"/>
                                                             <DoubleAnimation
                                                             Storyboard.TargetName="EditPanel"
                                                             Storyboard.TargetProperty="Width"
@@ -129,7 +129,7 @@
                                                             <ThicknessAnimation
                                                             Storyboard.TargetName="DescBtn"
                                                             Storyboard.TargetProperty="Margin"
-                                                            From="0,1,10,0" To="0,1,70,0" Duration="0:0:.2"/>
+                                                            From="0,4,10,0" To="0,4,70,0" Duration="0:0:.2"/>
                                                         </Storyboard>
                                                     </BeginStoryboard>
                                                 </EventTrigger.Actions>
@@ -141,7 +141,7 @@
                                                             <DoubleAnimation
                                                             Storyboard.TargetName="Bd"
                                                             Storyboard.TargetProperty="Height"
-                                                            From="200" To="30" Duration="0:0:.2"/>
+                                                            From="220" To="40" Duration="0:0:.2"/>
                                                             <DoubleAnimation
                                                             Storyboard.TargetName="EditPanel"
                                                             Storyboard.TargetProperty="Width"
@@ -149,7 +149,7 @@
                                                             <ThicknessAnimation
                                                             Storyboard.TargetName="DescBtn"
                                                             Storyboard.TargetProperty="Margin"
-                                                            From="0,1,70,0" To="0,1,10,0" Duration="0:0:.2"/>
+                                                            From="0,4,70,0" To="0,4,10,0" Duration="0:0:.2"/>
                                                         </Storyboard>
                                                     </BeginStoryboard>
                                                 </EventTrigger.Actions>
@@ -165,13 +165,13 @@
                                             </Style>
                                         </ToggleButton.Style>
                                     </ToggleButton>
-                                    <Grid x:Name="EditPanel" Width="0" HorizontalAlignment="Right">
+                                    <Grid x:Name="EditPanel" Width="0" HorizontalAlignment="Right" Margin="0,3,0,0">
                                         <Border x:Name="UpdateBtn"
                                             Background="Transparent" BorderThickness="0"
                                             HorizontalAlignment="Right"
                                             Height="20" Width="20" Padding="1" Margin="0,0,40,0">
                                             <Path Data="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"
-                                            Fill="#999999" Stretch="Uniform"/>
+                                                Fill="{DynamicResource Path}" Stretch="Uniform"/>
                                             <Border.InputBindings>
                                                 <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=UsersLw,
                                                     Path=DataContext.ToUpdateUserCommand}"
@@ -192,7 +192,7 @@
                                         HorizontalAlignment="Right"
                                         Height="20" Width="20" Padding="1" Margin="0,0,10,0">
                                             <Path Data="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
-                                        Fill="#999999" Stretch="Uniform"/>
+                                                Fill="{DynamicResource Path}" Stretch="Uniform"/>
                                             <Border.InputBindings>
                                                 <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=UsersLw,
                                                 Path=DataContext.ToDeleteUserCommand}"
@@ -219,24 +219,24 @@
                                         Margin="4,-1,0,0"/>
                                     <TextBlock Text="До:" Style="{StaticResource SmallTextBlockStyle}" 
                                         Grid.Column="1" Margin="4,-1,0,0"/>
+                                    <DatePicker Style="{StaticResource DatePickerBase}" 
+                                        Margin="2,25,2,0" SelectedDate="{Binding ElementName=UsersLw, Path=DataContext.From}"/>
                                     <DatePicker Style="{StaticResource DatePickerBase}"
-                                        Margin="2,20,2,0" SelectedDate="{Binding ElementName=UsersLw, Path=DataContext.From}"/>
-                                    <DatePicker Style="{StaticResource DatePickerBase}"
-                                        Grid.Column="1" Margin="2,20,2,0" SelectedDate="{Binding ElementName=UsersLw, Path=DataContext.To}"/>
+                                        Grid.Column="1" Margin="2,25,2,0" SelectedDate="{Binding ElementName=UsersLw, Path=DataContext.To}"/>
 
                                     <TextBlock Text="Выполненые задачи:" Style="{StaticResource SmallTextBlockStyle}"
-                                        Margin="10,50,0,0" Grid.ColumnSpan="100"/>
-                                    <TextBlock Margin="0,70,0,0" Style="{StaticResource SmallTextBlockStyle}">
+                                        Margin="10,60,0,0" Grid.ColumnSpan="100"/>
+                                    <TextBlock Margin="0,80,0,0" Style="{StaticResource SmallTextBlockStyle}">
                                         <Run Text="Количество:"/><LineBreak/>
                                         <Run Text="{Binding ComplitedCount, UpdateSourceTrigger=PropertyChanged}"/>
                                     </TextBlock>
-                                    <TextBlock Margin="0,70,0,0" Style="{StaticResource SmallTextBlockStyle}" Grid.Column="1">
+                                    <TextBlock Margin="0,80,0,0" Style="{StaticResource SmallTextBlockStyle}" Grid.Column="1">
                                         <Run Text="Затраченное время:"/><LineBreak/>
                                         <Run Text="{Binding ComplitedDuration, UpdateSourceTrigger=PropertyChanged}"/>
                                     </TextBlock>
 
                                     <Button Content="Рассчитать" Style="{StaticResource ButtonBase}"
-                                        Grid.Column="1" Height="30" Width="100" VerticalAlignment="Bottom" Margin="0,0,-35,10"
+                                        Grid.Column="1" Height="30" Width="100" VerticalAlignment="Bottom" Margin="0,0,-55,10"
                                         Command="{Binding ElementName=UsersLw, Path=DataContext.CalcStats}"
                                         CommandParameter="{Binding}"/>
                                 </Grid>
@@ -255,7 +255,7 @@
 
         <Border x:Name="EditUser" Panel.ZIndex="{Binding UserEditZIndex}" Opacity="0"
               Grid.ColumnSpan="100" Grid.RowSpan="100"
-              Height="200" Width="350" CornerRadius="10" Background="#2e2e2e"
+              Height="200" Width="350" CornerRadius="10" Background="{DynamicResource WindowPanel}"
               HorizontalAlignment="Center" VerticalAlignment="Center">
 
             <Border.Effect>
@@ -290,10 +290,10 @@
             </Border.Style>
 
             <Grid>
-                <TextBlock Style="{StaticResource SmallTextBlockStyle}"
+                <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
                     HorizontalAlignment="Center" VerticalAlignment="Top"
                     Margin="0,30,0,0" Width="290" Height="100"
-                    FontSize="18" TextWrapping="WrapWithOverflow" TextAlignment="Center">
+                    FontSize="20" TextWrapping="WrapWithOverflow" TextAlignment="Center">
                     <Run Text="Текущая роль"/>
                     <Run Text="{Binding UserToEdit.UserName, UpdateSourceTrigger=PropertyChanged}"/><Run
                         Text=":"/>
@@ -301,11 +301,11 @@
                 </TextBlock>
 
                 <Border Grid.Column="1" 
-                    Background="#2e2e2e" BorderBrush="Transparent"
+                    BorderBrush="Transparent"
                     Width="30" Height="30" Margin="0,0,20,50"
                     HorizontalAlignment="Right" VerticalAlignment="Bottom">
                     <Path Data="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z" 
-                        Stretch="Uniform" Fill="#999999" Width="20" Height="20"/>
+                        Stretch="Uniform" Fill="{DynamicResource Path}" Width="20" Height="20"/>
                     <Border.InputBindings>
                         <MouseBinding MouseAction="LeftClick" Command="{Binding ChangeRoleCommand}"/>
                     </Border.InputBindings>
@@ -323,13 +323,13 @@
                 <Button Content="Назад" 
                     Width="100" Height="30" Margin="10"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                    Style="{StaticResource ButtonBase}"
+                    Style="{StaticResource ButtonBaseWithTheme}"
                     Command="{Binding BackFromEditUserCommand}"/>
 
                 <Button Content="Готово" 
                     Width="100" Height="30" Margin="10"
                     HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                    Style="{StaticResource ButtonBase}"
+                    Style="{StaticResource ButtonBaseWithTheme}"
                     Command="{Binding EditUserCommand}"/>
             </Grid>
 
@@ -337,17 +337,17 @@
 
         <Border Grid.Column="1" Margin="30" Opacity="1"
               Style="{StaticResource PlateStyle}">
-            <Grid Margin="10">
+            <Grid Margin="20">
 
-                <TextBlock Style="{StaticResource MainTextBlockStyle}"
+                <TextBlock Style="{StaticResource SmallTextBlockStyle}"
                     Height="50" Margin="0"
                     TextWrapping="WrapWithOverflow"
                     VerticalAlignment="Top">
                     <Run Text="Компания:"/>
                     <Run Text="{Binding CompanyName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </TextBlock>
-                
-                <TextBlock Style="{StaticResource MainTextBlockStyle}"
+
+                <TextBlock Style="{StaticResource SmallTextBlockStyle}"
                     Height="50" Margin="0,50,0,0"
                     TextWrapping="WrapWithOverflow"
                     VerticalAlignment="Top">
@@ -360,7 +360,7 @@
                     Height="25" Width="25" Padding="1" Margin="5"
                     HorizontalAlignment="Right" VerticalAlignment="Bottom">
                     <Path Data="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"
-                        Fill="#999999" Stretch="Uniform"/>
+                        Fill="{DynamicResource Path}" Stretch="Uniform"/>
                     <Border.InputBindings>
                         <MouseBinding Gesture="LeftClick" Command="{Binding ToEditCompanyCommand}"/>
                     </Border.InputBindings>
@@ -382,7 +382,7 @@
             Panel.ZIndex="{Binding EditCompZIndex}" 
             Grid.RowSpan="100" Grid.ColumnSpan="100"
             Width="350" Height="200"
-            Background="#2e2e2e" CornerRadius="10">
+            Background="{DynamicResource WindowPanel}" CornerRadius="10">
 
             <Border.Effect>
                 <DropShadowEffect
@@ -478,14 +478,14 @@
                 </Grid.RowDefinitions>
 
                 <TextBox x:Name="CompNameTb" Margin="20,10,0,0"
-                    Style="{StaticResource TextBoxBase}" Width="300"
+                    Style="{StaticResource TextBoxBaseWithTheme}" Width="300"
                     HorizontalAlignment="Left" Height="30"
                     Text="{Binding CompNameToEdit, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Text="Название компании" Panel.ZIndex="-1"
                     Margin="20,0,0,0" Style="{StaticResource CompNameDescription}"/>
 
                 <TextBox x:Name="CompCodeTb" Margin="20,10,0,0" Grid.Row="1"
-                    Style="{StaticResource TextBoxBase}" Width="300"
+                    Style="{StaticResource TextBoxBaseWithTheme}" Width="300"
                     HorizontalAlignment="Left" Height="30"
                     Text="{Binding CompCodeToEdit, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Text="Код компании" Panel.ZIndex="-1" Grid.Row="1"
@@ -495,13 +495,13 @@
                 <Button Content="Назад" Grid.Row="100"
                     Width="100" Height="30" Margin="10"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                    Style="{StaticResource ButtonBase}"
+                    Style="{StaticResource ButtonBaseWithTheme}"
                     Command="{Binding BackFromEditCompanyCommand}"/>
 
                 <Button Content="Готово" Grid.Row="100"
                     Width="100" Height="30" Margin="10"
                     HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                    Style="{StaticResource ButtonBase}"
+                    Style="{StaticResource ButtonBaseWithTheme}"
                     Command="{Binding EditCompCommand}"/>
             </Grid>
 
@@ -512,7 +512,7 @@
             Panel.ZIndex="{Binding DeleteUserZIndex}" 
             Grid.RowSpan="100" Grid.ColumnSpan="100"
             Width="350" Height="200"
-            Background="#2e2e2e" CornerRadius="10">
+            Background="{DynamicResource WindowPanel}" CornerRadius="10">
 
             <Border.Effect>
                 <DropShadowEffect
@@ -547,18 +547,18 @@
 
             <Grid>
 
-                <TextBlock Style="{StaticResource MainTextBlockStyle}"
+                <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
                     VerticalAlignment="Top" TextAlignment="Center" TextWrapping="WrapWithOverflow"
-                    Margin="30,50,30,0">
+                    Margin="30,50,30,0" FontSize="20">
                     <Run Text="Вы действительно хотите удалить"/>
                     <Run Text="{Binding UserToDeleteName}"/><Run Text="?"/>
                 </TextBlock>
 
-                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBaseWithTheme}"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10"
                     Command="{Binding BackFromDeleteUserCommand}"/>
 
-                <Button Content="Удалить" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                <Button Content="Удалить" Width="100" Height="30" Style="{StaticResource ButtonBaseWithTheme}"
                     HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"
                     Command="{Binding DeleteUserCommand}"/>
 
@@ -573,7 +573,7 @@
             Grid.RowSpan="100"
             Margin="20,20,0,20"
             HorizontalAlignment="Stretch"
-            Background="#2e2e2e" CornerRadius="10">
+            Background="{DynamicResource WindowPanel}" CornerRadius="10">
 
             <Border.Effect>
                 <DropShadowEffect
@@ -614,13 +614,13 @@
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Style="{StaticResource MainTextBlockStyle}"
-                    VerticalAlignment="Top">
+                <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
+                    VerticalAlignment="Top" Margin="15" FontSize="20">
                     <Run Text="Выполненые задачи "/><Run
                         Text="{Binding ComplitedUserName}"/><Run Text=":"/>
                 </TextBlock>
 
-                <TextBox x:Name="SearchComplitedTb" Text="{Binding SearchComplitedText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxBase}"
+                <TextBox x:Name="SearchComplitedTb" Text="{Binding SearchComplitedText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxBaseWithTheme}"
                     Margin="10,0,20,0" Height="30"
                     VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
                 <TextBlock Text="Введите название задачи"
@@ -634,8 +634,8 @@
                                         <BeginStoryboard>
                                             <Storyboard>
                                                 <DoubleAnimation
-                                            Storyboard.TargetProperty="Opacity"
-                                            To="1" Duration="0:0:.1"/>
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="1" Duration="0:0:.1"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </DataTrigger.EnterActions>
@@ -643,8 +643,8 @@
                                         <BeginStoryboard>
                                             <Storyboard>
                                                 <DoubleAnimation
-                                            Storyboard.TargetProperty="Opacity"
-                                            To="0" Duration="0:0:.1"/>
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="0" Duration="0:0:.1"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </DataTrigger.ExitActions>
@@ -654,10 +654,10 @@
                     </TextBlock.Style>
                 </TextBlock>
 
-                <TextBlock Text="Задач нет" Opacity="0" FontSize="19"
-                    Grid.Row="1" VerticalAlignment="Top">
+                <TextBlock Text="Задач нет" Opacity="0" FontSize="20"
+                    Grid.Row="1" VerticalAlignment="Top" Margin="15">
                     <TextBlock.Style>
-                        <Style TargetType="TextBlock" BasedOn="{StaticResource MainTextBlockStyle}">
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource SmallTextBlockStyleWithTheme}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Compliteds.Count}" Value="0">
                                     <DataTrigger.EnterActions>
@@ -703,7 +703,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Border BorderThickness="2">
-                                <Button Style="{StaticResource ButtonBaseNoPress}" Height="30"
+                                <Button Style="{StaticResource ButtonBaseNoPressWiththeme}" Height="30"
                                     Margin="10,0,10,10" HorizontalAlignment="Stretch"
                                     Command="{Binding DataContext.ToCompletedDescCommand, ElementName=CompltedLw}"
                                     CommandParameter="{Binding}">
@@ -726,7 +726,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
                 
-                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBase}"
+                <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBaseWithTheme}"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10"
                     Command="{Binding BackFromComplitedCommand}" Grid.Row="2"/>
 
@@ -741,7 +741,7 @@
             Grid.RowSpan="100" Grid.Column="1"
             Margin="20,20,20,20"
             HorizontalAlignment="Stretch"
-            Background="#2e2e2e" CornerRadius="10">
+            Background="{DynamicResource WindowPanel}" CornerRadius="10">
 
             <Border.Effect>
                 <DropShadowEffect
@@ -787,7 +787,7 @@
                 </Grid.RowDefinitions>
                 
                 <Border Margin="15" BorderThickness="1"
-                    CornerRadius="10" BorderBrush="#99FFFFFF">
+                    CornerRadius="10" BorderBrush="{DynamicResource CompanyOutline}">
                     <Grid Margin="10">
 
                         <Grid.RowDefinitions>
@@ -795,11 +795,11 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="{Binding TaskName}" Style="{StaticResource MainTextBlockStyle}" 
-                            FontSize="20" Margin="0" VerticalAlignment="Top"/>
+                        <TextBlock Text="{Binding TaskName}" Style="{StaticResource SmallTextBlockStyleWithTheme}" 
+                            FontSize="22" Margin="0" VerticalAlignment="Top"/>
 
                         <TextBlock Text="{Binding TaskDescription}"
-                            Grid.Row="1" TextWrapping="WrapWithOverflow" Style="{StaticResource SmallTextBlockStyle}" FontSize="18"/>
+                            Grid.Row="1" TextWrapping="WrapWithOverflow" Style="{StaticResource SmallTextBlockStyleWithTheme}"/>
 
                     </Grid>
                 </Border>
@@ -813,41 +813,41 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Style="{StaticResource SmallTextBlockStyle}"
+                    <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
                         VerticalAlignment="Center" FontSize="18">
                         <Run Text="Выполнил: "/><Run
                             Text="{Binding ComplitedDescUserName}"/>
                     </TextBlock>
                     
-                    <TextBlock Style="{StaticResource SmallTextBlockStyle}"
+                    <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
                         Grid.Row="1" VerticalAlignment="Center" FontSize="18">
                         <Run Text="Потратил "/><Run
                             Text="{Binding ComplitedDuration}"/><Run
                             Text=" ч"/>
                     </TextBlock>
 
-                    <Button Content="Файлы" Style="{StaticResource ButtonBase}" Grid.Row="1" 
+                    <Button Content="Файлы" Style="{StaticResource ButtonBaseWithTheme}" Grid.Row="1" 
                         HorizontalAlignment="Right" Width="100" Height="30"
                         Command="{Binding GetFailsCommand}"/>
 
-                    <TextBlock Style="{StaticResource SmallTextBlockStyle}"
+                    <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
                         Grid.Row="2" VerticalAlignment="Center" FontSize="18">
                         <Run Text="Закончил: "/><Run
                             Text="{Binding ComplitedEndTime, StringFormat=dd.MM.yyyy}"/>
                     </TextBlock>
 
-                    <TextBlock Text="Коментарий:" Style="{StaticResource SmallTextBlockStyle}"
+                    <TextBlock Text="Коментарий:" Style="{StaticResource SmallTextBlockStyleWithTheme}"
                             Grid.Row="3" Margin="0,5,0,0" FontSize="18"/>
 
                     <ScrollViewer Grid.Row="3" Margin="0,30,0,0" VerticalScrollBarVisibility="Auto">
                         <TextBlock Text="{Binding ComplitedComment}" FontSize="18"
-                        TextWrapping="WrapWithOverflow" Style="{StaticResource SmallTextBlockStyle}" 
+                        TextWrapping="WrapWithOverflow" Style="{StaticResource SmallTextBlockStyleWithTheme}" 
                         />
                     </ScrollViewer>
 
                 </Grid>
 
-                <Border Width="1" Background="White" Opacity=".6" Grid.RowSpan="100"
+                <Border Width="1" Background="{DynamicResource CompanyOutline}" Opacity=".6" Grid.RowSpan="100"
                     HorizontalAlignment="Right" Margin="0,10,0,10"/>
 
                 <Grid Grid.RowSpan="100" Grid.Column="1">
@@ -858,13 +858,13 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Style="{StaticResource MainTextBlockStyle}" Margin="15,15,15,0"
-                        VerticalAlignment="Top" TextWrapping="WrapWithOverflow">
+                    <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}" Margin="15,15,15,0"
+                        VerticalAlignment="Top" TextWrapping="WrapWithOverflow" FontSize="20">
                         <Run Text="Другие отчеты по "/><Run
                             Text="{Binding TaskName}"/><Run Text=":"/>
                     </TextBlock>
 
-                    <TextBox x:Name="SearchOtherComplitedTb" Text="{Binding SearchOtherComplitedText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxBase}"
+                    <TextBox x:Name="SearchOtherComplitedTb" Text="{Binding SearchOtherComplitedText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxBaseWithTheme}"
                         Margin="10,0,20,0" Height="30" Grid.Row="1"
                         VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
                     <TextBlock Text="Введите имя" Grid.Row="1"
@@ -898,10 +898,10 @@
                         </TextBlock.Style>
                     </TextBlock>
 
-                    <TextBlock Text="Отчетов нет" Opacity="0" FontSize="19"
-                        Grid.Row="1" VerticalAlignment="Top">
+                    <TextBlock Text="Отчетов нет" Opacity="0" FontSize="20"
+                        Grid.Row="2" VerticalAlignment="Top" Margin="15,15,0,0">
                         <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource MainTextBlockStyle}">
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource SmallTextBlockStyleWithTheme}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding OtherCompliteds.Count}" Value="0">
                                         <DataTrigger.EnterActions>
@@ -947,7 +947,7 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderThickness="2">
-                                    <Button Style="{StaticResource ButtonBaseNoPress}" Height="30"
+                                    <Button Style="{StaticResource ButtonBaseNoPressWiththeme}" Height="30"
                                         Margin="10,0,10,10" HorizontalAlignment="Stretch"
                                         Command="{Binding DataContext.OtherOpenCommand, ElementName=OtherCompltedLw}"
                                         CommandParameter="{Binding}">

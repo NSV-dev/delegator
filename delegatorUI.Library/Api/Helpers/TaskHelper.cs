@@ -26,12 +26,13 @@ namespace delegatorUI.Library.Api.Helpers
                     throw new Exception(resp.ReasonPhrase);
             }
 
-            foreach (AppUser user in task.Users)
+            foreach (var user in task.Users)
             {
                 TaskUsers taskUser = new()
                 {
                     TaskId = task.Id,
-                    UserId = user.Id,
+                    UserId = user.User.Id,
+                    ToDo = user.ToDo,
                     CompanyId = companyID
                 };
                 using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser", taskUser))
@@ -80,13 +81,14 @@ namespace delegatorUI.Library.Api.Helpers
                     }
                 }
             }
-            foreach (AppUser user in task.Users)
+            foreach (var user in task.Users)
             {
                 TaskUsers taskUsers = new()
                 {
                     CompanyId = companyID,
                     TaskId = task.Id,
-                    UserId = user.Id
+                    UserId = user.User.Id,
+                    ToDo = user.ToDo
                 };
                 TaskUsers taskUsersWithID;
                 using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser/Get", taskUsers))
@@ -137,7 +139,7 @@ namespace delegatorUI.Library.Api.Helpers
                     throw new Exception(resp.ReasonPhrase);
             }
 
-            foreach (AppUser user in newTask.Users)
+            foreach (var user in newTask.Users)
             {
                 if (!oldTask.Users.Contains(user))
                 {
@@ -145,7 +147,8 @@ namespace delegatorUI.Library.Api.Helpers
                     {
                         CompanyId = companyID,
                         TaskId = oldTask.Id,
-                        UserId = user.Id
+                        UserId = user.User.Id,
+                        ToDo = user.ToDo
                     }))
                     {
                         if (!resp.IsSuccessStatusCode)
@@ -154,7 +157,7 @@ namespace delegatorUI.Library.Api.Helpers
                 }
             }
 
-            foreach (AppUser user in oldTask.Users)
+            foreach (var user in oldTask.Users)
             {
                 if (!newTask.Users.Contains(user))
                 {
@@ -162,7 +165,8 @@ namespace delegatorUI.Library.Api.Helpers
                     {
                         CompanyId = companyID,
                         TaskId = oldTask.Id,
-                        UserId = user.Id
+                        UserId = user.User.Id,
+                        ToDo = user.ToDo
                     };
                     TaskUsers taskUsersWithID;
                     using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser/Get", taskUsers))
@@ -193,7 +197,7 @@ namespace delegatorUI.Library.Api.Helpers
 
                     foreach (var task in tasks)
                     {
-                        task.Users = await _appUserHelper.GetByTask(task.Id);
+                        task.Users = await GetUsersWithToDos(task.Id);
                         task.Tasks = await GetByTaskID(task.Id);
                     }
 
@@ -212,7 +216,9 @@ namespace delegatorUI.Library.Api.Helpers
                     var tasks = await resp.Content.ReadAsAsync<List<AppTask>>();
 
                     foreach (AppTask item in tasks)
-                        item.Users = await _appUserHelper.GetByTask(item.Id);
+                        item.Users = await GetUsersWithToDos(item.Id);
+
+                    
 
                     return tasks;
                 } else
@@ -232,8 +238,8 @@ namespace delegatorUI.Library.Api.Helpers
 
                     foreach (var task in tasks)
                     {
-                        task.Users = await _appUserHelper.GetByTask(task.Id);
-                        task.Tasks = (await GetByTaskID(task.Id, userID)).Where(t => t.Users.Any(u => u.Id == userID)).ToList();
+                        task.Users = await GetUsersWithToDos(task.Id);
+                        task.Tasks = (await GetByTaskID(task.Id, userID)).Where(t => t.Users.Any(u => u.User.Id == userID)).ToList();
                     }
 
                     return tasks;
@@ -251,11 +257,11 @@ namespace delegatorUI.Library.Api.Helpers
                     var tasks = await resp.Content.ReadAsAsync<List<AppTask>>();
                     foreach (var task in tasks)
                     {
-                        task.Users = await _appUserHelper.GetByTask(task.Id);
+                        task.Users = await GetUsersWithToDos(task.Id);
                         if (userID is null)
                             task.Tasks = await GetByTaskID(task.Id);
                         else
-                            task.Tasks = (await GetByTaskID(task.Id, userID)).Where(t => t.Users.Any(u => u.Id == userID)).ToList();
+                            task.Tasks = (await GetByTaskID(task.Id, userID)).Where(t => t.Users.Any(u => u.User.Id == userID)).ToList();
                     }
                     return tasks;
                 } else
@@ -285,6 +291,25 @@ namespace delegatorUI.Library.Api.Helpers
                 else
                     throw new Exception(resp.ReasonPhrase);
             }
+        }
+
+        private async Task<List<UserWithToDo>> GetUsersWithToDos(string taskId)
+        {
+            List<AppUser> users = await _appUserHelper.GetByTask(taskId);
+            List<UserWithToDo> result = new();
+            foreach (AppUser user in users)
+            {
+                TaskUsers taskUsers;
+                using (HttpResponseMessage resp = await _apiClient.GetAsync($"TaskUser/ByTaskAndUser?taskID={taskId}&userID={user.Id}"))
+                {
+                    if (resp.IsSuccessStatusCode)
+                        taskUsers = await resp.Content.ReadAsAsync<TaskUsers>();
+                    else
+                        throw new Exception(resp.ReasonPhrase);
+                }
+                result.Add(new() { User = user, ToDo = taskUsers.ToDo });
+            }
+            return result;
         }
     }
 }

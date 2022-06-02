@@ -170,7 +170,7 @@
             ItemContainerStyle="{StaticResource UserTvStyle}" ItemTemplate="{StaticResource UserDt}"/>
 
         <Border Background="{DynamicResource WindowPanel}" CornerRadius="10"
-            Opacity="0" d:Opacity="1" Panel.ZIndex="{Binding ReportsZIndex}"
+            Opacity="0" d:Opacity="0" Panel.ZIndex="{Binding ReportsZIndex}"
             Width="600" Height="400" d:Panel.ZIndex="-1"
             Grid.ColumnSpan="100" Grid.RowSpan="100">
             <Border.Effect>
@@ -292,6 +292,268 @@
 
         <TextBlock Text="{Binding ErrorText}" Style="{StaticResource ErrorTextBlockStyle}"
             Grid.ColumnSpan="2" Width="250" Opacity="{Binding ErrorOpacity}" Panel.ZIndex="-100"/>
+
+        <Border Background="{DynamicResource WindowPanel}" CornerRadius="10"
+            Opacity="0" d:Opacity="1" Panel.ZIndex="{Binding ChangingUsersZIndex}"
+            Width="300" Height="350" d:Panel.ZIndex="1"
+            Grid.ColumnSpan="100" Grid.RowSpan="100">
+            <Border.Effect>
+                <DropShadowEffect
+                    ShadowDepth="1" Direction="275"
+                    Opacity=".6" BlurRadius="20"/>
+            </Border.Effect>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="Panel.ZIndex" Value="1">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                            Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                            Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Text="Список сотрудников:" Style="{StaticResource SmallTextBlockStyleWithTheme}"
+                    Margin="10,18,0,0" VerticalAlignment="Top"/>
+                <ListView x:Name="TaskUsersLw" ItemsSource="{Binding TaskUsers}"
+                    Margin="10,40,10,10" Style="{StaticResource ListViewBase}" ItemContainerStyle="{StaticResource ListViewNoHover}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding User.UserName}" Style="{StaticResource SmallTextBlockStyleWithTheme}"
+                                FontSize="18">
+                                <TextBlock.InputBindings>
+                                    <MouseBinding Gesture="LeftClick"
+                                        Command="{Binding ElementName=TaskUsersLw, Path=DataContext.DeleteUserCommand}"
+                                        CommandParameter="{Binding}"/>
+                                </TextBlock.InputBindings>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Border 
+                    Background="Transparent" BorderBrush="Transparent"
+                    Width="25" Height="25" Margin="0,19,10,0"
+                    HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Path Data="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" 
+                        Stretch="Uniform" Fill="{DynamicResource Path}" Width="15" Height="15"/>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding ToAddTaskUserCommand}"/>
+                    </Border.InputBindings>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+
+                <Grid Background="{DynamicResource WindowPanel}"
+                    Panel.ZIndex="{Binding AddTaskUserZIndex}" Opacity="0">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <Trigger Property="Panel.ZIndex" Value="1">
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                                Storyboard.TargetProperty="Opacity"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+
+                    </Grid.Style>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBox x:Name="SearchTaskTb" Style="{StaticResource TextBoxBaseWithTheme}" Margin="10,2" 
+                        Text="{Binding SearchTaskText, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="Поиск" Margin="12,16,0,0" Panel.ZIndex="-1">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource SmallTextBlockStyleWithTheme}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=SearchTaskTb, Path=Text}" Value="">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                                        Storyboard.TargetProperty="Opacity"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation From="1" To="00" Duration="0:0:.2"
+                                                        Storyboard.TargetProperty="Opacity"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <Border Grid.Column="1" 
+                        Background="{DynamicResource WindowPanel}" BorderBrush="Transparent"
+                        Width="25" Height="15" Margin="0,25,10,0"
+                        HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <Path Data="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z" 
+                            Stretch="Uniform" Fill="{DynamicResource Path}" Width="15" Height="15"/>
+                        <Border.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" Command="{Binding BackFromAddTaskUserCommand}"/>
+                        </Border.InputBindings>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Cursor" Value="Hand"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+
+                    <ListView x:Name="AddUsersLw" Grid.Row="1" 
+                        Style="{StaticResource ListViewBase}" ItemContainerStyle="{StaticResource ListViewNoHover}"
+                        Margin="10,5,10,10" ItemsSource="{Binding CompanyUsers}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding UserName}" Style="{StaticResource SmallTextBlockStyleWithTheme}"
+                                    FontSize="18">
+                                    <TextBlock.InputBindings>
+                                        <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=AddUsersLw,
+                                            Path=DataContext.ToToDoTaskUserCommand}"
+                                            CommandParameter="{Binding}"/>
+                                    </TextBlock.InputBindings>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+
+                <Button Content="Готово" Margin="0,0,10,10"
+                    Width="100" Height="30"
+                    HorizontalAlignment="Right"
+                    Command="{Binding ChangeUsersCommand}"
+                    Style="{StaticResource ButtonBaseWithTheme}"
+                    Grid.Row="2"/>
+
+                <Button Content="Назад" Margin="10,0,0,10"
+                    Width="100" Height="30"
+                    HorizontalAlignment="Left"
+                    Command="{Binding BackFromChangeUsersCommand}"
+                    Style="{StaticResource ButtonBaseWithTheme}"
+                    Grid.Row="2"/>
+
+            </Grid>
+        </Border>
+
+        <Border Background="{DynamicResource WindowPanel}" CornerRadius="10"
+            Opacity="0" d:Opacity="1" Panel.ZIndex="{Binding ToDoZIndex}"
+            Width="300" Height="350" d:Panel.ZIndex="1"
+            Grid.ColumnSpan="100" Grid.RowSpan="100">
+            <Border.Effect>
+                <DropShadowEffect
+                    ShadowDepth="1" Direction="275"
+                    Opacity=".6" BlurRadius="20"/>
+            </Border.Effect>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="Panel.ZIndex" Value="1">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0" To="1" Duration="0:0:.2"
+                                            Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="1" To="0" Duration="0:0:.2"
+                                            Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid >
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Обязанности человека?" Margin="10,10,0,0"
+                    Style="{StaticResource SmallTextBlockStyleWithTheme}" FontSize="20"/>
+
+                <TextBox Style="{StaticResource MultiLineTextBox}" Grid.Row="1" 
+                    Margin="10" Text="{Binding ToDoText, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button Content="Добавить" Margin="0,0,10,10"
+                    Width="100" Height="30"
+                    HorizontalAlignment="Right"
+                    Command="{Binding AddToDoCommand}"
+                    Style="{StaticResource ButtonBaseWithTheme}"
+                    Grid.Row="2"/>
+
+                <Button Content="Назад" Margin="10,0,0,10"
+                    Width="100" Height="30"
+                    HorizontalAlignment="Left"
+                    Command="{Binding BackFromToDoTaskUserCommand}"
+                    Style="{StaticResource ButtonBaseWithTheme}"
+                    Grid.Row="2"/>
+
+            </Grid>
+            
+        </Border>
 
         <res:LoadingAnimation Panel.ZIndex="{Binding LoadingZIndex}" 
             Opacity="0" d:Panel.ZIndex="-1"

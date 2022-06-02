@@ -11,10 +11,13 @@ namespace delegatorUI.Library.Models
         public DateTime EndTime { get; set; }
         public string SenderId { get; set; }
         public string CategoryId { get; set; }
+        public string ResponsibleId { get; set; }
+        public string ToDo { get; set; }
 
         public Category Category { get; set; }
         public AppUser Sender { get; set; }
-        public List<AppUser> Users { get; set; }
+        public AppUser Responsible { get; set; }
+        public List<UserWithToDo> Users { get; set; }
         public List<AppTask> Tasks { get; set; }
     }
 }

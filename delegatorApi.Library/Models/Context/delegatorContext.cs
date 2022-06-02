@@ -205,11 +205,19 @@ namespace delegatorApi.Library.Models.Context
                     .HasColumnName("SenderID")
                     .IsFixedLength(true);
 
+                entity.Property(e => e.ResponsibleId)
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .HasColumnName("ResponsibleID")
+                    .IsFixedLength(true);
+
                 entity.Property(e => e.Title).IsRequired();
 
                 entity.HasOne(d => d.Category);
 
                 entity.HasOne(d => d.Sender);
+
+                entity.HasOne(d => d.Responsible);
             });
 
             modelBuilder.Entity<TasksTask>(entity =>

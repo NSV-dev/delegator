@@ -128,11 +128,25 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             get => _addTaskUserZIndex;
             set => OnPropertyChanged(ref _addTaskUserZIndex, value);
         }
+
+        private int _changeRespZIndex = -1;
+        public int ChangeRespZIndex
+        {
+            get => _changeRespZIndex;
+            set => OnPropertyChanged(ref _changeRespZIndex, value);
+        }
+
+        private int _toDoZIndex = -1;
+        public int ToDoZIndex
+        {
+            get => _toDoZIndex;
+            set => OnPropertyChanged(ref _toDoZIndex, value);
+        }
         #endregion
 
         #region Task Prop
-        private ObservableCollection<AppUser> _newTaskUsers = new();
-        public ObservableCollection<AppUser> NewTaskUsers
+        private ObservableCollection<UserWithToDo> _newTaskUsers = new();
+        public ObservableCollection<UserWithToDo> NewTaskUsers
         {
             get => _newTaskUsers;
             set => OnPropertyChanged(ref _newTaskUsers, value);
@@ -165,7 +179,23 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             get => _newTaskCategory;
             set => OnPropertyChanged(ref _newTaskCategory, value);
         }
+
+        private AppUser _resp;
+        public AppUser Resp
+        {
+            get => _resp;
+            set => OnPropertyChanged(ref _resp, value);
+        }
         #endregion
+
+        private ObservableCollection<AppUser> _respUsers;
+        public ObservableCollection<AppUser> RespUsers
+        {
+            get => _respUsers;
+            set => OnPropertyChanged(ref _respUsers, value);
+        }
+
+        private AppUser _userToAdd;
 
         private string _searchTaskText;
         public string SearchTaskText
@@ -178,6 +208,24 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             }
         }
 
+        private string _searchRespText;
+        public string SearchRespText
+        {
+            get => _searchRespText;
+            set
+            {
+                OnPropertyChanged(ref _searchRespText, value);
+                UpadateRespUsers(_searchRespText);
+            }
+        }
+
+        private string _toDoText;
+        public string ToDoText
+        {
+            get => _toDoText;
+            set => OnPropertyChanged(ref _toDoText, value);
+        }
+
         private async void UpadateCompanyUsers(string name)
         {
             if (name == "")
@@ -186,6 +234,17 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             {
                 await LoadUsers();
                 CompanyUsers = new(CompanyUsers.Where(u => u.UserName.ToLower().Contains(name.ToLower())));
+            }
+        }
+
+        private async void UpadateRespUsers(string name)
+        {
+            if (name == "")
+                LoadRespUsers();
+            else
+            {
+                await LoadRespUsers();
+                RespUsers = new(RespUsers.Where(u => u.UserName.ToLower().Contains(name.ToLower())));
             }
         }
 
@@ -206,7 +265,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         public ICommand DeleteUserCommand { get; }
         private void OnDeleteUserCommandExecute(object p)
         {
-            NewTaskUsers.Remove(p as AppUser);
+            NewTaskUsers.Remove(NewTaskUsers.Single(u => u.User.Id == (p as AppUser).Id));
             CompanyUsers.Add(p as AppUser);
         }
 
@@ -219,11 +278,28 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         public ICommand BackFromAddTaskUserCommand { get; }
         private void OnBackFromAddTaskUserCommandExecute(object p)
         {
-            if (p != null)
-            {
-                NewTaskUsers.Add(p as AppUser);
-                CompanyUsers.Remove(CompanyUsers.Where(cu => cu.Id == (p as AppUser).Id).Single());
-            }
+            AddTaskUserZIndex = -1;
+        }
+
+        public ICommand ToToDoTaskUserCommand { get; }
+        private void OnToToDoTaskUserCommandExecute(object p)
+        {
+            _userToAdd = p as AppUser;
+            ToDoZIndex = 1;
+        }
+
+        public ICommand BackFromToDoTaskUserCommand { get; }
+        private void OnBackFromToDoTaskUserCommandExecute(object p)
+        {
+            ToDoZIndex = -1;
+        }
+
+        public ICommand AddToDoCommand { get; }
+        private void OnAddToDoCommandExecute(object p)
+        {
+            NewTaskUsers.Add(new() { User = _userToAdd, ToDo = ToDoText });
+            CompanyUsers.Remove(CompanyUsers.Single(u => u.Id == _userToAdd.Id));
+            ToDoZIndex = -1;
             AddTaskUserZIndex = -1;
         }
 
@@ -238,8 +314,12 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
                 EndTime = NewTaskEndDate,
                 Users = new(NewTaskUsers),
                 Sender = _user,
-                Category = NewTaskCategory
+                Category = NewTaskCategory,
+                Responsible = Resp
             };
+
+            if (!task.Users.Select(u => u.User).Contains(task.Responsible))
+                task.Users.Add(new() { User = task.Responsible, ToDo = "Ответственный" });
 
             (this as ILoading).StartLoading();
 
@@ -261,11 +341,13 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
                     Sender = _mainTask.Sender,
                     Title = _mainTask.Title,
                     Tasks = _mainTask.Tasks,
-                    Users = new(_mainTask.Users)
+                    Users = new(_mainTask.Users),
+                    ResponsibleId = _mainTask.ResponsibleId,
+                    Responsible = _mainTask.Responsible
                 };
 
-                foreach (AppUser user in task.Users)
-                    if (!_mainTask.Users.Any(u => u.Id == user.Id))
+                foreach (var user in task.Users)
+                    if (!_mainTask.Users.Any(u => u.User.Id == user.User.Id))
                         _mainTask.Users.Add(user);
 
                 await _apiHelper.Tasks.Update(oldMainTask, _mainTask, _company.Id);
@@ -277,9 +359,11 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             NewTaskDesc = "";
             NewTaskEndDate = DateTime.Today;
             NewTaskCategory = await _apiHelper.Categories.GetByTitle("Не важно и Не срочно");
+            Resp = null;
             oldUpdateTask = null;
             _mainTask = null;
             LoadUsers();
+            LoadRespUsers();
             NewTaskUsers = new();
             LoadTasks();
             (this as ILoading).EndLoading();
@@ -296,6 +380,22 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
                 index++;
 
             NewTaskCategory = Categories[index];
+        }
+
+        public ICommand ToChangeRespCommand { get; }
+        private void OnToChangeRespCommandExecute(object p)
+        {
+            ChangeRespZIndex = 1;
+        }
+
+        public ICommand BackFromChangeRespCommand { get; }
+        private void OnBackFromChangeRespCommandExecute(object p)
+        {
+            if (p is not null)
+            {
+                Resp = (AppUser)p;
+            }
+            ChangeRespZIndex = -10;
         }
         #endregion
 
@@ -320,11 +420,12 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             NewTaskDesc = (p as AppTask).Description;
             NewTaskEndDate = (DateTime)(p as AppTask).EndTime;
             NewTaskCategory = (p as AppTask).Category;
+            Resp = (p as AppTask).Responsible;
 
             NewTaskUsers = new((p as AppTask).Users);
-            foreach (AppUser user in NewTaskUsers)
-                if (CompanyUsers.Where(u => u.Id == user.Id).Count() == 1)
-                    CompanyUsers.Remove(CompanyUsers.Where(u => u.Id == user.Id).Single());
+            foreach (var user in NewTaskUsers)
+                if (CompanyUsers.Where(u => u.Id == user.User.Id).Count() == 1)
+                    CompanyUsers.Remove(CompanyUsers.Where(u => u.Id == user.User.Id).Single());
 
             oldUpdateTask = new()
             {
@@ -368,9 +469,13 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             DeleteUserCommand = new RelayCommand(OnDeleteUserCommandExecute);
             ToAddTaskUserCommand = new RelayCommand(OnToAddTaskUserCommandExecute);
             BackFromAddTaskUserCommand = new RelayCommand(OnBackFromAddTaskUserCommandExecute);
+            ToToDoTaskUserCommand = new RelayCommand(OnToToDoTaskUserCommandExecute);
+            BackFromToDoTaskUserCommand = new RelayCommand(OnBackFromToDoTaskUserCommandExecute);
+            AddToDoCommand = new RelayCommand(OnAddToDoCommandExecute);
             AddTaskCommand = new RelayCommand(OnAddTaskCommandExecute, _ =>
                 !string.IsNullOrWhiteSpace(NewTaskTitle) &&
-                !string.IsNullOrWhiteSpace(NewTaskDesc));
+                !string.IsNullOrWhiteSpace(NewTaskDesc) &&
+                Resp is not null);
             ReloadTasksCommand = new RelayCommand(_ => LoadTasks());
 
             ToDelTaskCommand = new RelayCommand(OnToDelTaskCommandExecute);
@@ -378,10 +483,13 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
             DelTaskCommand = new RelayCommand(OnDelTaskCommandExecute);
             ToUpdateTaskCommand = new RelayCommand(OnToUpdateTaskCommandExecute);
             ChangeCategoryCommand = new RelayCommand(OnChangeCategoryCommandExecute);
+            ToChangeRespCommand = new RelayCommand(OnToChangeRespCommandExecute);
+            BackFromChangeRespCommand = new RelayCommand(OnBackFromChangeRespCommandExecute);
 
             LoadTasks();
             LoadCategories();
             LoadUsers();
+            LoadRespUsers();
         }
 
         private async void LoadTasks()
@@ -397,6 +505,15 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         {
             (this as ILoading).StartLoading();
             CompanyUsers = new((await _apiHelper.Users.GetByCompany(_company.Id)).Where(cu => cu.Role.Title == "User"));
+            foreach (var user in NewTaskUsers)
+                CompanyUsers.Remove(CompanyUsers.Where(cu => cu.Id == user.User.Id).Single());
+            (this as ILoading).EndLoading();
+        }
+
+        private async Task LoadRespUsers()
+        {
+            (this as ILoading).StartLoading();
+            RespUsers = new((await _apiHelper.Users.GetByCompany(_company.Id)).Where(cu => cu.Role.Title == "User"));
             (this as ILoading).EndLoading();
         }
 

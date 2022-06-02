@@ -12,8 +12,10 @@ namespace delegatorApi.Library.DataAccess
         {
             task.CategoryId = task.Category.Id;
             task.SenderId = task.Sender.Id;
+            task.ResponsibleId = task.Responsible.Id;
             task.Category = null;
             task.Sender = null;
+            task.Responsible = null;
             using (delegatorContext db = new())
             {
                 db.Tasks.Add(task);
@@ -49,6 +51,7 @@ namespace delegatorApi.Library.DataAccess
                     .Distinct()
                     .Include(t => t.Sender)
                     .Include(t => t.Category)
+                    .Include(t => t.Responsible)
                     .ToList();
             }
         }
@@ -63,6 +66,7 @@ namespace delegatorApi.Library.DataAccess
                     .Distinct()
                     .Include(t => t.Sender)
                     .Include(t => t.Category)
+                    .Include(t => t.Responsible)
                     .ToList();
             }
         }
@@ -77,6 +81,7 @@ namespace delegatorApi.Library.DataAccess
                     .Distinct()
                     .Include(t => t.Sender)
                     .Include(t => t.Category)
+                    .Include(t => t.Responsible)
                     .ToList();
             }
         }

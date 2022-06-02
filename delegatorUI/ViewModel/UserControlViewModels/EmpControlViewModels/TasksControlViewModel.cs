@@ -125,6 +125,16 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
             ReportDuration = "";
             ReportFiles = new();
         }
+        private bool CanToReportCommandExecute(object p)
+        {
+            if ((p as AppTask).ResponsibleId == _user.Id && (p as AppTask).Users.Count > 1)
+            {
+                (this as IError).Error("Сначала все пользователи должны отправить отчеты");
+                return false;
+            }
+
+            return true;
+        }
 
         public ICommand BackFromReportCommand { get; }
         private void OnBackFromReportCommandExecute(object p)
@@ -200,8 +210,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
                     FileId = id
                 });
 
-            //EmailService.SendEmail(_taskToReport.Sender.Email, _taskToReport.Sender.UserName,
-            //    _user.UserName, _taskToReport.Title, ReportText, ReportDuration, new List<OpenFileDialog>(ReportFiles));
+            EmailService.SendEmail(_taskToReport.Sender.Email, _taskToReport.Sender.UserName,
+                _user.UserName, _taskToReport.Title, ReportText, ReportDuration, new List<OpenFileDialog>(ReportFiles));
 
             await _apiHelper.Users.DeleteTask(_taskToReport.Id, _user.Id, _company.Id);
 
@@ -229,6 +239,166 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
         }
         #endregion
 
+        #region Changing TaskUsers
+        private int _changingUsersZIndex = -1;
+        public int ChangingUsersZIndex
+        {
+            get => _changingUsersZIndex;
+            set => OnPropertyChanged(ref _changingUsersZIndex, value);
+        }
+
+        private int _addTaskUserZIndex = -1;
+        public int AddTaskUserZIndex
+        {
+            get => _addTaskUserZIndex;
+            set => OnPropertyChanged(ref _addTaskUserZIndex, value);
+        }
+
+        private int _toDoZIndex = -1;
+        public int ToDoZIndex
+        {
+            get => _toDoZIndex;
+            set => OnPropertyChanged(ref _toDoZIndex, value);
+        }
+
+        private AppTask _taskToChange;
+
+        private AppUser _userToAdd;
+
+        private ObservableCollection<UserWithToDo> _taskUsers = new();
+        public ObservableCollection<UserWithToDo> TaskUsers
+        {
+            get => _taskUsers;
+            set => OnPropertyChanged(ref _taskUsers, value);
+        }
+
+        private ObservableCollection<AppUser> _companyUsers;
+        public ObservableCollection<AppUser> CompanyUsers
+        {
+            get => _companyUsers;
+            set => OnPropertyChanged(ref _companyUsers, value);
+        }
+
+        private string _searchTaskText;
+        public string SearchTaskText
+        {
+            get => _searchTaskText;
+            set
+            {
+                OnPropertyChanged(ref _searchTaskText, value);
+                UpadateCompanyUsers(_searchTaskText);
+            }
+        }
+
+        private string _toDoText;
+        public string ToDoText
+        {
+            get => _toDoText;
+            set => OnPropertyChanged(ref _toDoText, value);
+        }
+
+        public ICommand ToChangeUsersCommand { get; }
+        private void OnToChangeUsersCommandExecute(object p)
+        {
+            if (_user.Id != (p as AppTask).ResponsibleId)
+                return;
+            
+            _taskToChange = p as AppTask;
+            LoadUsers();
+            TaskUsers = new((p as AppTask).Users);
+            ChangingUsersZIndex = 1;
+        }
+
+        public ICommand BackFromChangeUsersCommand { get; }
+        private void OnBackFromChangeUsersCommandExecute(object p)
+        {
+            ChangingUsersZIndex = -1;
+        }
+
+        public ICommand ToAddTaskUserCommand { get; }
+
+        public ICommand BackFromAddTaskUserCommand { get; }
+        private void OnBackFromAddTaskUserCommandExecute(object p)
+        {
+            AddTaskUserZIndex = -1;
+        }
+
+        public ICommand ToToDoTaskUserCommand { get; }
+        private void OnToToDoTaskUserCommandExecute(object p)
+        {
+            _userToAdd = p as AppUser;
+            ToDoText = "";
+            ToDoZIndex = 1;
+        }
+
+        public ICommand BackFromToDoTaskUserCommand { get; }
+        private void OnBackFromToDoTaskUserCommandExecute(object p)
+        {
+            ToDoZIndex = -1;
+        }
+
+        public ICommand AddToDoCommand { get; }
+        private void OnAddToDoCommandExecute(object p)
+        {
+            TaskUsers.Add(new() { User = _userToAdd, ToDo = ToDoText });
+            CompanyUsers.Remove(CompanyUsers.Single(u => u.Id == _userToAdd.Id));
+            ToDoZIndex = -1;
+            AddTaskUserZIndex = -1;
+        }
+
+        public ICommand DeleteUserCommand { get; }
+        private void OnDeleteUserCommandExecute(object p)
+        {
+            var user = (p as UserWithToDo).User;
+
+            if (user.Id == _user.Id)
+                return;
+
+            TaskUsers.Remove(TaskUsers.Where(u => u.User.Id == user.Id).Single());
+            CompanyUsers.Add(user);
+        }
+
+        public ICommand ChangeUsersCommand { get; }
+        private async void OnChangeUsersCommandExecute(object p)
+        {
+            (this as ILoading).StartLoading();
+
+            AppTask _taskChanged = new()
+            {
+                Id = _taskToChange.Id,
+                Title = _taskToChange.Title,
+                Description = _taskToChange.Description,
+                EndTime = _taskToChange.EndTime,
+                Sender = _taskToChange.Sender,
+                SenderId = _taskToChange.SenderId,
+                Category = _taskToChange.Category,
+                CategoryId = _taskToChange.CategoryId,
+                Responsible = _taskToChange.Responsible,
+                ResponsibleId = _taskToChange.ResponsibleId,
+                Tasks = _taskToChange.Tasks,
+                Users = TaskUsers.ToList()
+            };
+
+            await _apiHelper.Tasks.Update(_taskToChange, _taskChanged, _company.Id);
+            LoadTasks();
+            LoadTasksForToday();
+
+            (this as ILoading).EndLoading();
+            ChangingUsersZIndex = -1;
+        }
+
+        private async void UpadateCompanyUsers(string name)
+        {
+            if (name == "")
+                LoadUsers();
+            else
+            {
+                await LoadUsers();
+                CompanyUsers = new(CompanyUsers.Where(u => u.UserName.ToLower().Contains(name.ToLower())));
+            }
+        }
+        #endregion
+
         public TasksControlViewModel(APIHelper apiHelper, CompanyUser companyUser)
         {
             _apiHelper = apiHelper;
@@ -238,14 +408,35 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
 
             ReloadTasksCommand = new RelayCommand(OnReloadTasksCommandExecute);
 
-            ToReportCommand = new RelayCommand(OnToReportCommandExecute);
+            ToReportCommand = new RelayCommand(OnToReportCommandExecute, CanToReportCommandExecute);
             BackFromReportCommand = new RelayCommand(OnBackFromReportCommandExecute);
             AddFileCommand = new RelayCommand(OnAddFileCommandExecute);
             DeleteFileCommand = new RelayCommand(OnDeleteFileCommandExecute);
             ReportCommand = new RelayCommand(OnReportCommandExecute, _ => int.TryParse(ReportDuration, out int __));
 
+            ToChangeUsersCommand = new RelayCommand(OnToChangeUsersCommandExecute);
+            BackFromChangeUsersCommand = new RelayCommand(OnBackFromChangeUsersCommandExecute);
+            ToAddTaskUserCommand = new RelayCommand(_ => AddTaskUserZIndex = 1);
+            BackFromAddTaskUserCommand = new RelayCommand(OnBackFromAddTaskUserCommandExecute);
+            ToToDoTaskUserCommand = new RelayCommand(OnToToDoTaskUserCommandExecute);
+            BackFromToDoTaskUserCommand = new RelayCommand(OnBackFromToDoTaskUserCommandExecute);
+            AddToDoCommand = new RelayCommand(OnAddToDoCommandExecute);
+            DeleteUserCommand = new RelayCommand(OnDeleteUserCommandExecute);
+            ChangeUsersCommand = new RelayCommand(OnChangeUsersCommandExecute,
+                _ => TaskUsers.Count > 0);
+
             LoadTasks();
             LoadTasksForToday();
+            LoadUsers();
+        }
+
+        private async Task LoadUsers()
+        {
+            (this as ILoading).StartLoading();
+            CompanyUsers = new((await _apiHelper.Users.GetByCompany(_company.Id)).Where(cu => cu.Role.Title == "User"));
+            foreach (var user in TaskUsers)
+                CompanyUsers.Remove(CompanyUsers.Where(cu => cu.Id == user.User.Id).Single());
+            (this as ILoading).EndLoading();
         }
 
         private async Task LoadTasks()
@@ -254,6 +445,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
             Tasks = await _apiHelper.Tasks.GetByUserAndCompanyOnlyMain(_user.Id, _company.Id);
             Tasks = Tasks.Where(t => t.Title.ToLower().Contains(SearchText.ToLower())).ToList();
             Tasks = Tasks.OrderBy(t => t.EndTime).ToList();
+            foreach (var task in Tasks)
+                task.ToDo = task.Users.Single(u => u.User.Id == _user.Id).ToDo;
             (this as ILoading).EndLoading();
         }
 
@@ -266,6 +459,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
                 .ToList();
             TasksForToday = TasksForToday.Where(t => t.Title.ToLower().Contains(SearchText.ToLower())).ToList();
             TasksForToday = TasksForToday.OrderBy(t => t.EndTime).ToList();
+            foreach (var task in TasksForToday)
+                task.ToDo = task.Users.Single(u => u.User.Id == _user.Id).ToDo;
             (this as ILoading).EndLoading();
         }
     }

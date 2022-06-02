@@ -127,7 +127,7 @@
                                                 <DoubleAnimation
                                                     Storyboard.TargetName="Bd"
                                                     Storyboard.TargetProperty="Height"
-                                                    From="40" To="220" Duration="0:0:.2"/>
+                                                    From="40" To="265" Duration="0:0:.2"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -139,7 +139,7 @@
                                                 <DoubleAnimation
                                                     Storyboard.TargetName="Bd"
                                                     Storyboard.TargetProperty="Height"
-                                                    From="220" To="40" Duration="0:0:.2"/>
+                                                    From="265" To="40" Duration="0:0:.2"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -229,43 +229,98 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Описание задачи:" Style="{StaticResource SmallTextBlockStyle}"/>
-                <ScrollViewer Grid.Row="1" Height="75" VerticalScrollBarVisibility="Auto">
+                <Popup x:Name="ToDoPopup" Placement="Mouse" IsOpen="{Binding ElementName=ToDotb, Path=IsMouseOver, Mode=OneWay}"
+                    PopupAnimation="Fade" AllowsTransparency="True" MaxWidth="300">
+                    <Border Background="{DynamicResource WindowPanel}" CornerRadius="5" BorderThickness="1" BorderBrush="{DynamicResource Path}">
+                        <TextBlock Text="{Binding ToDo}" Style="{StaticResource SmallTextBlockStyleWithTheme}" Margin="3" TextWrapping="WrapWithOverflow"/>
+                    </Border>
+                </Popup>
+                <TextBlock x:Name="ToDotb" Style="{StaticResource SmallTextBlockStyle}" Grid.ColumnSpan="100" MaxWidth="330"
+                    HorizontalAlignment="Left">
+                    <Run Text="Обязанности:"/><LineBreak/>
+                    <Run Text="{Binding ToDo}"/>
+                </TextBlock>
+
+                <TextBlock Text="Описание задачи:" Style="{StaticResource SmallTextBlockStyle}" Grid.ColumnSpan="2"
+                    Grid.Row="1"/>
+                <ScrollViewer Grid.Row="2" Height="75" VerticalScrollBarVisibility="Auto">
                     <TextBlock Text="{Binding Description}" Style="{StaticResource SmallTextBlockStyle}"
-                        TextWrapping="WrapWithOverflow"/>
+                        TextWrapping="WrapWithOverflow" Grid.ColumnSpan="2"/>
                 </ScrollViewer>
 
-                <TextBlock Style="{StaticResource SmallTextBlockStyle}" Grid.Row="2" Margin="0,10,0,0">
+                <TextBlock Style="{StaticResource SmallTextBlockStyle}" Grid.Row="3" Margin="0,10,0,0">
                     <Run Text="Назначил:"/><LineBreak/>
                     <Run Text="{Binding Sender.UserName}"/>
                 </TextBlock>
+
+                <TextBlock Style="{StaticResource SmallTextBlockStyle}" Grid.Row="3" 
+                    Grid.Column="1" Margin="10,10,0,0" Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center">
+                    <Run Text="Ответственный:"/><LineBreak/>
+                    <Run Text="{Binding Responsible.UserName}"/>
+                </TextBlock>
                 
-                <TextBlock Style="{StaticResource SmallTextBlockStyle}" Grid.Row="2" Grid.Column="2" Margin="0,10,0,0">
+                <TextBlock Style="{StaticResource SmallTextBlockStyle}" Grid.Row="3" Grid.Column="3" Margin="0,10,0,0"
+                    HorizontalAlignment="Right">
                     <Run Text="Дэдлайн:"/><LineBreak/>
-                    <Run Text="{Binding EndTime, StringFormat=dd MM yyyy}"/>
+                    <Run Text="{Binding EndTime, StringFormat=dd.MM.yyyy}"/>
                 </TextBlock>
 
-                <TextBlock Text="Сотрудники:" Grid.Column="2" Style="{StaticResource SmallTextBlockStyle}"/>
+                <TextBlock Text="Сотрудники:" Grid.Column="2" Style="{StaticResource SmallTextBlockStyle}" Grid.ColumnSpan="2" Grid.Row="1"/>
                 <ListView ItemsSource="{Binding Users}" Style="{StaticResource ListViewBase}" BorderThickness="0"
                     HorizontalAlignment="Stretch" ItemContainerStyle="{StaticResource ListViewNoHover}"
-                    Grid.Column="2" Grid.Row="1" Grid.RowSpan="1">
+                    Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding UserName}" Style="{StaticResource SmallTextBlockStyle}"/>
+                            <Grid>
+                                <TextBlock x:Name="UserTb" Text="{Binding User.UserName}" Style="{StaticResource SmallTextBlockStyle}"/>
+                                <Popup x:Name="ToDoPopup" Placement="Mouse" IsOpen="{Binding ElementName=UserTb, Path=IsMouseOver, Mode=OneWay}"
+                                    PopupAnimation="Fade" AllowsTransparency="True" MaxWidth="300">
+                                    <Border Background="{DynamicResource WindowPanel}" CornerRadius="5" BorderThickness="1" BorderBrush="{DynamicResource Path}">
+                                        <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}" Margin="3" TextWrapping="WrapWithOverflow">
+                                            <Run Text="Обязанности "/><Run Text="{Binding User.UserName}"/>
+                                            <LineBreak/><Run Text="{Binding ToDo}"/>
+                                        </TextBlock>
+                                    </Border>
+                                </Popup>
+                            </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
 
                 <Border Background="Transparent" BorderThickness="0"
-                    Height="25" Width="25" Margin="0,-30,-30,0"
-                    Grid.Column="3" Grid.Row="10"
+                    VerticalAlignment="Top" Grid.Column="3" HorizontalAlignment="Right"
+                    Height="20" Width="20" Padding="1" Margin="0,0,0,0" Grid.Row="1">
+                    <Path Data="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"
+                        Fill="{DynamicResource Path}" Stretch="Uniform"/>
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding RelativeSource=
+                            {RelativeSource AncestorType=TreeView, Mode=FindAncestor}, Path=DataContext.ToChangeUsersCommand}"
+                            CommandParameter="{Binding}"/>
+                    </Border.InputBindings>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+
+                <Border Background="Transparent" BorderThickness="0"
+                    Height="20" Width="20" Margin="0,0,-30,0"
+                    Grid.Column="3" Grid.Row="1"
                     HorizontalAlignment="Right" VerticalAlignment="Top">
                     <Path Data="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
                         Fill="{DynamicResource Path}" Stretch="Uniform"/>

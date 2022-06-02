@@ -26,7 +26,7 @@ namespace delegatorUI.Infrastructure.Services
                 Credentials = new NetworkCredential()
                 {
                     UserName = "delegatorteam@gmail.com",
-                    Password = "***"
+                    Password = "upwqxeqgreebpcbf"
                 }
             };
 

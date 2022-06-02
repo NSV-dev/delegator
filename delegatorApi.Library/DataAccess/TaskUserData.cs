@@ -47,5 +47,13 @@ namespace delegatorApi.Library.DataAccess
                     return list.Single();
             }
         }
+
+        public TasksUser GetByTaskAndUser(string taskID, string userID)
+        {
+            using (delegatorContext db = new())
+            {
+                return db.TasksUsers.Single(tu => tu.TaskId == taskID && tu.UserId == userID);
+            }
+        }
     }
 }

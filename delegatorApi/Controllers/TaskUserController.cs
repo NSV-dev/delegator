@@ -25,5 +25,9 @@ namespace delegatorApi.Controllers
 
         [Route("Get")]
         public TasksUser Get(TasksUser tasksUser) => _taskUserData.Get(tasksUser);
+
+        [Route("ByTaskAndUser")]
+        public TasksUser GetByTaskAndUser(string taskID, string userID) 
+            => _taskUserData.GetByTaskAndUser(taskID, userID);
     }
 }

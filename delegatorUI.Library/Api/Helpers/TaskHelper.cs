@@ -59,69 +59,9 @@ namespace delegatorUI.Library.Api.Helpers
 
         public async Task Delete(AppTask task, string companyID)
         {
-            if (task.Tasks is not null)
-            {
+            if (task.Tasks.Count > 0)
                 foreach (AppTask subtask in task.Tasks)
-                    Delete(subtask, companyID);
-
-                foreach (AppTask subtask in task.Tasks)
-                {
-                    TaskTasks taskTasksWithID;
-                    using (HttpResponseMessage resp = await _apiClient.GetAsync($"TaskTask/ByTaskID?taskID={subtask.Id}"))
-                    {
-                        if (resp.IsSuccessStatusCode)
-                            taskTasksWithID = await resp.Content.ReadAsAsync<TaskTasks>();
-                        else
-                            throw new Exception(resp.ReasonPhrase);
-                    }
-                    using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskTask/Delete", taskTasksWithID))
-                    {
-                        if (!resp.IsSuccessStatusCode)
-                            throw new Exception(resp.ReasonPhrase);
-                    }
-                }
-            }
-            foreach (var user in task.Users)
-            {
-                TaskUsers taskUsers = new()
-                {
-                    CompanyId = companyID,
-                    TaskId = task.Id,
-                    UserId = user.User.Id,
-                    ToDo = user.ToDo
-                };
-                TaskUsers taskUsersWithID;
-                using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser/Get", taskUsers))
-                {
-                    if (resp.IsSuccessStatusCode)
-                        taskUsersWithID = await resp.Content.ReadAsAsync<TaskUsers>();
-                    else
-                        throw new Exception(resp.ReasonPhrase);
-                }
-                if (taskUsersWithID is not null)
-                    using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskUser/Delete", taskUsersWithID))
-                    {
-                        if (!resp.IsSuccessStatusCode)
-                            throw new Exception(resp.ReasonPhrase);
-                    }
-            }
-
-            TaskTasks taskTasks = null;
-            using (HttpResponseMessage resp = await _apiClient.GetAsync($"TaskTask/ByTaskID?taskID={task.Id}"))
-            {
-                if (resp.IsSuccessStatusCode)
-                    taskTasks = await resp.Content.ReadAsAsync<TaskTasks>();
-                else
-                    throw new Exception(resp.ReasonPhrase);
-            }
-            if (taskTasks != null)
-            {
-                using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("TaskTask/Delete", taskTasks))
-                {
-                    if (!resp.IsSuccessStatusCode)
-                        throw new Exception(resp.ReasonPhrase);
-                }
-            }
+                    await Delete(subtask, companyID);
 
             using (HttpResponseMessage resp = await _apiClient.PostAsJsonAsync("Task/Delete", task))
             {
@@ -226,15 +166,13 @@ namespace delegatorUI.Library.Api.Helpers
             }
         }
 
-        public async Task<List<AppTask>> GetByUserAndCompanyOnlyMain(string userID, string companyID)
+        public async Task<List<AppTask>> GetByUserAndCompany(string userID, string companyID)
         {
             using (HttpResponseMessage resp = await _apiClient.GetAsync($"Task/ByUserIDAndCompanyID?userID={userID}&companyID={companyID}"))
             {
                 if (resp.IsSuccessStatusCode)
                 {
                     List<AppTask> tasks = await resp.Content.ReadAsAsync<List<AppTask>>();
-
-                    tasks = await RemoveNotMains(tasks);
 
                     foreach (var task in tasks)
                     {

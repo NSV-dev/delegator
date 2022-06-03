@@ -27,6 +27,12 @@ namespace delegatorApi.Library.DataAccess
         {
             using (delegatorContext db = new())
             {
+                foreach (var item in db.TasksTasks.Where(tt => tt.TaskId == task.Id || tt.MainTaskId == task.Id))
+                    db.TasksTasks.Remove(item);
+
+                foreach (var item in db.TasksUsers.Where(tu => tu.TaskId == task.Id))
+                    db.TasksUsers.Remove(item);
+
                 db.Tasks.Remove(task);
                 db.SaveChanges();
             }

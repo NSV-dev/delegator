@@ -15,8 +15,8 @@
     <SolidColorBrush x:Key="Hover" Color="#dddddd"/>
 
     <SolidColorBrush x:Key="Path" Color="#111111"/>
-    
-    <SolidColorBrush x:Key="TaskBg" Color="#555555"/>
+
+    <SolidColorBrush x:Key="TaskBg" Color="#B8B8B8"/>
 
     <SolidColorBrush x:Key="PanelButtonChecked" Color="White"/>
     <SolidColorBrush x:Key="PanelButtonUnChecked" Color="#474747"/>

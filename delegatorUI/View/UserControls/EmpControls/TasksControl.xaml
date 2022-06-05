@@ -131,7 +131,7 @@
         </TextBlock>
 
         <TreeView ItemsSource="{Binding Tasks}" Background="Transparent" BorderBrush="Transparent" 
-            Grid.Column="1" Grid.Row="1" Padding="0,0,10,0" 
+            Grid.Column="1" Grid.Row="1" Padding="0,0,10,0"
             ItemContainerStyle="{StaticResource UserTvStyle}" ItemTemplate="{StaticResource UserDt}"/>
 
         <TextBlock Text="Задач нет" Opacity="0" Margin="20,20,0,0"
@@ -217,7 +217,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
-                    Grid.ColumnSpan="200" FontSize="20">
+                    Grid.ColumnSpan="200" FontSize="22">
                     <Run Text="Отчет о"/>
                     <Run Text="{Binding ReportTaskName}"/><Run 
                         Text=", назначена:"/>
@@ -227,7 +227,7 @@
                 <TextBlock Text="Текст отчета:" Grid.Row="1" Style="{StaticResource SmallTextBlockStyleWithTheme}"/>
                 <TextBox Style="{StaticResource MultiLineTextBox}" 
                     Text="{Binding ReportText, UpdateSourceTrigger=PropertyChanged}"
-                    Grid.Row="1" Margin="0,22,10,30" FontSize="16"/>
+                    Grid.Row="1" Margin="0,24,10,30" FontSize="16"/>
 
                 <TextBlock Text="Время выполнения:" VerticalAlignment="Bottom" Margin="0,0,0,6"
                     Grid.Row="1" Style="{StaticResource SmallTextBlockStyleWithTheme}"/>
@@ -258,7 +258,7 @@
                 </Border>
                 <ListView x:Name="filesLw" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                     Style="{StaticResource ListViewBase}" ItemContainerStyle="{StaticResource ListViewNoHover}"
-                    ItemsSource="{Binding ReportFiles}" Grid.Column="1" Grid.Row="1" Margin="0,20,0,10">
+                    ItemsSource="{Binding ReportFiles}" Grid.Column="1" Grid.Row="1" Margin="0,24,0,10">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding SafeFileName}" 
@@ -336,13 +336,12 @@
                 </Grid.RowDefinitions>
                 
                 <TextBlock Text="Список сотрудников:" Style="{StaticResource SmallTextBlockStyleWithTheme}"
-                    Margin="10,18,0,0" VerticalAlignment="Top"/>
+                    Margin="10,14,0,0" VerticalAlignment="Top"/>
                 <ListView x:Name="TaskUsersLw" ItemsSource="{Binding TaskUsers}"
                     Margin="10,40,10,10" Style="{StaticResource ListViewBase}" ItemContainerStyle="{StaticResource ListViewNoHover}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding User.UserName}" Style="{StaticResource SmallTextBlockStyleWithTheme}"
-                                FontSize="18">
+                            <TextBlock Text="{Binding User.UserName}" Style="{StaticResource SmallTextBlockStyleWithTheme}">
                                 <TextBlock.InputBindings>
                                     <MouseBinding Gesture="LeftClick"
                                         Command="{Binding ElementName=TaskUsersLw, Path=DataContext.DeleteUserCommand}"
@@ -407,9 +406,9 @@
 
                     <TextBox x:Name="SearchTaskTb" Style="{StaticResource TextBoxBaseWithTheme}" Margin="10,2" 
                         Text="{Binding SearchTaskText, UpdateSourceTrigger=PropertyChanged}"/>
-                    <TextBlock Text="Поиск" Margin="12,16,0,0" Panel.ZIndex="-1">
+                    <TextBlock Text="Поиск" Margin="12,16,0,0" Panel.ZIndex="-1" FontSize="18">
                         <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource SmallTextBlockStyleWithTheme}">
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyleBaseWithTheme}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ElementName=SearchTaskTb, Path=Text}" Value="">
                                         <DataTrigger.EnterActions>
@@ -458,8 +457,7 @@
                         Margin="10,5,10,10" ItemsSource="{Binding CompanyUsers}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding UserName}" Style="{StaticResource SmallTextBlockStyleWithTheme}"
-                                    FontSize="18">
+                                <TextBlock Text="{Binding UserName}" Style="{StaticResource SmallTextBlockStyleWithTheme}">
                                     <TextBlock.InputBindings>
                                         <MouseBinding Gesture="LeftClick" Command="{Binding ElementName=AddUsersLw,
                                             Path=DataContext.ToToDoTaskUserCommand}"

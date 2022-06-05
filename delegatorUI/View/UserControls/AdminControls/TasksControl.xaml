@@ -34,7 +34,7 @@
 
             <Grid Background="Transparent">
 
-                <TextBlock Style="{StaticResource TextBlockStyle}" 
+                <TextBlock Style="{StaticResource TextBlockStyle}" FontSize="24"
                            HorizontalAlignment="Left" Margin="30,0,0,20"
                            Foreground="{DynamicResource Text}">
                     <Run 
@@ -248,7 +248,7 @@
                                                                 <DoubleAnimation
                                                                     Storyboard.TargetName="Bd"
                                                                     Storyboard.TargetProperty="Height"
-                                                                    From="40" To="220" Duration="0:0:.2"/>
+                                                                    From="40" To="230" Duration="0:0:.2"/>
                                                                 <DoubleAnimation
                                                                     Storyboard.TargetName="EditPanel"
                                                                     Storyboard.TargetProperty="Width"
@@ -268,7 +268,7 @@
                                                                 <DoubleAnimation
                                                                     Storyboard.TargetName="Bd"
                                                                     Storyboard.TargetProperty="Height"
-                                                                    From="220" To="40" Duration="0:0:.2"/>
+                                                                    From="230" To="40" Duration="0:0:.2"/>
                                                                 <DoubleAnimation
                                                                     Storyboard.TargetName="EditPanel"
                                                                     Storyboard.TargetProperty="Width"
@@ -362,11 +362,11 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             
-                            <TextBlock Text="{Binding Title}" Style="{StaticResource SmallTextBlockStyle}" Margin="0,4,0,0"/>
+                            <TextBlock Text="{Binding Title}" Style="{StaticResource SmallTextBlockStyleWithTheme}" Margin="0,1,0,0"/>
 
                             <TextBlock Text="{Binding Category.Title}" Foreground="{Binding Category.Color}"
                                 HorizontalAlignment="Right" Background="{DynamicResource TaskBg}" Style="{DynamicResource SmallTextBlockStyle}"
-                                FontSize="16" Margin="0,5,0,0"/>
+                                FontSize="18" Margin="0,3,0,0"/>
                                 
                             <Rectangle Height="2" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Fill="White" Grid.Row="1"/>
 
@@ -392,17 +392,18 @@
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="Описание задачи:" Style="{DynamicResource SmallTextBlockStyle}"/>
-                                <ScrollViewer Grid.Row="1" Height="75" VerticalScrollBarVisibility="Auto">
+                                <TextBlock Text="Описание задачи:" Style="{DynamicResource SmallTextBlockStyleWithTheme}"/>
+                                <ScrollViewer Grid.Row="1" Height="75" VerticalScrollBarVisibility="Auto" MaxWidth="400"
+                                    HorizontalAlignment="Left">
                                     <TextBlock Text="{Binding Description}"
-                                        TextWrapping="WrapWithOverflow" Style="{DynamicResource SmallTextBlockStyle}"/>
+                                        TextWrapping="WrapWithOverflow" Style="{DynamicResource SmallTextBlockStyleWithTheme}"/>
                                 </ScrollViewer>
 
-                                <TextBlock Text="Дэдлайн:" Grid.Row="2" Margin="0,10,0,0" Style="{DynamicResource SmallTextBlockStyle}"/>
+                                <TextBlock Text="Дэдлайн:" Grid.Row="2" Margin="0,10,0,0" Style="{DynamicResource SmallTextBlockStyleWithTheme}"/>
                                 <TextBlock Text="{Binding EndTime, StringFormat=d}" Grid.Row="3" 
-                                        TextWrapping="WrapWithOverflow" Style="{DynamicResource SmallTextBlockStyle}"/>
+                                        TextWrapping="WrapWithOverflow" Style="{DynamicResource SmallTextBlockStyleWithTheme}"/>
 
-                                <TextBlock Text="Сотрудники:" Grid.Column="1" Margin="50,0,0,0" Style="{DynamicResource SmallTextBlockStyle}"/>
+                                <TextBlock Text="Сотрудники:" Grid.Column="1" Margin="50,0,0,0" Style="{DynamicResource SmallTextBlockStyleWithTheme}"/>
                                 <ListView ItemsSource="{Binding Users}" 
                                     Width="200" ItemContainerStyle="{StaticResource ListViewNoHover}"
                                     HorizontalAlignment="Left" Margin="50,0,0,0"
@@ -410,7 +411,7 @@
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
-                                                <TextBlock x:Name="UserTb" Text="{Binding User.UserName}" Style="{StaticResource SmallTextBlockStyle}"/>
+                                                <TextBlock x:Name="UserTb" Text="{Binding User.UserName}" Style="{StaticResource SmallTextBlockStyleWithTheme}"/>
                                                 <Popup x:Name="ToDoPopup" Placement="Mouse" IsOpen="{Binding ElementName=UserTb, Path=IsMouseOver, Mode=OneWay}"
                                                     PopupAnimation="Fade" AllowsTransparency="True" MaxWidth="300">
                                                     <Border Background="{DynamicResource WindowPanel}" CornerRadius="5" BorderThickness="1" BorderBrush="{DynamicResource Path}">
@@ -425,12 +426,12 @@
                                     </ListView.ItemTemplate>
                                 </ListView>
 
-                                <TextBlock Grid.Column="2" Style="{DynamicResource SmallTextBlockStyle}">
+                                <TextBlock Grid.Column="2" Style="{DynamicResource SmallTextBlockStyleWithTheme}">
                                     <Run Text="Назначил:"/>
                                     <Run Text="{Binding Sender.UserName}"/>
                                 </TextBlock>
                                 
-                                <TextBlock Grid.Column="2" Style="{DynamicResource SmallTextBlockStyle}"
+                                <TextBlock Grid.Column="2" Style="{DynamicResource SmallTextBlockStyleWithTheme}"
                                     Grid.Row="1">
                                     <Run Text="Ответственный:"/>
                                     <Run Text="{Binding Responsible.UserName}"/>
@@ -565,12 +566,12 @@
                              Margin="10,40,10,10" VerticalScrollBarVisibility="Auto"/>
                     <TextBlock Text="Описание:" Grid.Row="1" Panel.ZIndex="-1" 
                             Style="{StaticResource SmallTextBlockStyleWithTheme}"
-                            Width="200" Margin="12,18,0,10"
+                            Width="200" Margin="12,14,0,10"
                             HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
                     <TextBlock Text="Ответственный:" Grid.Row="1" Grid.Column="1" Panel.ZIndex="-1" 
                             Style="{StaticResource SmallTextBlockStyleWithTheme}"
-                            Width="200" Margin="12,18,0,10"
+                            Width="200" Margin="12,14,0,10"
                             HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     <TextBlock Text="{Binding Resp.UserName}" Grid.Row="1" Grid.Column="1" Panel.ZIndex="-1" 
                             Style="{StaticResource SmallTextBlockStyleWithTheme}"
@@ -699,7 +700,7 @@
 
 
                     <TextBlock Text="Список сотрудников:" Style="{StaticResource SmallTextBlockStyleWithTheme}"
-                               Grid.Column="2" Grid.Row="1" Margin="10,18,0,0" VerticalAlignment="Top"/>
+                               Grid.Column="2" Grid.Row="1" Margin="10,14,0,0" VerticalAlignment="Top"/>
                     <ListView x:Name="TaskUsersLw" Grid.Column="2" Grid.Row="1" ItemsSource="{Binding NewTaskUsers}"
                               Margin="10,40,10,10" Style="{StaticResource ListViewBase}" ItemContainerStyle="{StaticResource ListViewNoHover}">
                         <ListView.ItemTemplate>
@@ -842,7 +843,7 @@
                     </TextBlock>
 
                     <Border Grid.Row="2" Grid.Column="2"
-                        BorderBrush="Transparent"
+                        BorderBrush="Transparent" Background="Transparent"
                         Width="30" Height="30" Margin="50,0,10,5"
                         HorizontalAlignment="Left" VerticalAlignment="Bottom">
                         <Path Data="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z" 
@@ -913,7 +914,7 @@
                 <Grid Margin="10">
 
                     <TextBlock Margin="20,-20,20,0" Height="120" Style="{StaticResource SmallTextBlockStyleWithTheme}"
-                        TextWrapping="WrapWithOverflow" TextAlignment="Center" FontSize="20">
+                        TextWrapping="WrapWithOverflow" TextAlignment="Center" FontSize="22">
                         <Run 
                             Text="Вы уверен что хотите удалить "/><Run
                             Text="{Binding TaskToDel.Title}"/><Run

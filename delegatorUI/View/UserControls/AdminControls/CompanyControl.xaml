@@ -86,7 +86,7 @@
                     <DataTemplate>
                         <Border x:Name="Bd"
                             Background="{DynamicResource TaskBg}" CornerRadius="5" 
-                            Height="40" Margin="10,8,10,0">
+                            Height="45" Margin="10,8,10,0">
 
                             <Grid>
                                 <Grid VerticalAlignment="Top" Margin="0,4,0,0">
@@ -97,7 +97,7 @@
                                                 CommandParameter="{Binding}"/>
                                         </TextBlock.InputBindings>
                                         <TextBlock.Style>
-                                            <Style TargetType="TextBlock" BasedOn="{StaticResource SmallTextBlockStyle}">
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource SmallTextBlockStyleWithTheme}">
                                                 <Style.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
                                                         <Setter Property="Cursor" Value="Hand"/>
@@ -106,12 +106,12 @@
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
-                                    <TextBlock Margin="100,3,0,0" Style="{StaticResource SmallTextBlockStyle}" >
+                                    <TextBlock Margin="100,5,0,0" Style="{StaticResource SmallTextBlockStyleWithTheme}" FontSize="19">
                                         <Run Text="Роль:"/>
                                         <Run Text="{Binding Role.Title}"/>
                                     </TextBlock>
                                     <ToggleButton x:Name="DescBtn"
-                                        Content="● ● ●" Margin="0,4,10,0" FontSize="16"
+                                        Content="● ● ●" Margin="0,6,10,0" FontSize="16"
                                         VerticalAlignment="Top" HorizontalAlignment="Right">
                                         <ToggleButton.Triggers>
                                             <EventTrigger RoutedEvent="ToggleButton.Checked">
@@ -215,27 +215,27 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="От:" Style="{StaticResource SmallTextBlockStyle}"
+                                    <TextBlock Text="От:" Style="{StaticResource SmallTextBlockStyleWithTheme}"
                                         Margin="4,-1,0,0"/>
-                                    <TextBlock Text="До:" Style="{StaticResource SmallTextBlockStyle}" 
+                                    <TextBlock Text="До:" Style="{StaticResource SmallTextBlockStyleWithTheme}" 
                                         Grid.Column="1" Margin="4,-1,0,0"/>
                                     <DatePicker Style="{StaticResource DatePickerBase}" 
                                         Margin="2,25,2,0" SelectedDate="{Binding ElementName=UsersLw, Path=DataContext.From}"/>
                                     <DatePicker Style="{StaticResource DatePickerBase}"
                                         Grid.Column="1" Margin="2,25,2,0" SelectedDate="{Binding ElementName=UsersLw, Path=DataContext.To}"/>
 
-                                    <TextBlock Text="Выполненые задачи:" Style="{StaticResource SmallTextBlockStyle}"
+                                    <TextBlock Text="Выполненые задачи:" Style="{StaticResource SmallTextBlockStyleWithTheme}"
                                         Margin="10,60,0,0" Grid.ColumnSpan="100"/>
-                                    <TextBlock Margin="0,80,0,0" Style="{StaticResource SmallTextBlockStyle}">
+                                    <TextBlock Margin="0,80,0,0" Style="{StaticResource SmallTextBlockStyleWithTheme}" FontSize="19">
                                         <Run Text="Количество:"/><LineBreak/>
                                         <Run Text="{Binding ComplitedCount, UpdateSourceTrigger=PropertyChanged}"/>
                                     </TextBlock>
-                                    <TextBlock Margin="0,80,0,0" Style="{StaticResource SmallTextBlockStyle}" Grid.Column="1">
+                                    <TextBlock Margin="0,80,0,0" Style="{StaticResource SmallTextBlockStyleWithTheme}" Grid.Column="1" FontSize="19">
                                         <Run Text="Затраченное время:"/><LineBreak/>
                                         <Run Text="{Binding ComplitedDuration, UpdateSourceTrigger=PropertyChanged}"/>
                                     </TextBlock>
 
-                                    <Button Content="Рассчитать" Style="{StaticResource ButtonBase}"
+                                    <Button Content="Рассчитать" Style="{StaticResource ButtonBaseWithTheme}"
                                         Grid.Column="1" Height="30" Width="100" VerticalAlignment="Bottom" Margin="0,0,-55,10"
                                         Command="{Binding ElementName=UsersLw, Path=DataContext.CalcStats}"
                                         CommandParameter="{Binding}"/>
@@ -293,7 +293,7 @@
                 <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
                     HorizontalAlignment="Center" VerticalAlignment="Top"
                     Margin="0,30,0,0" Width="290" Height="100"
-                    FontSize="20" TextWrapping="WrapWithOverflow" TextAlignment="Center">
+                    FontSize="22" TextWrapping="WrapWithOverflow" TextAlignment="Center">
                     <Run Text="Текущая роль"/>
                     <Run Text="{Binding UserToEdit.UserName, UpdateSourceTrigger=PropertyChanged}"/><Run
                         Text=":"/>
@@ -339,16 +339,16 @@
               Style="{StaticResource PlateStyle}">
             <Grid Margin="20">
 
-                <TextBlock Style="{StaticResource SmallTextBlockStyle}"
-                    Height="50" Margin="0"
+                <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
+                    Height="50" Margin="0" FontSize="22"
                     TextWrapping="WrapWithOverflow"
                     VerticalAlignment="Top">
                     <Run Text="Компания:"/>
                     <Run Text="{Binding CompanyName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </TextBlock>
 
-                <TextBlock Style="{StaticResource SmallTextBlockStyle}"
-                    Height="50" Margin="0,50,0,0"
+                <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
+                    Height="50" Margin="0,50,0,0" FontSize="22"
                     TextWrapping="WrapWithOverflow"
                     VerticalAlignment="Top">
                     <Run Text="Код компании:"/>
@@ -549,7 +549,7 @@
 
                 <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
                     VerticalAlignment="Top" TextAlignment="Center" TextWrapping="WrapWithOverflow"
-                    Margin="30,50,30,0" FontSize="20">
+                    Margin="30,50,30,0" FontSize="22">
                     <Run Text="Вы действительно хотите удалить"/>
                     <Run Text="{Binding UserToDeleteName}"/><Run Text="?"/>
                 </TextBlock>
@@ -609,21 +609,22 @@
             <Grid>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="30"/>
                     <RowDefinition/>
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
 
                 <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
-                    VerticalAlignment="Top" Margin="15" FontSize="20">
+                    VerticalAlignment="Top" Margin="15" FontSize="22" TextWrapping="WrapWithOverflow" >
                     <Run Text="Выполненые задачи "/><Run
                         Text="{Binding ComplitedUserName}"/><Run Text=":"/>
                 </TextBlock>
 
                 <TextBox x:Name="SearchComplitedTb" Text="{Binding SearchComplitedText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxBaseWithTheme}"
-                    Margin="10,0,20,0" Height="30"
+                    Margin="10,0,20,0" Height="30" Grid.Row="1"
                     VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
-                <TextBlock Text="Введите название задачи"
+                <TextBlock Text="Введите название задачи" Grid.Row="1"
                     Margin="12,0,0,0" Panel.ZIndex="-100">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock" x:Name="SearchComplitedDescription"
@@ -655,7 +656,7 @@
                 </TextBlock>
 
                 <TextBlock Text="Задач нет" Opacity="0" FontSize="20"
-                    Grid.Row="1" VerticalAlignment="Top" Margin="15">
+                    Grid.Row="2" VerticalAlignment="Top" Margin="15">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock" BasedOn="{StaticResource SmallTextBlockStyleWithTheme}">
                             <Style.Triggers>
@@ -685,7 +686,7 @@
                 </TextBlock>
 
                 <ListView x:Name="CompltedLw" Style="{StaticResource ListViewBase}"
-                    Grid.Row="1" Margin="0,15,0,0" BorderThickness="0"
+                    Grid.Row="2" Margin="0,15,0,0" BorderThickness="0"
                     ItemsSource="{Binding Compliteds}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
@@ -703,18 +704,18 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Border BorderThickness="2">
-                                <Button Style="{StaticResource ButtonBaseNoPressWiththeme}" Height="30"
-                                    Margin="10,0,10,10" HorizontalAlignment="Stretch"
+                                <Button Style="{StaticResource ButtonBaseNoPressWiththeme}" Height="60"
+                                    Margin="10,0,10,10" HorizontalAlignment="Stretch" FontSize="20"
                                     Command="{Binding DataContext.ToCompletedDescCommand, ElementName=CompltedLw}"
                                     CommandParameter="{Binding}">
                                     <Button.Content>
-                                        <Grid Margin="20,0,10,0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition/>
-                                                <ColumnDefinition/>
-                                            </Grid.ColumnDefinitions>
+                                        <Grid Margin="10,0,10,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
                                             <TextBlock Text="{Binding TaskTitle}"/>
-                                            <TextBlock Grid.Column="1" FontSize="15" VerticalAlignment="Bottom">
+                                            <TextBlock Grid.Row="1" FontSize="18" VerticalAlignment="Bottom">
                                                 <Run Text="Закончил: "/>
                                                 <Run Text="{Binding EndTime, StringFormat=dd.MM.yyyy}"/>
                                             </TextBlock>
@@ -728,7 +729,7 @@
                 
                 <Button Content="Назад" Width="100" Height="30" Style="{StaticResource ButtonBaseWithTheme}"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10"
-                    Command="{Binding BackFromComplitedCommand}" Grid.Row="2"/>
+                    Command="{Binding BackFromComplitedCommand}" Grid.Row="3"/>
 
             </Grid>
 
@@ -814,13 +815,13 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
-                        VerticalAlignment="Center" FontSize="18">
+                        VerticalAlignment="Center">
                         <Run Text="Выполнил: "/><Run
                             Text="{Binding ComplitedDescUserName}"/>
                     </TextBlock>
                     
                     <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
-                        Grid.Row="1" VerticalAlignment="Center" FontSize="18">
+                        Grid.Row="1" VerticalAlignment="Center">
                         <Run Text="Потратил "/><Run
                             Text="{Binding ComplitedDuration}"/><Run
                             Text=" ч"/>
@@ -831,16 +832,16 @@
                         Command="{Binding GetFailsCommand}"/>
 
                     <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}"
-                        Grid.Row="2" VerticalAlignment="Center" FontSize="18">
+                        Grid.Row="2" VerticalAlignment="Center">
                         <Run Text="Закончил: "/><Run
                             Text="{Binding ComplitedEndTime, StringFormat=dd.MM.yyyy}"/>
                     </TextBlock>
 
                     <TextBlock Text="Коментарий:" Style="{StaticResource SmallTextBlockStyleWithTheme}"
-                            Grid.Row="3" Margin="0,5,0,0" FontSize="18"/>
+                            Grid.Row="3" Margin="0,5,0,0"/>
 
                     <ScrollViewer Grid.Row="3" Margin="0,30,0,0" VerticalScrollBarVisibility="Auto">
-                        <TextBlock Text="{Binding ComplitedComment}" FontSize="18"
+                        <TextBlock Text="{Binding ComplitedComment}"
                         TextWrapping="WrapWithOverflow" Style="{StaticResource SmallTextBlockStyleWithTheme}" 
                         />
                     </ScrollViewer>
@@ -859,7 +860,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}" Margin="15,15,15,0"
-                        VerticalAlignment="Top" TextWrapping="WrapWithOverflow" FontSize="20">
+                        VerticalAlignment="Top" TextWrapping="WrapWithOverflow" FontSize="22">
                         <Run Text="Другие отчеты по "/><Run
                             Text="{Binding TaskName}"/><Run Text=":"/>
                     </TextBlock>
@@ -947,18 +948,18 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderThickness="2">
-                                    <Button Style="{StaticResource ButtonBaseNoPressWiththeme}" Height="30"
+                                    <Button Style="{StaticResource ButtonBaseNoPressWiththeme}" Height="60"
                                         Margin="10,0,10,10" HorizontalAlignment="Stretch"
                                         Command="{Binding DataContext.OtherOpenCommand, ElementName=OtherCompltedLw}"
                                         CommandParameter="{Binding}">
                                         <Button.Content>
-                                            <Grid Margin="20,0,10,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="{Binding CompanyUser.User.UserName}"/>
-                                                <TextBlock Grid.Column="1" FontSize="15" VerticalAlignment="Bottom">
+                                            <Grid Margin="10,0,10,0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding CompanyUser.User.UserName}" FontSize="20"/>
+                                                <TextBlock Grid.Row="1" FontSize="18" VerticalAlignment="Bottom">
                                                     <Run Text="Закончил: "/>
                                                     <Run Text="{Binding EndTime, StringFormat=dd.MM.yyyy}"/>
                                                 </TextBlock>

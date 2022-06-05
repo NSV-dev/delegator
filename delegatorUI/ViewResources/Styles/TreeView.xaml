@@ -78,7 +78,7 @@
         <Setter Property="Padding" Value="1,0,0,0"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontSize" Value="18"/>
-        <Setter Property="Margin" Value="20,0,0,0"/>
+        <Setter Property="Margin" Value="18,0,0,0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TreeViewItem}">
@@ -99,7 +99,7 @@
                             <Border.Effect>
                                 <DropShadowEffect
                                     ShadowDepth="1" Direction="275"
-                                    Opacity=".6" BlurRadius="20"/>
+                                    Opacity=".6" BlurRadius="15"/>
                             </Border.Effect>
                         </Border>
                         <ToggleButton x:Name="Expander" VerticalAlignment="Top" Margin="4,10,0,0"
@@ -127,7 +127,7 @@
                                                 <DoubleAnimation
                                                     Storyboard.TargetName="Bd"
                                                     Storyboard.TargetProperty="Height"
-                                                    From="40" To="265" Duration="0:0:.2"/>
+                                                    From="40" To="280" Duration="0:0:.2"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -139,7 +139,7 @@
                                                 <DoubleAnimation
                                                     Storyboard.TargetName="Bd"
                                                     Storyboard.TargetProperty="Height"
-                                                    From="265" To="40" Duration="0:0:.2"/>
+                                                    From="280" To="40" Duration="0:0:.2"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>
@@ -216,7 +216,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{Binding Title}" Style="{StaticResource SmallTextBlockStyle}" Margin="0,3,0,0"/>
+            <TextBlock Text="{Binding Title}" Style="{StaticResource SmallTextBlockStyleWithTheme}" Margin="0,3,0,0"/>
 
             <TextBlock Text="{Binding Category.Title}" Foreground="{Binding Category.Color}" FontSize="16"
                 HorizontalAlignment="Right" Margin="0,3,10,0" Style="{StaticResource SmallTextBlockStyle}"/>
@@ -244,45 +244,46 @@
                         <TextBlock Text="{Binding ToDo}" Style="{StaticResource SmallTextBlockStyleWithTheme}" Margin="3" TextWrapping="WrapWithOverflow"/>
                     </Border>
                 </Popup>
-                <TextBlock x:Name="ToDotb" Style="{StaticResource SmallTextBlockStyle}" Grid.ColumnSpan="100" MaxWidth="330"
+                <TextBlock x:Name="ToDotb" Style="{StaticResource SmallTextBlockStyleWithTheme}" Grid.ColumnSpan="100" MaxWidth="330"
                     HorizontalAlignment="Left">
                     <Run Text="Обязанности:"/><LineBreak/>
                     <Run Text="{Binding ToDo}"/>
                 </TextBlock>
 
-                <TextBlock Text="Описание задачи:" Style="{StaticResource SmallTextBlockStyle}" Grid.ColumnSpan="2"
+                <TextBlock Text="Описание задачи:" Style="{StaticResource SmallTextBlockStyleWithTheme}" Grid.ColumnSpan="2"
                     Grid.Row="1"/>
-                <ScrollViewer Grid.Row="2" Height="75" VerticalScrollBarVisibility="Auto">
-                    <TextBlock Text="{Binding Description}" Style="{StaticResource SmallTextBlockStyle}"
+                <ScrollViewer Grid.Row="2" Height="75" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2" MaxWidth="170"
+                    HorizontalAlignment="Left">
+                    <TextBlock Text="{Binding Description}" Style="{StaticResource SmallTextBlockStyleWithTheme}"
                         TextWrapping="WrapWithOverflow" Grid.ColumnSpan="2"/>
                 </ScrollViewer>
 
-                <TextBlock Style="{StaticResource SmallTextBlockStyle}" Grid.Row="3" Margin="0,10,0,0">
+                <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}" Grid.Row="3" Margin="0,10,0,0">
                     <Run Text="Назначил:"/><LineBreak/>
                     <Run Text="{Binding Sender.UserName}"/>
                 </TextBlock>
 
-                <TextBlock Style="{StaticResource SmallTextBlockStyle}" Grid.Row="3" 
+                <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}" Grid.Row="3" 
                     Grid.Column="1" Margin="10,10,0,0" Grid.ColumnSpan="2"
                     HorizontalAlignment="Center">
                     <Run Text="Ответственный:"/><LineBreak/>
                     <Run Text="{Binding Responsible.UserName}"/>
                 </TextBlock>
                 
-                <TextBlock Style="{StaticResource SmallTextBlockStyle}" Grid.Row="3" Grid.Column="3" Margin="0,10,0,0"
+                <TextBlock Style="{StaticResource SmallTextBlockStyleWithTheme}" Grid.Row="3" Grid.Column="3" Margin="0,10,0,0"
                     HorizontalAlignment="Right">
                     <Run Text="Дэдлайн:"/><LineBreak/>
                     <Run Text="{Binding EndTime, StringFormat=dd.MM.yyyy}"/>
                 </TextBlock>
 
-                <TextBlock Text="Сотрудники:" Grid.Column="2" Style="{StaticResource SmallTextBlockStyle}" Grid.ColumnSpan="2" Grid.Row="1"/>
+                <TextBlock Text="Сотрудники:" Grid.Column="2" Style="{StaticResource SmallTextBlockStyleWithTheme}" Grid.ColumnSpan="2" Grid.Row="1"/>
                 <ListView ItemsSource="{Binding Users}" Style="{StaticResource ListViewBase}" BorderThickness="0"
                     HorizontalAlignment="Stretch" ItemContainerStyle="{StaticResource ListViewNoHover}"
                     Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <TextBlock x:Name="UserTb" Text="{Binding User.UserName}" Style="{StaticResource SmallTextBlockStyle}"/>
+                                <TextBlock x:Name="UserTb" Text="{Binding User.UserName}" Style="{StaticResource SmallTextBlockStyleWithTheme}"/>
                                 <Popup x:Name="ToDoPopup" Placement="Mouse" IsOpen="{Binding ElementName=UserTb, Path=IsMouseOver, Mode=OneWay}"
                                     PopupAnimation="Fade" AllowsTransparency="True" MaxWidth="300">
                                     <Border Background="{DynamicResource WindowPanel}" CornerRadius="5" BorderThickness="1" BorderBrush="{DynamicResource Path}">

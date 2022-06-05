@@ -24,7 +24,20 @@
                     <Setter Property="VerticalContentAlignment" Value="Center"/>
                 </Style>
             </StackPanel.Resources>
-            <Label Content="Регистрация" FontSize="16">
+            <Label Content="Регистрация" FontSize="20">
+                <Label.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                                    Storyboard.TargetProperty="FontSize"
+                                    To="24" Duration="0:0:.1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Label.Triggers>
+            </Label>
+            <Label Content="Вход" FontSize="24">
                 <Label.Triggers>
                     <EventTrigger RoutedEvent="Loaded">
                         <BeginStoryboard>
@@ -32,19 +45,6 @@
                                 <DoubleAnimation
                                     Storyboard.TargetProperty="FontSize"
                                     To="20" Duration="0:0:.1"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                </Label.Triggers>
-            </Label>
-            <Label Content="Вход" FontSize="20">
-                <Label.Triggers>
-                    <EventTrigger RoutedEvent="Loaded">
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation
-                                    Storyboard.TargetProperty="FontSize"
-                                    To="16" Duration="0:0:.1"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger>

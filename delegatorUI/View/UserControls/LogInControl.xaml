@@ -23,14 +23,14 @@
                     <Setter Property="VerticalContentAlignment" Value="Center"/>
                 </Style>
             </StackPanel.Resources>
-            <Label Content="Регистрация" FontSize="20">
+            <Label Content="Регистрация" FontSize="24">
                 <Label.Triggers>
                     <EventTrigger RoutedEvent="Loaded">
                         <BeginStoryboard>
                             <Storyboard>
                                 <DoubleAnimation
                                     Storyboard.TargetProperty="FontSize"
-                                    To="16" Duration="0:0:.1"/>
+                                    To="20" Duration="0:0:.1"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger>
@@ -49,14 +49,14 @@
                     <MouseBinding MouseAction="LeftClick" Command="{Binding ToRegCommand}"/>
                 </Label.InputBindings>
             </Label>
-            <Label Content="Вход" FontSize="16">
+            <Label Content="Вход" FontSize="20">
                 <Label.Triggers>
                     <EventTrigger RoutedEvent="Loaded">
                         <BeginStoryboard>
                             <Storyboard>
                                 <DoubleAnimation
                                     Storyboard.TargetProperty="FontSize"
-                                    To="20" Duration="0:0:.1"/>
+                                    To="24" Duration="0:0:.1"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger>

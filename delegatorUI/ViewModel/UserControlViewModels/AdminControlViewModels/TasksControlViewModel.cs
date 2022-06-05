@@ -318,7 +318,7 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
                 Responsible = Resp
             };
 
-            if (!task.Users.Select(u => u.User).Contains(task.Responsible))
+            if (!task.Users.Select(u => u.User).ToList().Exists(t => t.Id == task.Responsible.Id))
                 task.Users.Add(new() { User = task.Responsible, ToDo = "Ответственный" });
 
             (this as ILoading).StartLoading();
@@ -345,10 +345,6 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
                     ResponsibleId = _mainTask.ResponsibleId,
                     Responsible = _mainTask.Responsible
                 };
-
-                foreach (var user in task.Users)
-                    if (!_mainTask.Users.Any(u => u.User.Id == user.User.Id))
-                        _mainTask.Users.Add(user);
 
                 await _apiHelper.Tasks.Update(oldMainTask, _mainTask, _company.Id);
             }

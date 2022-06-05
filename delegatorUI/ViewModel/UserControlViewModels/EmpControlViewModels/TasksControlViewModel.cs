@@ -442,11 +442,22 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
         private async Task LoadTasks()
         {
             (this as ILoading).StartLoading();
-            Tasks = await _apiHelper.Tasks.GetByUserAndCompanyOnlyMain(_user.Id, _company.Id);
+            Tasks = await _apiHelper.Tasks.GetByUserAndCompany(_user.Id, _company.Id);
+            List<AppTask> tasksToRemove = new();
+            foreach (var task in Tasks)
+            {
+                var list = GetAllSubs(task);
+                foreach (var task1 in Tasks)
+                    if (list.Exists(t => t.Id == task1.Id))
+                        tasksToRemove.Add(task1);
+            }
+            foreach (var task in tasksToRemove)
+                Tasks.RemoveAll(t => t.Id == task.Id);
+
             Tasks = Tasks.Where(t => t.Title.ToLower().Contains(SearchText.ToLower())).ToList();
             Tasks = Tasks.OrderBy(t => t.EndTime).ToList();
             foreach (var task in Tasks)
-                task.ToDo = task.Users.Single(u => u.User.Id == _user.Id).ToDo;
+                GetToDo(task);
             (this as ILoading).EndLoading();
         }
 
@@ -460,8 +471,25 @@ namespace delegatorUI.ViewModel.UserControlViewModels.EmpControlViewModels
             TasksForToday = TasksForToday.Where(t => t.Title.ToLower().Contains(SearchText.ToLower())).ToList();
             TasksForToday = TasksForToday.OrderBy(t => t.EndTime).ToList();
             foreach (var task in TasksForToday)
-                task.ToDo = task.Users.Single(u => u.User.Id == _user.Id).ToDo;
+                GetToDo(task);
             (this as ILoading).EndLoading();
+        }
+
+        private async Task GetToDo(AppTask task)
+        {
+            task.ToDo = task.Users.Single(u => u.User.Id == _user.Id).ToDo;
+            if (task.Tasks is not null)
+                foreach (var sub in task.Tasks)
+                    await GetToDo(sub);
+        }
+
+        private List<AppTask> GetAllSubs(AppTask task)
+        {
+            List<AppTask> res = new();
+            res.AddRange(task.Tasks);
+            foreach (var sub in task.Tasks)
+                res.AddRange(GetAllSubs(sub));
+            return res;
         }
     }
 }

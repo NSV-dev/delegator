@@ -59,7 +59,7 @@ namespace delegatorUI.Library.Api.Helpers
 
         public async Task Delete(AppTask task, string companyID)
         {
-            if (task.Tasks.Count > 0)
+            if (task.Tasks?.Count > 0)
                 foreach (AppTask subtask in task.Tasks)
                     await Delete(subtask, companyID);
 

@@ -265,8 +265,8 @@ namespace delegatorUI.ViewModel.UserControlViewModels.AdminControlViewModels
         public ICommand DeleteUserCommand { get; }
         private void OnDeleteUserCommandExecute(object p)
         {
-            NewTaskUsers.Remove(NewTaskUsers.Single(u => u.User.Id == (p as AppUser).Id));
-            CompanyUsers.Add(p as AppUser);
+            NewTaskUsers.Remove(NewTaskUsers.Single(u => u.User.Id == (p as UserWithToDo).User.Id));
+            CompanyUsers.Add((p as UserWithToDo).User);
         }
 
         public ICommand ToAddTaskUserCommand { get; }

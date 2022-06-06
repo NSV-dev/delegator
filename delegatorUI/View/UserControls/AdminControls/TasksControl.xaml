@@ -705,7 +705,7 @@
                               Margin="10,40,10,10" Style="{StaticResource ListViewBase}" ItemContainerStyle="{StaticResource ListViewNoHover}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding UserName}" Style="{StaticResource SmallTextBlockStyleWithTheme}"
+                                <TextBlock Text="{Binding User.UserName}" Style="{StaticResource SmallTextBlockStyleWithTheme}"
                                     FontSize="18">
                                     <TextBlock.InputBindings>
                                         <MouseBinding Gesture="LeftClick"

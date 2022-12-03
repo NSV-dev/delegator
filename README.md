@@ -1,3 +1,3 @@
 # delegator
 
-delegator is a client-server desktop application for groups of people or companies who want to 
+delegator is a client-server task managing desktop application for groups or companies

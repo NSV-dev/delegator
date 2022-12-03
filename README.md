@@ -17,4 +17,4 @@ WPF client + ASP.NET API + MS SQL data base
 
 ### You can download and run this app 
 
-Download this ZIP file and run *setup.exe*
+Download this ZIP file and run **setup.exe**

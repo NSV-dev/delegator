@@ -18,3 +18,5 @@ WPF client + ASP.NET API + MS SQL data base
 ### You can download and run this app 
 
 Download this [ZIP](delegator.zip) file and run `setup.exe`
+
+P.S. Currently not working (servers are not free)
